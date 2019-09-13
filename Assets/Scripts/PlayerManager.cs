@@ -62,7 +62,7 @@ public class PlayerManager : MonoBehaviour
 
     public void EnableVehicle(PlayerVehicles vehicle)
     {
-        helicopter.SetActive(false);
+        //helicopter.SetActive(false);
         turret.SetActive(false);
         plane.SetActive(false);
         turretVR.SetActive(false);
@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour
             currentVehicle = turretVR;
         }
 
-        CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(), currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
+        //CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(), currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
 
         rotateable = currentVehicle.GetComponent<IRotateable>().GetRotateable();
         //AimingCircle.Instance.SetTrueAimingTransform(currentVehicle.transform);

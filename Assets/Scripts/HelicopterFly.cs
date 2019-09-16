@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using Valve.VR;
 
 public class HelicopterFly : MonoBehaviour, IRotateable
 {
+    public SteamVR_Action_Vector2 touchPosition;
+
     public static HelicopterFly Instance;
 
     private float horizontal;
@@ -35,6 +38,8 @@ public class HelicopterFly : MonoBehaviour, IRotateable
     void Update()
     {
         GetInput();
+        GetInputVR();
+        ProcessInput();
         UpdateIdealVelocity();
         Rotation();
         Tilting();
@@ -45,11 +50,20 @@ public class HelicopterFly : MonoBehaviour, IRotateable
         MatchIdealVelocity();
     }
 
+    void GetInputVR()
+    {
+        horizontal = touchPosition.GetAxis(SteamVR_Input_Sources.Any).x;
+        vertical = touchPosition.GetAxis(SteamVR_Input_Sources.Any).y;
+    }
+
     void GetInput()
     {
-        //Get horizontal input from -1 to 1
         horizontal = InputController.Horizontal();
+        vertical = InputController.Vertical();
+    }
 
+    void ProcessInput()
+    {
         desiredSidewaysTilt += horizontal * Time.deltaTime * DESIRED_SIDEWAYS_TILT_ACCELERATION;
         if (Mathf.Abs(horizontal) < 0.8f)
             desiredSidewaysTilt = Mathf.MoveTowards(desiredSidewaysTilt, 0, Time.deltaTime * DESIRED_SIDEWAYS_TILT_ACCELERATION);
@@ -57,10 +71,10 @@ public class HelicopterFly : MonoBehaviour, IRotateable
         if (Mathf.Abs(desiredSidewaysTilt) > 1)
             desiredSidewaysTilt = Mathf.Sign(desiredSidewaysTilt);
 
-        //Get vertical input from -1 to 1
-        vertical = InputController.Vertical();
-
         desiredSpeed += vertical * Time.deltaTime * DESIRED_SPEED_ACCELERATION;
+
+        if (Mathf.Abs(vertical) < 0.8f)
+            desiredSpeed = Mathf.MoveTowards(desiredSpeed, 0, Time.deltaTime * DESIRED_SPEED_ACCELERATION);
 
         if (Mathf.Abs(desiredSpeed) > 1)
             desiredSpeed = Mathf.Sign(desiredSpeed);

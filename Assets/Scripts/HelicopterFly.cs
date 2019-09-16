@@ -12,7 +12,9 @@ public class HelicopterFly : MonoBehaviour, IRotateable
 
     private readonly float ROTATION_SPEED = 75f;
     private readonly float DESIRED_SPEED_ACCELERATION = 2f;
+    private readonly float ALTITUDE_ACCELERATION = 20f;
     private readonly float DESIRED_SIDEWAYS_TILT_ACCELERATION = 7f;
+    private readonly float MAX_SPEED = 50f;
     private readonly float MAX_FORWARD_TILT_ANGLE = 15;
     private readonly float MAX_SIDEWAYS_TILT_ANGLE = 25;
 
@@ -45,6 +47,7 @@ public class HelicopterFly : MonoBehaviour, IRotateable
 
     void GetInput()
     {
+        //Get horizontal input from -1 to 1
         horizontal = InputController.Horizontal();
 
         desiredSidewaysTilt += horizontal * Time.deltaTime * DESIRED_SIDEWAYS_TILT_ACCELERATION;
@@ -54,25 +57,27 @@ public class HelicopterFly : MonoBehaviour, IRotateable
         if (Mathf.Abs(desiredSidewaysTilt) > 1)
             desiredSidewaysTilt = Mathf.Sign(desiredSidewaysTilt);
 
+        //Get vertical input from -1 to 1
         vertical = InputController.Vertical();
 
         desiredSpeed += vertical * Time.deltaTime * DESIRED_SPEED_ACCELERATION;
+
         if (Mathf.Abs(desiredSpeed) > 1)
             desiredSpeed = Mathf.Sign(desiredSpeed);
 
         altitude = 0;
         if (InputController.Button3())
-            altitude++;
+            altitude += ALTITUDE_ACCELERATION;
 
         if (InputController.Button2())
-            altitude--;
+            altitude -= ALTITUDE_ACCELERATION;
     }
 
     void UpdateIdealVelocity()
     {
         var rotateableHeading = helicopterRotateable.transform.forward;
         rotateableHeading.y = 0;
-        idealVelocity = rotateableHeading * desiredSpeed;
+        idealVelocity = rotateableHeading * desiredSpeed * MAX_SPEED;
         idealVelocity.y = altitude;
     }
 

@@ -1,11 +1,19 @@
 {
   "actions": [
     {
-      "name": "/actions/default/in/touchPad",
-      "type": "vector2"
+      "name": "/actions/default/in/InteractUI",
+      "type": "boolean"
     },
     {
-      "name": "/actions/default/in/trigger",
+      "name": "/actions/default/in/Teleport",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/GrabPinch",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/GrabGrip",
       "type": "boolean"
     },
     {
@@ -13,13 +21,50 @@
       "type": "pose"
     },
     {
+      "name": "/actions/default/in/SkeletonLeftHand",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/left"
+    },
+    {
+      "name": "/actions/default/in/SkeletonRightHand",
+      "type": "skeleton",
+      "skeleton": "/skeleton/hand/right"
+    },
+    {
+      "name": "/actions/default/in/Squeeze",
+      "type": "vector1",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/default/in/HeadsetOnHead",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/default/in/TurretMainWeapon",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/TouchPadLeft",
+      "type": "vector2"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
+    },
+    {
+      "name": "/actions/mixedreality/in/ExternalCamera",
+      "type": "pose",
+      "requirement": "optional"
     }
   ],
   "action_sets": [
     {
       "name": "/actions/default",
+      "usage": "single"
+    },
+    {
+      "name": "/actions/mixedreality",
       "usage": "single"
     }
   ],
@@ -64,7 +109,10 @@
   "localization": [
     {
       "language_tag": "en_US",
-      "/actions/default/out/Haptic": "Haptic"
+      "/actions/default/out/Haptic": "Haptic",
+      "/actions/default/in/Pose": "Pose",
+      "/actions/default/in/SkeletonLeftHand": "Skeleton (Left)",
+      "/actions/default/in/SkeletonRightHand": "Skeleton (Right)"
     }
   ]
 }

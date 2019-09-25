@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
-public class PlayerTurret : MonoBehaviour, IRotateable
+public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
 {
     private float horizontal;
     private float vertical;
 
     [SerializeField] private GameObject Rotateable;
     [SerializeField] private GameObject Tiltable;
+    [SerializeField] private Transform cameraPosition;
 
     private readonly float ROTATION_SPEED = 100f;
     private readonly float TILT_SPEED = 100f;
@@ -78,5 +79,15 @@ public class PlayerTurret : MonoBehaviour, IRotateable
     public GameObject GetRotateable()
     {
         return Rotateable;
+    }
+
+    public Vector3 GetRelocatePosition()
+    {
+        return cameraPosition.position;
+    }
+
+    public float GetRelocateRotation()
+    {
+        return transform.rotation.eulerAngles.y;
     }
 }

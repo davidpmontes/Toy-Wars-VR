@@ -58,8 +58,6 @@ public class Drive : MonoBehaviour, ICameraRelocate
             currTurnRate = Mathf.MoveTowards(currTurnRate, 0, TURN_ACCELERATION);
         }
 
-
-
         Vector3 wantedPosition = transform.position + transform.forward * moveVertical * currMoveRate * Time.deltaTime;
         Quaternion wantedRotation = transform.rotation * Quaternion.Euler(Vector3.up * moveHorizontal * currTurnRate * Time.deltaTime);
 

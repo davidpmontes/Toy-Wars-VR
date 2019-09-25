@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.tank);
+        EnableVehicle(PlayerVehicles.turretVR);
     }
 
     public GameObject CurrentVehicle()
@@ -64,13 +64,13 @@ public class PlayerManager : MonoBehaviour
         {
             EnableVehicle(PlayerVehicles.tank);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
-                                                   currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
-            CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
-        }
+    private void SetCameraToVehicle()
+    {
+        CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
+                                       currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
+        CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
     }
 
     public void EnableVehicle(PlayerVehicles vehicle)
@@ -106,6 +106,8 @@ public class PlayerManager : MonoBehaviour
             tank.SetActive(true);
             currentVehicle = tank;
         }
+
+        SetCameraToVehicle();
 
         //rotateable = currentVehicle.GetComponent<IRotateable>().GetRotateable();
 

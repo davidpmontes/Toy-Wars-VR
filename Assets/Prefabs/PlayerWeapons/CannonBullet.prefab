@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6110640345494018826}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0208202, y: 0.0208202, z: 0.0208202}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -68,6 +68,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -105,8 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed07956e36a2f482fa096da6e8f948d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
-  lifespan: 2
+  speed: 500
+  lifespan: 5
 --- !u!54 &6804072720458766518
 Rigidbody:
   m_ObjectHideFlags: 0

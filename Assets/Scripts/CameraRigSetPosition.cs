@@ -20,4 +20,9 @@ public class CameraRigSetPosition : MonoBehaviour
         pivot.transform.Rotate(Vector3.up, yRotation - HMD.transform.rotation.eulerAngles.y);
         pivot.transform.parent = transform;
     }
+
+    public void AttachToGameobject(Transform parent)
+    {
+        transform.parent = parent;
+    }
 }

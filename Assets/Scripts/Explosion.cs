@@ -14,7 +14,7 @@ public class Explosion : MonoBehaviour
     private void OnEnable()
     {
         Invoke("Deactivate", lifespan);
-        audiosource.PlayOneShot(explosionClip);
+        //audiosource.PlayOneShot(explosionClip);
     }
 
     void Deactivate()

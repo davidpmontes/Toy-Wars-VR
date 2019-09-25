@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+using Valve.VR;
 
 public class Cannon : MonoBehaviour
 {
+    public SteamVR_Action_Boolean trigger;
+
     [SerializeField] private float delay = 0.5f;
     [SerializeField] private float soundDelay = 0.2f;
     [SerializeField] private GameObject muzzleFlash;
@@ -32,6 +35,31 @@ public class Cannon : MonoBehaviour
     }
 
     void Update()
+    {
+        //GetInput();
+        GetInputVR();
+    }
+
+    void GetInputVR()
+    {
+        if (trigger.state)
+        {
+            if (Time.time - lastTimeFired > delay)
+            {
+                lastTimeFired = Time.time;
+                muzzleFlashScript.TurnOnLight();
+                SpawnBullet();
+            }
+
+            //if (Time.time - lastTimeSound > soundDelay)
+            //{
+            //    lastTimeSound = Time.time;
+            //    audioSource.PlayOneShot(cannonBulletAudio);
+            //}
+        }
+    }
+
+    void GetInput()
     {
         if (InputController.Button4())
         {
@@ -68,5 +96,6 @@ public class Cannon : MonoBehaviour
         var cannonBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.CannonBullet);
         cannonBullet.GetComponent<Projectile>().Init(transform, direction.normalized);
         cannonBullet.SetActive(true);
+        Debug.Log("cannonBulletActive");
     }
 }

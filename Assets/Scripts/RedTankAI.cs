@@ -34,7 +34,6 @@ public class RedTankAI : MonoBehaviour, IDamageable
             return;
 
         float distance = Vector3.Distance(Waypoints[CurrentWP].transform.position, transform.position);
-        Debug.Log(CurrentWP);
 
         if (distance < MIN_WP_DISTANCE)
         {
@@ -71,6 +70,6 @@ public class RedTankAI : MonoBehaviour, IDamageable
     {
         Waypoints.Clear();
         EnemyManager.Instance.DestroyEnemy(gameObject);
-        ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.SmallExplosionEffect, transform);
+        ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.smallExplosion, transform);
     }
 }

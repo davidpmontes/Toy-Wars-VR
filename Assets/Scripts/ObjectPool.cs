@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Pools { CannonBullet, Rocket, smallExplosion, largeExplosion, RedTarget, PingPongBall, SmallExplosionEffect, RedTank, RedHelicopter, P51Bullet };
+public enum Pools { CannonBullet, Rocket, smallExplosion, largeExplosion, RedTarget, PingPongBall, RedTank, RedHelicopter, P51Bullet };
 
 public class ObjectPool : MonoBehaviour
 {

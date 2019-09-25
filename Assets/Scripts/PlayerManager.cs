@@ -5,7 +5,8 @@ public enum PlayerVehicles
     helicopter,
     turret,
     plane,
-    turretVR
+    turretVR,
+    tank
 }
 
 public class PlayerManager : MonoBehaviour
@@ -17,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject turret;
     [SerializeField] private GameObject plane;
     [SerializeField] private GameObject turretVR;
+    [SerializeField] private GameObject tank;
 
     private GameObject rotateable;
 
@@ -27,7 +29,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.helicopter);
+        EnableVehicle(PlayerVehicles.tank);
     }
 
     public GameObject CurrentVehicle()
@@ -58,6 +60,17 @@ public class PlayerManager : MonoBehaviour
         {
             EnableVehicle(PlayerVehicles.turretVR);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            EnableVehicle(PlayerVehicles.tank);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
+                                                   currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
+            CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
+        }
     }
 
     public void EnableVehicle(PlayerVehicles vehicle)
@@ -66,6 +79,7 @@ public class PlayerManager : MonoBehaviour
         turret.SetActive(false);
         plane.SetActive(false);
         turretVR.SetActive(false);
+        tank.SetActive(false);
 
         if (vehicle == PlayerVehicles.helicopter)
         {
@@ -87,8 +101,13 @@ public class PlayerManager : MonoBehaviour
             turretVR.SetActive(true);
             currentVehicle = turretVR;
         }
+        else if (vehicle == PlayerVehicles.tank)
+        {
+            tank.SetActive(true);
+            currentVehicle = tank;
+        }
 
-        rotateable = currentVehicle.GetComponent<IRotateable>().GetRotateable();
+        //rotateable = currentVehicle.GetComponent<IRotateable>().GetRotateable();
 
         //AimingCircle.Instance.SetTrueAimingTransform(currentVehicle.transform);
         //FollowTarget.Instance.SetCameraTargets(currentVehicle.transform);

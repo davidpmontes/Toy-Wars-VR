@@ -16,6 +16,6 @@ public class HUDCompass : MonoBehaviour
 
     void Update()
     {
-        rt.anchoredPosition = new Vector2(-PlayerManager.Instance.CurrentRotateable().transform.rotation.eulerAngles.y * MULTIPLIER + OFFSET, 0);
+        //rt.anchoredPosition = new Vector2(-PlayerManager.Instance.CurrentRotateable().transform.rotation.eulerAngles.y * MULTIPLIER + OFFSET, 0);
     }
 }

@@ -63,7 +63,7 @@ public class RedHelicopterAI : MonoBehaviour, IDamageable
 
     public void DestroyHelicopter()
     {
-        ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.SmallExplosionEffect, transform);
+        ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.smallExplosion, transform);
         EnemyManager.Instance.DestroyEnemy(gameObject);
     }
 }

@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.turretVR);
+        EnableVehicle(PlayerVehicles.tank);
     }
 
     public GameObject CurrentVehicle()

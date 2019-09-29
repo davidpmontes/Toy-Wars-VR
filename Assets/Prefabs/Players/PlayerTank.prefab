@@ -56,13 +56,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1270038493474374}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.159, z: -0.015}
+  m_LocalPosition: {x: 0, y: 0.1795, z: -0.01999998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4579012101259358}
   - {fileID: 4113736988324238}
-  m_Father: {fileID: 4020520891231902}
-  m_RootOrder: 0
+  m_Father: {fileID: 4097920048545798}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33390778072654708
 MeshFilter:
@@ -121,8 +121,9 @@ GameObject:
   - component: {fileID: 4020520891231902}
   - component: {fileID: 33139994615853284}
   - component: {fileID: 23533558051988452}
+  - component: {fileID: 8450325075190536566}
   m_Layer: 11
-  m_Name: body
+  m_Name: tracks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,8 +139,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.020500002, z: -0.004999995}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4348174039374368}
+  m_Children: []
   m_Father: {fileID: 4097920048545798}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -189,6 +189,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8450325075190536566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1648983470645932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983a7e5cbf3772b4eb0f7e880debfd29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1683248985675240
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,6 +232,7 @@ Transform:
   m_Children:
   - {fileID: 2598045011674657927}
   - {fileID: 4020520891231902}
+  - {fileID: 4348174039374368}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -235,14 +248,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6d7c8e465b345d39ddab780a073109, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchPosition:
+  TankGasPedal:
     actionPath: 
     needsReinit: 0
+  desiredVelocity: {x: 0, y: 0, z: 0}
+  forceDirection: {x: 0, y: 0, z: 0}
   MAX_MOVE_RATE: 0
   MAX_TURN_RATE: 0
   MOVE_ACCELERATION: 0
   TURN_ACCELERATION: 0
   cameraPosition: {fileID: 0}
+  currTurnRate: 0
 --- !u!54 &54829626067578480
 Rigidbody:
   m_ObjectHideFlags: 0

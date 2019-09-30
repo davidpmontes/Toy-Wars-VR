@@ -9,6 +9,6 @@ public class PlayerTankTracks : MonoBehaviour
 
     private void RotateTracksToCamera()
     {
-        transform.rotation = Quaternion.Euler(new Vector3(0, Camera.main.transform.rotation.eulerAngles.y, 0));
+        transform.localRotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.localRotation.eulerAngles.z));
     }
 }

@@ -3,14 +3,11 @@ using Valve.VR;
 
 public class Drive : MonoBehaviour, ICameraRelocate
 {
-    public SteamVR_Action_Boolean TankGasPedal;
     public SteamVR_Action_Vector2 TouchPadPosition;
 
-    private int tankGasPedal;
-    private int forwardReverse;
+    private float strafeLeftRight;
+    private float forwardReverse;
 
-    //private float moveHorizontal;
-    //private float moveVertical;
     public Vector3 desiredVelocity;
     public Vector3 forceDirection;
 
@@ -18,13 +15,19 @@ public class Drive : MonoBehaviour, ICameraRelocate
     [SerializeField] private float MAX_TURN_RATE;
     [SerializeField] private float MOVE_ACCELERATION;
     [SerializeField] private float TURN_ACCELERATION;
+    [SerializeField] private Transform GroundDetectorOrigin;
+    [SerializeField] private Transform TurningPoint;
+    [SerializeField] private Transform CameraTrackingTracks;
 
+
+    [SerializeField] private Transform tracks;
     [SerializeField] private Transform cameraPosition;
     public float currTurnRate;
 
     private SteamVR_Behaviour_Pose pose = null;
 
     private Rigidbody rb;
+    private Vector3 gravityDirection;
 
     void Awake()
     {
@@ -34,49 +37,61 @@ public class Drive : MonoBehaviour, ICameraRelocate
 
     private void Update()
     {
+        DetectGround();
         GetInput();
+        SetTurningPoint();
+        RotateTracks();
+    }
+
+    private void DetectGround()
+    {
+        if (Physics.Raycast(GroundDetectorOrigin.position, -transform.up, out RaycastHit hit, 10f, LayerMask.GetMask("Statics")))
+        {
+            gravityDirection = hit.normal;
+        }
     }
 
     private void GetInput()
     {
-        tankGasPedal = TankGasPedal.state ? 1 : 0;
-        forwardReverse = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y >= 0 ? 1 : -1;
-        //moveHorizontal = touchPosition.GetAxis(SteamVR_Input_Sources.Any).x;
-        //moveVertical = touchPosition.GetAxis(SteamVR_Input_Sources.Any).y;
+        strafeLeftRight = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).x;
+        forwardReverse = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y;
     }
 
     void FixedUpdate ()
     {
+        MoveTank();
+        GravityToSurface();
+    }
 
-        //currMoveRate = Mathf.MoveTowards(currMoveRate, MAX_MOVE_RATE * moveVertical, MOVE_ACCELERATION);
+    private void SetTurningPoint()
+    {
+        TurningPoint.localPosition = new Vector3(TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).x, 0, TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y);
+    }
 
-        //if (Mathf.Abs(moveVertical) > 0.1f)
-        //{
-        //    currMoveRate = Mathf.MoveTowards(currMoveRate, MAX_MOVE_RATE, MOVE_ACCELERATION);
-        //}
-        //else
-        //{
-        //    currMoveRate = Mathf.MoveTowards(currMoveRate, 0, MOVE_ACCELERATION);
-        //}
+    private void RotateTracks()
+    {
+        CameraTrackingTracks.rotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.localRotation.eulerAngles.z));
 
-        //if (Mathf.Abs(moveHorizontal) > 0.1f)
-        //{
-        //    currTurnRate = Mathf.MoveTowards(currTurnRate, MAX_TURN_RATE, TURN_ACCELERATION);
-        //}
-        //else
-        //{
-        //    currTurnRate = Mathf.MoveTowards(currTurnRate, 0, TURN_ACCELERATION);
-        //}
+        var direction = (TurningPoint.position - transform.position).normalized;
+        direction.y = 0;
 
-        //Vector3 wantedPosition = transform.position + ((transform.forward) + (transform.right)) * currMoveRate * Time.deltaTime;
-        //Quaternion wantedRotation = transform.rotation * Quaternion.Euler(Vector3.up * moveHorizontal * currTurnRate * Time.deltaTime);
+        //create the rotation we need to be in to look at the target
+        var lookRotation = Quaternion.LookRotation(direction);
 
-        desiredVelocity = forwardReverse * Camera.main.transform.forward * tankGasPedal * 25;  //new Vector3(moveHorizontal, 0, moveVertical) * 5;
-        forceDirection =  (desiredVelocity - rb.velocity);
+        //rotate us over time according to speed until we are in the required rotation
+        tracks.localRotation = Quaternion.Slerp(tracks.localRotation, lookRotation, Time.deltaTime * 2);
+    }
+
+    private void MoveTank()
+    {
+        desiredVelocity = (TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).magnitude * -tracks.forward) * 25;  //new Vector3(moveHorizontal, 0, moveVertical) * 5;
+        forceDirection = (desiredVelocity - rb.velocity);
         rb.AddForce(forceDirection, ForceMode.Acceleration);
+    }
 
-        //rb.MovePosition(wantedPosition);
-        //rb.MoveRotation(wantedRotation);
+    private void GravityToSurface()
+    {
+        rb.AddForce(gravityDirection * Physics.gravity.y, ForceMode.Acceleration);
     }
 
     public Vector3 GetRelocatePosition()

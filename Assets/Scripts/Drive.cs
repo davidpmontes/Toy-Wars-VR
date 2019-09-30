@@ -19,7 +19,7 @@ public class Drive : MonoBehaviour, ICameraRelocate
     [SerializeField] private Transform TurningPoint;
     [SerializeField] private Transform CameraTrackingTracks;
 
-
+    [SerializeField] private Transform turret;
     [SerializeField] private Transform tracks;
     [SerializeField] private Transform cameraPosition;
     public float currTurnRate;
@@ -70,7 +70,7 @@ public class Drive : MonoBehaviour, ICameraRelocate
 
     private void RotateTracks()
     {
-        CameraTrackingTracks.rotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, transform.localRotation.eulerAngles.z));
+        CameraTrackingTracks.rotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, turret.rotation.eulerAngles.y, transform.localRotation.eulerAngles.z));
 
         var direction = (TurningPoint.position - transform.position).normalized;
         direction.y = 0;

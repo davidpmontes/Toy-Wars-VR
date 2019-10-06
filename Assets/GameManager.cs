@@ -2,8 +2,24 @@
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+    [SerializeField] private GameObject[] entities;
+
+    private int currIndex = 0;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
-        //TabletController.Instance.SetCameraToFollowObject(PlayerManager.Instance.CurrentVehicle().transform);
+        ActivateEntity();
+    }
+
+    public void ActivateEntity()
+    {
+        entities[currIndex].SetActive(true);
+        currIndex++;
     }
 }

@@ -82,8 +82,8 @@ public class MainMenu : MonoBehaviour
 
         AudioManager.Instance.Stop("MainMenu");
 
-        if (scenename == "ShootingRange1")
-            SceneManager.LoadScene("ShootingRangePopUpTargets");
+        //if (scenename == "ShootingRange1")
+        //    SceneManager.LoadScene("ShootingRangePopUpTargets");
 
 
     }

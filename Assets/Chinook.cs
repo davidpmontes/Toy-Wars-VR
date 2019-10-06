@@ -39,17 +39,17 @@ public class Chinook : MonoBehaviour, IEnemy
 
     IEnumerator DamageShake()
     {
-        Vector3 oldPosition = transform.position;
-        transform.position = transform.position + Random.insideUnitSphere * 2;
+        Vector3 oldPosition = transform.localPosition;
+        transform.localPosition = transform.localPosition + Random.insideUnitSphere * 2;
 
-        while(Vector3.Distance(transform.position, oldPosition) > 0.1)
+        while (Vector3.Distance(transform.localPosition, oldPosition) > 0.1)
         {
-            transform.position = Vector3.MoveTowards(transform.position, oldPosition, Time.deltaTime * 20);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, oldPosition, Time.deltaTime * 20);
             yield return null;
         }
-        transform.position = oldPosition;
+        transform.localPosition = oldPosition;
         isShaking = false;
-        
+
 
         //Quaternion oldRotation = transform.rotation;
         //Quaternion newRotation = transform.rotation;
@@ -64,7 +64,7 @@ public class Chinook : MonoBehaviour, IEnemy
         //transform.rotation = oldRotation;
     }
 
-    private void DestroySelf()
+        private void DestroySelf()
     {
         ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }

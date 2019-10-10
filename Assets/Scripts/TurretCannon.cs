@@ -13,9 +13,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     public SteamVR_Action_Boolean fireAction;
 
-    [SerializeField] private AudioClip shoot;
-    private AudioSource[] audiosources;
-
     private Animator animator;
 
     private float lastTimeFired;
@@ -23,7 +20,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     
     void Awake()
     {
-        audiosources = GetComponents<AudioSource>();
         animator = GetComponent<Animator>();
     }
 
@@ -53,7 +49,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
         turretBullet.SetActive(true);
 
-        audiosources[0].PlayOneShot(shoot);
         leftFlash.Play();
     }
 
@@ -66,7 +61,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
         turretBullet.SetActive(true);
 
-        audiosources[0].PlayOneShot(shoot);
         rightFlash.Play();
     }
 

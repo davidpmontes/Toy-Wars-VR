@@ -2,8 +2,8 @@
 
 public enum PlayerVehicles
 {
-    turretVR,
-    tank
+    turretVR_A,
+    turretVR_B
 }
 
 public class PlayerManager : MonoBehaviour
@@ -11,8 +11,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     private GameObject currentVehicle;
 
-    [SerializeField] private GameObject turretVR;
-    [SerializeField] private GameObject tank;
+    [SerializeField] private GameObject turretVR_A;
+    [SerializeField] private GameObject turretVR_B;
 
     private GameObject rotateable;
 
@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.tank);
+        EnableVehicle(PlayerVehicles.turretVR_A);
     }
 
     public GameObject CurrentVehicle()
@@ -40,11 +40,11 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            EnableVehicle(PlayerVehicles.turretVR);
+            EnableVehicle(PlayerVehicles.turretVR_A);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            EnableVehicle(PlayerVehicles.tank);
+            EnableVehicle(PlayerVehicles.turretVR_B);
         }
     }
 
@@ -57,18 +57,18 @@ public class PlayerManager : MonoBehaviour
 
     public void EnableVehicle(PlayerVehicles vehicle)
     {
-        turretVR.SetActive(false);
-        tank.SetActive(false);
+        turretVR_A.SetActive(false);
+        turretVR_B.SetActive(false);
 
-        if (vehicle == PlayerVehicles.turretVR)
+        if (vehicle == PlayerVehicles.turretVR_A)
         {
-            turretVR.SetActive(true);
-            currentVehicle = turretVR;
+            turretVR_A.SetActive(true);
+            currentVehicle = turretVR_A;
         }
-        else if (vehicle == PlayerVehicles.tank)
+        else if (vehicle == PlayerVehicles.turretVR_B)
         {
-            tank.SetActive(true);
-            currentVehicle = tank;
+            turretVR_B.SetActive(true);
+            currentVehicle = turretVR_B;
         }
 
         SetCameraToVehicle();

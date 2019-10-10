@@ -1,20 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 
 public class EntityManager : MonoBehaviour
 {
-    [SerializeField] GameObject[] entities;
-    private int currIndex = 0;
+    public GameObject[] entities;
+    private int currEntity;
 
-    void Start()
+    private void OnEnable()
     {
-        ActivateEntity();
+        currEntity = 0;
+        GetComponent<PlayableDirector>().Play();
+        foreach (GameObject entity in entities)
+        {
+            entity.SetActive(false);
+        }
     }
 
-    public void ActivateEntity()
+    public void NextEntity()
     {
-        entities[currIndex].SetActive(true);
-        currIndex++;
+        if (currEntity < entities.Length)
+        {
+            entities[currEntity].SetActive(true);
+        }
     }
 }

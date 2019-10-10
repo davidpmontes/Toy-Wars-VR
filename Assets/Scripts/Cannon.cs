@@ -30,13 +30,10 @@ public class Cannon : MonoBehaviour
     {
         muzzleFlashScript = muzzleFlash.GetComponent<MuzzleFlash>();
         muzzleFlashScript.TurnOffLight();
-        //layerMask = //1 << LayerMask.NameToLayer("Statics") |
-                    //1 << LayerMask.NameToLayer("Enemy");
     }
 
     void Update()
     {
-        //GetInput();
         GetInputVR();
     }
 
@@ -49,31 +46,6 @@ public class Cannon : MonoBehaviour
                 lastTimeFired = Time.time;
                 muzzleFlashScript.TurnOnLight();
                 SpawnBullet();
-            }
-
-            //if (Time.time - lastTimeSound > soundDelay)
-            //{
-            //    lastTimeSound = Time.time;
-            //    audioSource.PlayOneShot(cannonBulletAudio);
-            //}
-        }
-    }
-
-    void GetInput()
-    {
-        if (InputController.Button4())
-        {
-            if (Time.time - lastTimeFired > delay)
-            {
-                lastTimeFired = Time.time;
-                muzzleFlashScript.TurnOnLight();
-                SpawnBullet();
-            }
-
-            if (Time.time - lastTimeSound > soundDelay)
-            {
-                lastTimeSound = Time.time;
-                audioSource.PlayOneShot(cannonBulletAudio);
             }
         }
     }

@@ -29,25 +29,12 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     void Update()
     {
-        //GetKeyboardInput();
         GetVRInput();
     }
 
     private void GetVRInput()
     {
         if (fireAction.state)
-        {
-            animator.SetBool("firing", true);
-        }
-        else
-        {
-            animator.SetBool("firing", false);
-        }
-    }
-
-    private void GetKeyboardInput()
-    {
-        if (InputController.Button4())
         {
             animator.SetBool("firing", true);
         }

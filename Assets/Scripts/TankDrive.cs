@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Valve.VR;
 
-public class Drive : MonoBehaviour, ICameraRelocate
+public class TankDrive : MonoBehaviour, ICameraRelocate
 {
     public SteamVR_Action_Vector2 TouchPadPosition;
 

@@ -24,10 +24,6 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
     void Update()
     {
         VRTrack();
-        //GetInput();
-        //MakeSound();
-        //Rotate();
-        //Tilt();
     }
 
     private void VRTrack()
@@ -40,12 +36,6 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
             var lookRotation = Quaternion.LookRotation(direction);
             Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation, lookRotation, Time.deltaTime * 10);
         }
-    }
-
-    private void GetInput()
-    {
-        horizontal = InputController.Horizontal();
-        vertical = InputController.Vertical();
     }
 
     private void MakeSound()

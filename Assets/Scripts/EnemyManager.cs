@@ -29,37 +29,37 @@ public class EnemyManager : MonoBehaviour
 
     private void CheckEnemiesBeingTargeted()
     {
-        foreach (GameObject enemy in enemyToRedTarget.Keys)
-        {
-            var viewportPoint = Camera.main.WorldToViewportPoint(enemy.transform.position);
-            viewportPoint.x = (viewportPoint.x * Screen.width) - Screen.width / 2;
-            viewportPoint.y = (viewportPoint.y * Screen.height) - Screen.height / 2;
+        //foreach (GameObject enemy in enemyToRedTarget.Keys)
+        //{
+        //    var viewportPoint = Camera.main.WorldToViewportPoint(enemy.transform.position);
+        //    viewportPoint.x = (viewportPoint.x * Screen.width) - Screen.width / 2;
+        //    viewportPoint.y = (viewportPoint.y * Screen.height) - Screen.height / 2;
 
-            var distance = Vector2.Distance(viewportPoint, AimingCircle.Instance.rtPosition());
+        //    var distance = Vector2.Distance(viewportPoint, AimingCircle.Instance.rtPosition());
 
-            if (enemyToRedTarget[enemy] == null)
-            {
-                if (distance < MAX_LOCKON_DISTANCE)
-                {
-                    var redTarget = ObjectPool.Instance.GetFromPoolInactive(Pools.RedTarget);
-                    redTarget.transform.SetParent(CanvasHUD.Instance.transform);
-                    redTarget.SetActive(true);
-                    enemyToRedTarget[enemy] = redTarget;
-                    break;
-                }
-            }
-            else
-            {
-                if (distance > MAX_LOCKON_DISTANCE)
-                {
-                    ObjectPool.Instance.DeactivateAndAddToPool(enemyToRedTarget[enemy]);
-                    enemyToRedTarget[enemy] = null;
-                    break;
-                }
+        //    if (enemyToRedTarget[enemy] == null)
+        //    {
+        //        if (distance < MAX_LOCKON_DISTANCE)
+        //        {
+        //            var redTarget = ObjectPool.Instance.GetFromPoolInactive(Pools.RedTarget);
+        //            redTarget.transform.SetParent(CanvasHUD.Instance.transform);
+        //            redTarget.SetActive(true);
+        //            enemyToRedTarget[enemy] = redTarget;
+        //            break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (distance > MAX_LOCKON_DISTANCE)
+        //        {
+        //            ObjectPool.Instance.DeactivateAndAddToPool(enemyToRedTarget[enemy]);
+        //            enemyToRedTarget[enemy] = null;
+        //            break;
+        //        }
 
-                enemyToRedTarget[enemy].GetComponent<RectTransform>().anchoredPosition = viewportPoint;
-            }
-        }
+        //        enemyToRedTarget[enemy].GetComponent<RectTransform>().anchoredPosition = viewportPoint;
+        //    }
+        //}
     }
 
     public GameObject GetNearestTarget()
@@ -90,7 +90,7 @@ public class EnemyManager : MonoBehaviour
 
     public void DestroyEnemy(GameObject enemy)
     {
-        WaveManager.Instance.EnemyDestroyed();
+        //WaveManager.Instance.EnemyDestroyed();
         ObjectPool.Instance.DeactivateAndAddToPool(enemy);
         //enemyToRedTarget.Remove(enemy);
     }

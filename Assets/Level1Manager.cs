@@ -6,7 +6,7 @@ public class Level1Manager : MonoBehaviour
 {
     public static Level1Manager Instance { get; private set; }
 
-    int state = 0;
+    int state = 3;
 
     [SerializeField] GameObject[] enemySpawners;
     [SerializeField] GameObject[] timelines;
@@ -34,7 +34,7 @@ public class Level1Manager : MonoBehaviour
         }
         else if (state == 1) //Spawn enemies
         {
-            enemySpawners[0].SetActive(true);
+            enemySpawners[0].SetActive(true);  //Chinook Spawner
             NextState(0);
         }
         else if (state == 2) //Waiting for the Player to defeat all the targets
@@ -50,7 +50,12 @@ public class Level1Manager : MonoBehaviour
                 NextState(0);
             }
         }
-        else if (state == 3)
+        else if (state == 3)    //Attack Helicopter Spawner
+        {
+            enemySpawners[1].SetActive(true);
+            NextState(0);
+        }
+        else if (state == 4)
         {
 
         }

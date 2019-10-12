@@ -12,7 +12,7 @@ public class EnemyManager : MonoBehaviour
 
     public Dictionary<GameObject, GameObject> enemyToRedTarget;
     private GameObject nearestTarget;
-    private int enemyCount;
+    public int enemyCount;
 
     private readonly int MAX_LOCKON_DISTANCE = 100;
     [SerializeField] private GameObject AllEnemies;
@@ -26,6 +26,17 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
         CheckEnemiesBeingTargeted();
+    }
+
+    public void RegisterEnemy()
+    {
+        enemyCount++;
+    }
+
+    public void DeregisterEnemy()
+    {
+        enemyCount--;
+        Level1Manager.Instance.UpdateState();
     }
 
     public int GetEnemyCount()

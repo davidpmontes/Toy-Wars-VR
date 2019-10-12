@@ -4,11 +4,22 @@ using UnityEngine.Playables;
 
 public class Level1Manager : MonoBehaviour
 {
+    public static Level1Manager Instance { get; private set; }
+
     int state = 0;
 
     [SerializeField] GameObject[] enemySpawners;
     [SerializeField] GameObject[] timelines;
+    [SerializeField] AudioClip audioClipWowGreatShot;
+    [SerializeField] AudioClip audioClipYouGotAllTheTargets;
+    private AudioSource audioSource;
 
+
+    private void Awake()
+    {
+        Instance = this;
+        audioSource = GetComponent<AudioSource>();
+    }
     void Start()
     {
         UpdateState();
@@ -28,9 +39,14 @@ public class Level1Manager : MonoBehaviour
         }
         else if (state == 2) //Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetEnemyCount() < 0)
+            if (EnemyManager.Instance.GetEnemyCount() == 9)
             {
-                Debug.Log("you won!");
+                PlayAudio(audioClipWowGreatShot, 0);
+            }
+
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                PlayAudio(audioClipYouGotAllTheTargets, 0);
                 NextState(0);
             }
         }
@@ -48,6 +64,7 @@ public class Level1Manager : MonoBehaviour
     IEnumerator PlayAudioInTime(AudioClip clip, float time)
     {
         yield return new WaitForSeconds(time);
+        audioSource.PlayOneShot(clip);
     }
 
     private void NextState(float time)

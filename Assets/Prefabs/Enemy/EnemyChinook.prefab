@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 4088554032852414868}
   - component: {fileID: 4195079568735955391}
   m_Layer: 11
-  m_Name: Chinook
+  m_Name: EnemyChinook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -431,6 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c74bc613b14e4048a4b7fda27f18043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  red: {fileID: 2100000, guid: 2656faf15c805154cb1654752195e671, type: 2}
 --- !u!65 &4195079568735955391
 BoxCollider:
   m_ObjectHideFlags: 0

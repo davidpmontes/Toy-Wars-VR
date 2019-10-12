@@ -3,8 +3,18 @@ using UnityEngine;
 
 public class Chinook : MonoBehaviour, IEnemy
 {
-    private float life = 300;
-    public bool isShaking = false;
+    private float life = 3;
+    private bool isShaking = false;
+    private Material originalMaterial;
+    private Material material;
+    [SerializeField] private Material red;
+    private MeshRenderer meshRenderer;
+
+    private void Awake()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+        originalMaterial = GetComponent<MeshRenderer>().material;
+    }
 
     public void DamageEnemy(Vector3 position)
     {
@@ -16,25 +26,17 @@ public class Chinook : MonoBehaviour, IEnemy
         if (life <= 0)
         {
             DestroySelf();
+            EnemyManager.Instance.DeregisterEnemy();
         }
         else
         {
             if (!isShaking)
             {
                 isShaking = true;
-                StartCoroutine("DamageShake");
+                StartCoroutine(DamageShake());
+                StartCoroutine(FlashRed());
             }
         }
-    }
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
     }
 
     IEnumerator DamageShake()
@@ -49,23 +51,34 @@ public class Chinook : MonoBehaviour, IEnemy
         }
         transform.localPosition = oldPosition;
         isShaking = false;
-
-
-        //Quaternion oldRotation = transform.rotation;
-        //Quaternion newRotation = transform.rotation;
-        //newRotation.eulerAngles = new Vector3(newRotation.eulerAngles.x + Random.Range(-10, 10), newRotation.eulerAngles.y + Random.Range(-10, 10), newRotation.eulerAngles.z + Random.Range(-10, 10));
-
-        //transform.rotation = newRotation;
-
-        //while (Mathf.Abs(Quaternion.Dot(transform.rotation, oldRotation)) < 0.999f)
-        //{
-        //    transform.rotation = Quaternion.RotateTowards(transform.rotation, oldRotation, Time.deltaTime * 10);
-        //}
-        //transform.rotation = oldRotation;
     }
 
-        private void DestroySelf()
+    IEnumerator FlashRed()
     {
-        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        meshRenderer.material = red;
+        yield return new WaitForSeconds(0.05f);
+        meshRenderer.material = originalMaterial;
+    }
+
+    private void DestroySelf()
+    {
+        gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
+        var rigidBody = gameObject.AddComponent<Rigidbody>();
+        rigidBody.AddRelativeTorque(new Vector3(Random.Range(1, 3), Random.Range(-3, 3), Random.Range(1, 2)), ForceMode.Impulse);
+        var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
+        smoke.transform.position = transform.position;
+        smoke.transform.SetParent(transform);
+        smoke.SetActive(true);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
+        {
+            var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
+            explosion.transform.position = transform.position;
+            explosion.SetActive(true);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
     }
 }

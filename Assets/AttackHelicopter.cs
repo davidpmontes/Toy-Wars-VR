@@ -11,10 +11,9 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     private MeshRenderer meshRenderer;
 
     private GameObject target;
-    private int state = 0;
-    // 0 == acquireTarget
-    // 1 == moveToTarget
-    // 2 == fireOnTarget
+    private int state = 1;
+    private float nextFiringTime;
+    private float nextActionTime;
 
     private void Awake()
     {
@@ -24,38 +23,59 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
 
     private void Update()
     {
-        if (state == 0)
+        if (target == null)
         {
-            target = BaseAssetManager.Instance.GetTopBaseAsset();
-            if (target != null)
+            if (nextActionTime < Time.time)
             {
-                state = 1;
+                nextActionTime = Time.time + 3;
+                target = BaseAssetManager.Instance.GetTopBaseAsset();
+                if (target != null)
+                {
+                    state = 1;
+                }
+            }
+            else
+            {
+                return;
             }
         }
-        else if (state == 1)
+
+
+
+
+        if (state == 1) //move to target
         {
             var distance = Vector3.Distance(transform.position, target.transform.position);
-            Vector3 targetDir = target.transform.position - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDir);
 
             if (distance > 100)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 50);
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 10);
             }
             else
             {
                 state = 2;
             }
         }
-        else if (state == 2)
+        else if (state == 2) //fire on target
         {
-            Vector3 targetDir = target.transform.position - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDir);
+            if (nextFiringTime < Time.time)
+            {
+                if (target == null)
+                {
+                    state = 1;
+                    return;
+                }
 
-            Debug.Log("firing on target");
+                nextFiringTime = Time.time + 1;
+                var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
+                enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
+                enemyBullet.SetActive(true);
+            }
         }
+
+        Vector3 targetDir = target.transform.position - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
     }
 
     public void DamageEnemy(Vector3 position)

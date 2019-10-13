@@ -6,7 +6,7 @@ public class Level1Manager : MonoBehaviour
 {
     public static Level1Manager Instance { get; private set; }
 
-    int state = 3;
+    public int state;
 
     [SerializeField] GameObject[] enemySpawners;
     [SerializeField] GameObject[] timelines;
@@ -47,7 +47,7 @@ public class Level1Manager : MonoBehaviour
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
                 PlayAudio(audioClipYouGotAllTheTargets, 0);
-                NextState(0);
+                NextState(3);
             }
         }
         else if (state == 3)    //Attack Helicopter Spawner

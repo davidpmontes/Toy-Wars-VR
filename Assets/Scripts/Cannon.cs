@@ -65,9 +65,9 @@ public class Cannon : MonoBehaviour
         //    direction = (nearestTarget.transform.position - transform.position).normalized;
         //}
 
-        var cannonBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.CannonBullet);
-        cannonBullet.GetComponent<Projectile>().Init(transform, direction.normalized);
-        cannonBullet.SetActive(true);
-        Debug.Log("cannonBulletActive");
+        //var cannonBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.CannonBullet);
+        //cannonBullet.GetComponent<Projectile>().Init(transform, direction.normalized);
+        //cannonBullet.SetActive(true);
+        //Debug.Log("cannonBulletActive");
     }
 }

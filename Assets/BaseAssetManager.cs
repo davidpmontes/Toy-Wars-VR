@@ -15,19 +15,14 @@ public class BaseAssetManager : MonoBehaviour
     public GameObject GetTopBaseAsset()
     {
         if (baseAssets.Count > 0)
-            return baseAssets[0];
+            return baseAssets[Random.Range(0, baseAssets.Count)];
 
         return null;
     }
 
-    public void RegisterBaseAsset()
+    public void DeregisterBaseAsset(GameObject baseAsset)
     {
-        baseAssetCount++;
-    }
-
-    public void DeregisterEnemy()
-    {
-        baseAssetCount--;
+        baseAssets.Remove(baseAsset);
         Level1Manager.Instance.UpdateState();
     }
 }

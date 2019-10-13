@@ -1,19 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BaseAsset : MonoBehaviour, IBaseAsset
 {
-    private float life = 3;
-    private Material originalMaterial;
-    private Material material;
-    [SerializeField] private Material red;
-    private MeshRenderer meshRenderer;
-
-    private void Awake()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-        originalMaterial = GetComponent<MeshRenderer>().material;
-    }
+    [SerializeField] private float life;
 
     public void TakeDamage(Vector3 position)
     {
@@ -32,8 +21,8 @@ public class BaseAsset : MonoBehaviour, IBaseAsset
     {
         var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
         smoke.transform.position = transform.position;
-        smoke.transform.SetParent(transform);
         smoke.SetActive(true);
+        BaseAssetManager.Instance.DeregisterBaseAsset(gameObject);
         Destroy(gameObject);
     }
 }

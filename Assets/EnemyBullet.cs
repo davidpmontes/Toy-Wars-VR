@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float lifespan;
@@ -14,9 +14,9 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<IEnemy>(out IEnemy component))
+        if (collision.gameObject.TryGetComponent<IBaseAsset>(out IBaseAsset component))
         {
-            component.DamageEnemy(transform.position);
+            component.TakeDamage(transform.position);
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }

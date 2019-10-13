@@ -40,13 +40,16 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             }
         }
 
+
+
+
         if (state == 1) //move to target
         {
-            var distance = Vector3.Distance(transform.position, new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+            var distance = Vector3.Distance(transform.position, target.transform.position);
 
             if (distance > 100)
             {
-                transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z), Time.deltaTime * 10);
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 10);
             }
             else
             {
@@ -70,12 +73,9 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             }
         }
 
-        if (target != null)
-        {
-            Vector3 targetDir = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDir);
-        }
+        Vector3 targetDir = target.transform.position - transform.position;
+        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDir);
     }
 
     public void DamageEnemy(Vector3 position)

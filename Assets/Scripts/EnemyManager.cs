@@ -1,18 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum ENEMY_NAMES
-{
-	RedTank, RedHelicopter
-}
-
 public class EnemyManager : MonoBehaviour
 {
 	public static EnemyManager Instance { get; private set; }
 
     public Dictionary<GameObject, GameObject> enemyToRedTarget;
     private GameObject nearestTarget;
-    public int enemyCount;
+    private int enemyCount;
 
     private readonly int MAX_LOCKON_DISTANCE = 100;
     [SerializeField] private GameObject AllEnemies;
@@ -107,8 +102,6 @@ public class EnemyManager : MonoBehaviour
 
     public void DestroyEnemy(GameObject enemy)
     {
-        //WaveManager.Instance.EnemyDestroyed();
         ObjectPool.Instance.DeactivateAndAddToPool(enemy);
-        //enemyToRedTarget.Remove(enemy);
     }
 }

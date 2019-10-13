@@ -10,10 +10,52 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     [SerializeField] private Material red;
     private MeshRenderer meshRenderer;
 
+    private GameObject target;
+    private int state = 0;
+    // 0 == acquireTarget
+    // 1 == moveToTarget
+    // 2 == fireOnTarget
+
     private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
-        originalMaterial = GetComponent<MeshRenderer>().material;
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        originalMaterial = meshRenderer.material;
+    }
+
+    private void Update()
+    {
+        if (state == 0)
+        {
+            target = BaseAssetManager.Instance.GetTopBaseAsset();
+            if (target != null)
+            {
+                state = 1;
+            }
+        }
+        else if (state == 1)
+        {
+            var distance = Vector3.Distance(transform.position, target.transform.position);
+            Vector3 targetDir = target.transform.position - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
+
+            if (distance > 100)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 50);
+            }
+            else
+            {
+                state = 2;
+            }
+        }
+        else if (state == 2)
+        {
+            Vector3 targetDir = target.transform.position - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
+
+            Debug.Log("firing on target");
+        }
     }
 
     public void DamageEnemy(Vector3 position)

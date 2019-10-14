@@ -1,42 +1,72 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using Valve.VR;
 
-public class menuSelector : MonoBehaviour
+public class MenuSelector : MonoBehaviour
 {
-    public static menuSelector Instance { get; private set; }
-    public string currentlySelectedObject;
+    public static MenuSelector Instance { get; private set; }
 
+    public SteamVR_Action_Boolean selectMenu;
+
+    private LayerMask layerMask;
+    private string currentButtonName;
+    private string buttonDownName;
+    
+
+    private void Start()
+    {
+        QualitySettings.shadowDistance = 10;
+        currentButtonName = "None";
+    }
     private void Awake()
     {
         Instance = this;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        if(other.gameObject.name == "PlayButton")
+        CastRay();
+        CheckButtonClick();
+    }
+
+    private void CheckButtonClick()
+    {
+        if (selectMenu.stateDown)
         {
-            currentlySelectedObject = "PlayButton";
+            if (currentButtonName == "PlayButton" || currentButtonName == "QuitButton")
+            {
+                buttonDownName = currentButtonName;
+            }
         }
-        else if(other.gameObject.name == "QuitButton")
+
+        if (selectMenu.stateUp)
         {
-            currentlySelectedObject = "QuitButton";
+            if (buttonDownName == currentButtonName)
+            {
+                if (buttonDownName == "PlayButton")
+                {
+                    SceneManager.LoadScene("Level1");
+                }
+                else if (buttonDownName == "QuitButton")
+                {
+                    Debug.Log("Quit");
+                }
+            }
+            buttonDownName = "None";
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void CastRay()
     {
-        if (other.gameObject.name == "PlayButton")
+        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hitInfo, 1000))
         {
-            currentlySelectedObject = "none";
+            if (hitInfo.collider.gameObject.name == "PlayButton" || hitInfo.collider.gameObject.name == "QuitButton")
+            {
+                currentButtonName = hitInfo.collider.gameObject.name;
+                return;
+            }
         }
-        else if (other.gameObject.name == "QuitButton")
-        {
-            currentlySelectedObject = "none";
-        }
-    }
 
-    public string GetMenu()
-    {
-        return currentlySelectedObject;
+        currentButtonName = "None";
     }
-
 }

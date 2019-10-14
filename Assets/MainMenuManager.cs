@@ -1,14 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Valve.VR;
-
-
+﻿using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
 
-    public SteamVR_Action_Boolean selectMenu;    // Start is called before the first frame update
     void Start()
     {
         QualitySettings.shadowDistance = 10;
@@ -17,13 +11,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Update()
     {
-        if(selectMenu.stateDown == true)
-        {
-           if(menuSelector.Instance.GetMenu() == "PlayButton")
-            {
-                Debug.Log("PlayButton");
-            }
-        }
+
     }
 
     private void SetCameraToMainMenu()

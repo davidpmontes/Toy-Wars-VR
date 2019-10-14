@@ -1,7 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager Instance { get; private set; }
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -9,9 +15,13 @@ public class MainMenuManager : MonoBehaviour
         SetCameraToMainMenu();
     }
 
-    void Update()
+    public void PlayButtonClicked()
     {
+        Invoke("PlayGameInTime", 1);
+    }
 
+    public void QuitButtonClicked()
+    {
     }
 
     private void SetCameraToMainMenu()
@@ -20,5 +30,8 @@ public class MainMenuManager : MonoBehaviour
                                        transform.rotation.eulerAngles.y);
     }
 
-
+    private void PlayGameInTime()
+    {
+        SceneManager.LoadScene("Level1");
+    }
 }

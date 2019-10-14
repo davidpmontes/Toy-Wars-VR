@@ -14,7 +14,6 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] AudioClip audioClipYouGotAllTheTargets;
     private AudioSource audioSource;
 
-
     private void Awake()
     {
         Instance = this;

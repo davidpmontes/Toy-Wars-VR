@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 using Valve.VR;
 
 public class MenuSelector : MonoBehaviour
@@ -11,11 +10,12 @@ public class MenuSelector : MonoBehaviour
     private LayerMask layerMask;
     private string currentButtonName;
     private string buttonDownName;
-    
+
+    public Animator PlayButton;
+    public Animator QuitButton;
 
     private void Start()
     {
-        QualitySettings.shadowDistance = 10;
         currentButtonName = "None";
     }
     private void Awake()
@@ -45,11 +45,23 @@ public class MenuSelector : MonoBehaviour
             {
                 if (buttonDownName == "PlayButton")
                 {
-                    SceneManager.LoadScene("Level1");
+                    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+                    explode.transform.position = PlayButton.gameObject.transform.position;
+                    explode.transform.localScale = Vector3.one * 0.5f;
+                    explode.SetActive(true);
+                    PlayButton.gameObject.SetActive(false);
+                    MainMenuManager.Instance.PlayButtonClicked();
+                    enabled = false;
                 }
                 else if (buttonDownName == "QuitButton")
                 {
-                    Debug.Log("Quit");
+                    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+                    explode.transform.position = QuitButton.gameObject.transform.position;
+                    explode.transform.localScale = Vector3.one * 0.5f;
+                    explode.SetActive(true);
+                    //QuitButton.gameObject.SetActive(false);
+                    //MainMenuManager.Instance.QuitButtonClicked();
+                    //enabled = false;
                 }
             }
             buttonDownName = "None";
@@ -60,13 +72,28 @@ public class MenuSelector : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hitInfo, 1000))
         {
-            if (hitInfo.collider.gameObject.name == "PlayButton" || hitInfo.collider.gameObject.name == "QuitButton")
+            var obj = hitInfo.collider.gameObject;
+
+            if (obj.name == "PlayButton" || obj.name == "QuitButton")
             {
                 currentButtonName = hitInfo.collider.gameObject.name;
+                
+                if (obj.name == "PlayButton")
+                {
+                    PlayButton.Play("Hover");
+                }
+
+                if (obj.name == "QuitButton")
+                {
+                    QuitButton.Play("Hover");
+                }
+
                 return;
             }
         }
 
+        PlayButton.Play("Idle");
+        QuitButton.Play("Idle");
         currentButtonName = "None";
     }
 }

@@ -21,7 +21,7 @@ public class Level1Manager : MonoBehaviour
     }
     void Start()
     {
-        QualitySettings.shadowDistance = 1000;
+        QualitySettings.shadowDistance = 450;
         UpdateState();
     }
 

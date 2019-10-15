@@ -10,14 +10,17 @@ public class Level1Manager : MonoBehaviour
 
     [SerializeField] GameObject[] enemySpawners;
     [SerializeField] GameObject[] timelines;
+    [SerializeField] AudioClip audioClipBackgroundMusic;
     [SerializeField] AudioClip audioClipWowGreatShot;
     [SerializeField] AudioClip audioClipYouGotAllTheTargets;
-    private AudioSource audioSource;
+    private AudioSource audioSourceBackgroundMusic;
+    private AudioSource audioSourceVoiceOver;
 
     private void Awake()
     {
         Instance = this;
-        audioSource = GetComponent<AudioSource>();
+        audioSourceBackgroundMusic = GetComponents<AudioSource>()[0];
+        audioSourceVoiceOver = GetComponents<AudioSource>()[1];
     }
     void Start()
     {
@@ -69,7 +72,7 @@ public class Level1Manager : MonoBehaviour
     IEnumerator PlayAudioInTime(AudioClip clip, float time)
     {
         yield return new WaitForSeconds(time);
-        audioSource.PlayOneShot(clip);
+        audioSourceVoiceOver.PlayOneShot(clip);
     }
 
     private void NextState(float time)

@@ -12,6 +12,8 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     [SerializeField] private Transform cameraPosition;
 
     public SteamVR_Action_Boolean fireAction;
+    private AudioSource audioSource;
+    [SerializeField] AudioClip bang;
 
     private Animator animator;
 
@@ -21,6 +23,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -42,6 +45,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     private void SpawnBulletLeft()
     {
+        audioSource.PlayOneShot(bang);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (LeftAim.position - barrelLeftTip.position).normalized;
@@ -54,6 +58,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     private void SpawnBulletRight()
     {
+        audioSource.PlayOneShot(bang);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (RightAim.position - barrelRightTip.position).normalized;

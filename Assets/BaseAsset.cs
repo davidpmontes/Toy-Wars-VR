@@ -19,9 +19,9 @@ public class BaseAsset : MonoBehaviour, IBaseAsset
 
     private void DestroySelf()
     {
-        var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
-        smoke.transform.position = transform.position;
-        smoke.SetActive(true);
+        var largeExplosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
+        largeExplosion.transform.position = transform.position;
+        largeExplosion.SetActive(true);
         BaseAssetManager.Instance.DeregisterBaseAsset(gameObject);
         Destroy(gameObject);
     }

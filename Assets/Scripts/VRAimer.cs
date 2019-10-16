@@ -10,8 +10,8 @@ public class VRAimer : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        layerMask = (1 << LayerMask.NameToLayer("Statics")) |
-                    (1 << LayerMask.NameToLayer("Enemy"));
+        layerMask = 1 << LayerMask.NameToLayer("Statics"); //|
+                    //(1 << LayerMask.NameToLayer("Enemy"));
     }
 
     void Update()

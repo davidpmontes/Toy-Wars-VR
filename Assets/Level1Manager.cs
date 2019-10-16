@@ -53,21 +53,26 @@ public class Level1Manager : MonoBehaviour
                 NextState(3);
             }
         }
-        else if (state == 3)    //Attack Helicopter Spawner
+        else if (state == 3)
+        {
+            timelines[1].SetActive(true);
+            NextState(3);
+        }
+        else if (state == 4)    //Attack Helicopter Spawner
         {
             enemySpawners[1].SetActive(true);
             NextState(0);
         }
-        else if (state == 4)    //Waiting for the Player to defeat all the targets
+        else if (state == 5)    //Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
                 NextState(0);
             }
         }
-        else if (state == 5)
+        else if (state == 6)
         {
-            timelines[1].SetActive(true);
+            timelines[2].SetActive(true);
         }
     }
 

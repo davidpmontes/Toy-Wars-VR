@@ -9,6 +9,7 @@ public class Chinook : MonoBehaviour, IEnemy
     private Material material;
     [SerializeField] private Material red = default;
     private MeshRenderer meshRenderer;
+    private GameObject smoke;
 
     private void Awake()
     {
@@ -65,7 +66,7 @@ public class Chinook : MonoBehaviour, IEnemy
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
         var rigidBody = gameObject.AddComponent<Rigidbody>();
         rigidBody.AddRelativeTorque(new Vector3(Random.Range(1, 3), Random.Range(-3, 3), Random.Range(1, 2)), ForceMode.Impulse);
-        var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
+        smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
@@ -78,6 +79,7 @@ public class Chinook : MonoBehaviour, IEnemy
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.SetActive(true);
+            ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }

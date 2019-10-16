@@ -9,6 +9,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     private Material material;
     [SerializeField] private Material red = default;
     private MeshRenderer meshRenderer;
+    private GameObject smoke;
 
     private GameObject target;
     private int state = 1;
@@ -40,16 +41,13 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             }
         }
 
-
-
-
         if (state == 1) //move to target
         {
-            var distance = Vector3.Distance(transform.position, target.transform.position);
+            var distance = Vector3.Distance(transform.position, new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
 
             if (distance > 100)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * 10);
+                transform.position = Vector3.MoveTowards(transform.position, new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z), Time.deltaTime * 10);
             }
             else
             {
@@ -73,7 +71,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             }
         }
 
-        Vector3 targetDir = target.transform.position - transform.position;
+        Vector3 targetDir = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z) - transform.position;
         Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
         transform.rotation = Quaternion.LookRotation(newDir);
     }
@@ -127,7 +125,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
         var rigidBody = gameObject.AddComponent<Rigidbody>();
         rigidBody.AddRelativeTorque(new Vector3(Random.Range(1, 3), Random.Range(-3, 3), Random.Range(1, 2)), ForceMode.Impulse);
-        var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
+        smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
@@ -140,6 +138,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.SetActive(true);
+            ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }

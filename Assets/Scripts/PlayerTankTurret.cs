@@ -2,8 +2,8 @@
 
 public class PlayerTankTurret : MonoBehaviour
 {
-    [SerializeField] private Transform targetPoint;
-    [SerializeField] private Transform barrel;
+    [SerializeField] private Transform targetPoint = default;
+    [SerializeField] private Transform barrel = default;
 
     void Update()
     {

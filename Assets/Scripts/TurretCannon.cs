@@ -3,17 +3,17 @@ using Valve.VR;
 
 public class TurretCannon : MonoBehaviour, ICameraRelocate
 {
-    [SerializeField] private Transform LeftAim;
-    [SerializeField] private Transform RightAim;
-    [SerializeField] private Transform barrelLeftTip;
-    [SerializeField] private Transform barrelRightTip;
-    [SerializeField] private ParticleSystem leftFlash;
-    [SerializeField] private ParticleSystem rightFlash;
-    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private Transform LeftAim = default;
+    [SerializeField] private Transform RightAim = default;
+    [SerializeField] private Transform barrelLeftTip = default;
+    [SerializeField] private Transform barrelRightTip = default;
+    [SerializeField] private ParticleSystem leftFlash = default;
+    [SerializeField] private ParticleSystem rightFlash = default;
+    [SerializeField] private Transform cameraPosition = default;
 
     public SteamVR_Action_Boolean fireAction;
     private AudioSource audioSource;
-    [SerializeField] AudioClip bang;
+    [SerializeField] AudioClip bang = default;
 
     private Animator animator;
 

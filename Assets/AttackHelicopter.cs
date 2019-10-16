@@ -7,7 +7,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     private bool isShaking = false;
     private Material originalMaterial;
     private Material material;
-    [SerializeField] private Material red;
+    [SerializeField] private Material red = default;
     private MeshRenderer meshRenderer;
 
     private GameObject target;
@@ -87,8 +87,8 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
 
         if (life <= 0)
         {
+            EnemyManager.Instance.DeregisterEnemy(gameObject);
             DestroySelf();
-            EnemyManager.Instance.DeregisterEnemy();
         }
         else
         {

@@ -8,11 +8,11 @@ public class Level1Manager : MonoBehaviour
 
     public int state;
 
-    [SerializeField] GameObject[] enemySpawners;
-    [SerializeField] GameObject[] timelines;
-    [SerializeField] AudioClip audioClipBackgroundMusic;
-    [SerializeField] AudioClip audioClipWowGreatShot;
-    [SerializeField] AudioClip audioClipYouGotAllTheTargets;
+    [SerializeField] GameObject[] enemySpawners = default;
+    [SerializeField] GameObject[] timelines = default;
+    [SerializeField] AudioClip audioClipBackgroundMusic = default;
+    [SerializeField] AudioClip audioClipWowGreatShot = default;
+    [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
     private AudioSource audioSourceBackgroundMusic;
     private AudioSource audioSourceVoiceOver;
 
@@ -58,9 +58,16 @@ public class Level1Manager : MonoBehaviour
             enemySpawners[1].SetActive(true);
             NextState(0);
         }
-        else if (state == 4)
+        else if (state == 4)    //Waiting for the Player to defeat all the targets
         {
-
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                NextState(0);
+            }
+        }
+        else if (state == 5)
+        {
+            timelines[1].SetActive(true);
         }
     }
 

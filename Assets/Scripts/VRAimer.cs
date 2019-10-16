@@ -3,7 +3,7 @@
 public class VRAimer : MonoBehaviour
 {
     public static VRAimer Instance { get; private set; }
-    [SerializeField] private GameObject targetPoint;
+    [SerializeField] private GameObject targetPoint = default;
 
     private LayerMask layerMask;
 

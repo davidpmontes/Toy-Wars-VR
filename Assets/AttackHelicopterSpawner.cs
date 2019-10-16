@@ -9,7 +9,7 @@ public class AttackHelicopterSpawner : MonoBehaviour
             var newAttackHelicopter = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.AttackHelicopter, transform);
             newAttackHelicopter.transform.position = transform.position + new Vector3(Random.Range(-50, 50), Random.Range(20, 70), Random.Range(-50, 50));
             newAttackHelicopter.transform.SetParent(transform);
-            EnemyManager.Instance.RegisterEnemy();
+            EnemyManager.Instance.RegisterEnemy(newAttackHelicopter);
         }
     }
 

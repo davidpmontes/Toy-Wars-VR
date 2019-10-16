@@ -5,28 +5,27 @@ public class EnemyManager : MonoBehaviour
 {
 	public static EnemyManager Instance { get; private set; }
 
-    private int enemyCount;
-
-    [SerializeField] private GameObject AllEnemies;
+    [SerializeField] private HashSet<GameObject> AllEnemies;
 
     void Awake()
     {
         Instance = this;
+        AllEnemies = new HashSet<GameObject>();
     }
 
-    public void RegisterEnemy()
+    public void RegisterEnemy(GameObject newEnemy)
     {
-        enemyCount++;
+        AllEnemies.Add(newEnemy);
     }
 
-    public void DeregisterEnemy()
+    public void DeregisterEnemy(GameObject oldEnemy)
     {
-        enemyCount--;
+        AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
     }
 
     public int GetEnemyCount()
     {
-        return enemyCount;
+        return AllEnemies.Count;
     }
 }

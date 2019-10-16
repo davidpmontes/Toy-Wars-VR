@@ -11,17 +11,17 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     public Vector3 desiredVelocity;
     public Vector3 forceDirection;
 
-    [SerializeField] private float MAX_MOVE_RATE;
-    [SerializeField] private float MAX_TURN_RATE;
-    [SerializeField] private float MOVE_ACCELERATION;
-    [SerializeField] private float TURN_ACCELERATION;
-    [SerializeField] private Transform GroundDetectorOrigin;
-    [SerializeField] private Transform TurningPoint;
-    [SerializeField] private Transform CameraTrackingTracks;
+    [SerializeField] private float MAX_MOVE_RATE = default;
+    [SerializeField] private float MAX_TURN_RATE = default;
+    [SerializeField] private float MOVE_ACCELERATION = default;
+    [SerializeField] private float TURN_ACCELERATION = default;
+    [SerializeField] private Transform GroundDetectorOrigin = default;
+    [SerializeField] private Transform TurningPoint = default;
+    [SerializeField] private Transform CameraTrackingTracks = default;
 
-    [SerializeField] private Transform turret;
-    [SerializeField] private Transform tracks;
-    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private Transform turret = default;
+    [SerializeField] private Transform tracks = default;
+    [SerializeField] private Transform cameraPosition = default;
     public float currTurnRate;
 
     private SteamVR_Behaviour_Pose pose = null;

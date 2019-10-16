@@ -3,8 +3,8 @@
 public class CameraRigSetPosition : MonoBehaviour
 {
     public static CameraRigSetPosition Instance { get; private set; }
-    [SerializeField] private Transform HMD;
-    [SerializeField] private GameObject pivot;
+    [SerializeField] private Transform HMD = default;
+    [SerializeField] private GameObject pivot = default;
 
     void Awake()
     {

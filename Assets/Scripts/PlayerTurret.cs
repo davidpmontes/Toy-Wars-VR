@@ -3,14 +3,14 @@
 public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
 {
     private float horizontal;
-    private float vertical;
+    private float vertical; 
 
-    [SerializeField] private GameObject Rotateable;
-    [SerializeField] private GameObject Tiltable;
-    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private GameObject Rotateable = default;
+    [SerializeField] private GameObject Tiltable = default;
+    [SerializeField] private Transform cameraPosition = default;
 
     private readonly float ROTATION_SPEED = 100f;
-    private readonly float TILT_SPEED = 100f;
+    private readonly float TILT_SPEED = 100f; 
 
     float rotationX = 15;
 

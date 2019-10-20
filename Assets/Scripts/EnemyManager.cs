@@ -22,10 +22,13 @@ public class EnemyManager : MonoBehaviour
     {
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
+        ScoreScript.Instance.AddScore(1000);
     }
 
     public int GetEnemyCount()
     {
         return AllEnemies.Count;
     }
+
+    
 }

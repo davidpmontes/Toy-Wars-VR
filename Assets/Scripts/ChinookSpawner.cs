@@ -7,8 +7,9 @@ public class ChinookSpawner : MonoBehaviour
         for(int i = 0; i < 10; i++)
         {
             var newChinook = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.EnemyChinook, transform);
-            newChinook.transform.position = transform.position + new Vector3(Random.Range(-50, 50), Random.Range(20, 70), Random.Range(-50, 50));
+            newChinook.transform.position = transform.position + new Vector3(Random.Range(-80, 80), Random.Range(10, 100), Random.Range(-80, 80));
             newChinook.transform.SetParent(transform);
+            EnemyManager.Instance.RegisterEnemy(newChinook);
         }
     }
 

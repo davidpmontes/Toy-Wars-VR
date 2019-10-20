@@ -2,10 +2,10 @@
 
 public class MaintainSize : MonoBehaviour
 {
-    private readonly float SPEED = 100;
-    private readonly float PERCENT = .8f;
-    private readonly float MAX_SIZE = 2;
-    private readonly float MIN_SIZE = .5f;
+    public float SPEED = 100;
+    public float PERCENT = .8f;
+    public float MAX_SIZE = 2;
+    public float MIN_SIZE = .5f;
         
     void Update()
     {

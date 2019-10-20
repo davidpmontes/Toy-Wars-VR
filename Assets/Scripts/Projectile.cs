@@ -22,26 +22,6 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-    //    {
-    //        var damageable = other.gameObject.GetComponent<IDamageable>();
-
-    //        if (damageable != null)
-    //        {
-    //            var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.smallExplosion);
-    //            explosion.GetComponent<Explosion>().Init(transform.position, Vector3.zero);
-    //            explosion.SetActive(true);
-
-    //            damageable.TakeDamage(1);
-
-    //            CancelInvoke();
-    //            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-    //        }
-    //    }
-    //}
-
     private void OnEnable()
     {
         Invoke("Deactivate", lifespan);

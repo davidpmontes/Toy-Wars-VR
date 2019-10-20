@@ -5,8 +5,8 @@ public class PlayerTankCannon : MonoBehaviour
 {
     public SteamVR_Action_Boolean fireAction;
 
-    [SerializeField] private Transform spawnPosition;
-    [SerializeField] private Transform aimingPoint;
+    [SerializeField] private Transform spawnPosition = default;
+    [SerializeField] private Transform aimingPoint = default;
 
     void Update()
     {

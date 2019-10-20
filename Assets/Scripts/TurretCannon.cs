@@ -3,18 +3,17 @@ using Valve.VR;
 
 public class TurretCannon : MonoBehaviour, ICameraRelocate
 {
-    [SerializeField] private Transform LeftAim;
-    [SerializeField] private Transform RightAim;
-    [SerializeField] private Transform barrelLeftTip;
-    [SerializeField] private Transform barrelRightTip;
-    [SerializeField] private ParticleSystem leftFlash;
-    [SerializeField] private ParticleSystem rightFlash;
-    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private Transform LeftAim = default;
+    [SerializeField] private Transform RightAim = default;
+    [SerializeField] private Transform barrelLeftTip = default;
+    [SerializeField] private Transform barrelRightTip = default;
+    [SerializeField] private ParticleSystem leftFlash = default;
+    [SerializeField] private ParticleSystem rightFlash = default;
+    [SerializeField] private Transform cameraPosition = default;
 
     public SteamVR_Action_Boolean fireAction;
-
-    [SerializeField] private AudioClip shoot;
-    private AudioSource[] audiosources;
+    private AudioSource audioSource;
+    [SerializeField] AudioClip bang = default;
 
     private Animator animator;
 
@@ -23,8 +22,8 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     
     void Awake()
     {
-        audiosources = GetComponents<AudioSource>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -46,6 +45,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     private void SpawnBulletLeft()
     {
+        audioSource.PlayOneShot(bang);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (LeftAim.position - barrelLeftTip.position).normalized;
@@ -53,12 +53,12 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
         turretBullet.SetActive(true);
 
-        audiosources[0].PlayOneShot(shoot);
         leftFlash.Play();
     }
 
     private void SpawnBulletRight()
     {
+        audioSource.PlayOneShot(bang);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (RightAim.position - barrelRightTip.position).normalized;
@@ -66,7 +66,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
         turretBullet.SetActive(true);
 
-        audiosources[0].PlayOneShot(shoot);
         rightFlash.Play();
     }
 

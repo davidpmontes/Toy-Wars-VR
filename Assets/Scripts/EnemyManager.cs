@@ -29,6 +29,4 @@ public class EnemyManager : MonoBehaviour
     {
         return AllEnemies.Count;
     }
-
-    
 }

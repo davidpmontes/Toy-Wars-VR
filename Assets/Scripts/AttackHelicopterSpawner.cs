@@ -12,8 +12,4 @@ public class AttackHelicopterSpawner : MonoBehaviour
             EnemyManager.Instance.RegisterEnemy(newAttackHelicopter);
         }
     }
-
-    private void Update()
-    {
-    }
 }

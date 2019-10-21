@@ -1,40 +1,87 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using Cinemachine;
 
-public class Spitfire : MonoBehaviour
+public class Spitfire : MonoBehaviour, IEnemy
 {
-    [SerializeField] private GameObject[] waypoints;
-    private int wpIndex = 0;
-    public float moveSpeed;
-    public float rotateSpeed;
-    [SerializeField] private GameObject tiltable;
-    private Vector3 waypointRandom;
+    private float life = 3;
+    private Material originalMaterial;
+    private Material material;
+    [SerializeField] private Material red = default;
+    private MeshRenderer meshRenderer;
+    private Rigidbody rigidBody;
+    private GameObject smoke;
+    private Vector3 pos0;
+    private Vector3 pos1;
 
-    void Update()
+    private void Awake()
     {
-        FlyToWaypoint();
+        rigidBody = GetComponent<Rigidbody>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        originalMaterial = meshRenderer.material;
     }
 
-    private void FlyToWaypoint()
+    private void Update()
     {
-        var distance = Vector3.Distance(transform.position, waypoints[wpIndex].transform.position + waypointRandom);
+        StorePositions();
+    }
 
-        if (distance > 50)
+    public void DamageEnemy(Vector3 position)
+    {
+        if (life <= 0)
+            return;
+
+        life--;
+        var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+        explosion.transform.position = position;
+        explosion.SetActive(true);
+
+        if (life <= 0)
         {
-            Vector3 targetDir = waypoints[wpIndex].transform.position + waypointRandom - transform.position;
-            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * rotateSpeed, 0.0f);
-            transform.localRotation = Quaternion.LookRotation(newDir);
-
-            transform.Translate(0, 0, Time.deltaTime * moveSpeed);
+            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            DestroySelf();
         }
         else
         {
-            NextWayPoint();
-}
+            StartCoroutine(FlashRed());
+        }
     }
 
-    private void NextWayPoint()
+    IEnumerator FlashRed()
     {
-        wpIndex = (++wpIndex) % waypoints.Length;
-        waypointRandom = Random.insideUnitSphere * 30;
+        meshRenderer.material = red;
+        yield return new WaitForSeconds(0.05f);
+        meshRenderer.material = originalMaterial;
+    }
+
+    private void StorePositions()
+    {
+        pos0 = pos1;
+        pos1 = transform.position;
+    }
+
+    private void DestroySelf()
+    {
+        gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
+        GetComponent<CinemachineDollyCart>().enabled = false;
+        rigidBody.isKinematic = false;
+        rigidBody.velocity = (pos1 - pos0) / Time.deltaTime;
+        rigidBody.AddRelativeTorque(new Vector3(Random.Range(1, 3), Random.Range(-3, 3), Random.Range(1, 2)), ForceMode.Impulse);
+        smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
+        smoke.transform.position = transform.position;
+        smoke.transform.SetParent(transform);
+        smoke.SetActive(true);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
+        {
+            var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
+            explosion.transform.position = transform.position;
+            explosion.SetActive(true);
+            ObjectPool.Instance.DeactivateAndAddToPool(smoke);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
     }
 }

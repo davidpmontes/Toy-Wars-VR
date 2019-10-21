@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
 using Cinemachine;
+using System.Collections;
 
 public class SpitfireSpawner : MonoBehaviour
 {
-    [SerializeField] CinemachineSmoothPath path;
+    [SerializeField] CinemachineSmoothPath[] path;
     void Start()
     {
         for (int i = 0; i < 10; i++)
         {
-            Invoke("Spawn", i * 1);
+            StartCoroutine(Spawn(i * 1));
         }
     }
 
-    private void Spawn()
+    IEnumerator Spawn(float delay)
     {
+        yield return new WaitForSeconds(delay);
+
         var newSpitfire = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.Spitfire, transform);
         newSpitfire.SetActive(true);
         var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
         cart.enabled = true;
-        cart.m_Path = path;
+        cart.m_Path = path[Random.Range(0, 2)];
         newSpitfire.GetComponent<Rigidbody>().isKinematic = true;
         EnemyManager.Instance.RegisterEnemy(newSpitfire);
     }

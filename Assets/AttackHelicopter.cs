@@ -15,11 +15,21 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     private int state = 1;
     private float nextFiringTime;
     private float nextActionTime;
+    private AudioManager audioManager;
+    private int sourceKey;
 
     private void Awake()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
+    }
+
+    private void Start()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+        audioManager.BindReserved(sourceKey, this.transform);
+        audioManager.PlayReserved(sourceKey);
     }
 
     private void Update()
@@ -129,6 +139,10 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -142,4 +156,13 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }
+
+    private void OnDestroy()
+    {
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+        }
+    }
+
 }

@@ -10,11 +10,21 @@ public class Chinook : MonoBehaviour, IEnemy
     [SerializeField] private Material red = default;
     private MeshRenderer meshRenderer;
     private GameObject smoke;
+    private AudioManager audioManager;
+    private int sourceKey;
 
     private void Awake()
     {
         meshRenderer = GetComponent<MeshRenderer>();
         originalMaterial = GetComponent<MeshRenderer>().material;
+    }
+
+    public void Start()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+        audioManager.BindReserved(sourceKey, this.transform);
+        audioManager.PlayReserved(sourceKey);
     }
 
     public void DamageEnemy(Vector3 position)
@@ -70,6 +80,10 @@ public class Chinook : MonoBehaviour, IEnemy
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -81,6 +95,14 @@ public class Chinook : MonoBehaviour, IEnemy
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if(audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
         }
     }
 }

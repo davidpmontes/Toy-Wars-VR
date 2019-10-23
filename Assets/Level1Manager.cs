@@ -15,12 +15,14 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
     private AudioSource audioSourceBackgroundMusic;
     private AudioSource audioSourceVoiceOver;
+    private AudioManager audioManager;
 
     private void Awake()
     {
         Instance = this;
         audioSourceBackgroundMusic = GetComponents<AudioSource>()[0];
         audioSourceVoiceOver = GetComponents<AudioSource>()[1];
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
     void Start()
     {
@@ -44,12 +46,14 @@ public class Level1Manager : MonoBehaviour
         {
             if (EnemyManager.Instance.GetEnemyCount() == 9)
             {
-                PlayAudio(audioClipWowGreatShot, 0);
+                //PlayAudio(audioClipWowGreatShot, 0);
+                audioManager.PlayNarration(audioClipWowGreatShot);
             }
 
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
-                PlayAudio(audioClipYouGotAllTheTargets, 0);
+                //PlayAudio(audioClipYouGotAllTheTargets, 0);
+                audioManager.PlayNarration(audioClipYouGotAllTheTargets);
                 NextState(3);
             }
         }

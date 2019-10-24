@@ -8,7 +8,8 @@ public enum Pools { PingPongBall,
                     Large_CFX_Explosion_B_Smoke_Text,
                     Smoke,
                     AttackHelicopter,
-                    EnemyBullet
+                    EnemyBullet,
+                    Spitfire
                 };
 
 public class ObjectPool : MonoBehaviour

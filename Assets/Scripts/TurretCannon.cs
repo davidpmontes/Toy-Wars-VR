@@ -50,10 +50,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
         if (fireAction.state)
         {
             animator.SetBool("firing", true);
-        } else if (Input.GetKey(KeyCode.Space))
-            {
-                animator.SetBool("firing", true);
-            }
+        }
         else
         {
             animator.SetBool("firing", false);

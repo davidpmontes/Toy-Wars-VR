@@ -3,19 +3,23 @@
 public class LargeExplosion : MonoBehaviour
 {
     [SerializeField] private AudioClip explosionClip;
-    private AudioSource audioSource;
+    private AudioManager audioManager;
 
     private int lifespan = 2;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     private void OnEnable()
     {
         Invoke("Deactivate", lifespan);
-        audioSource.PlayOneShot(explosionClip);
+        audioManager.PlayOneshot("explosion_large_01", transform, true, 1f, 1f, 1f);
     }
 
     void Deactivate()

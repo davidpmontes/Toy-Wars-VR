@@ -153,7 +153,7 @@ public class AudioManager : MonoBehaviour
             }
             AudioSource src = source_pool.Pop();
             GameObject audio_obj = src.gameObject;
-            audio_obj.transform.Translate(coord);
+            audio_obj.transform.position = coord;
             src.spatialize = occluding;
             src.spatialBlend = spacial_blend;
             src.clip = clip;
@@ -200,8 +200,34 @@ public class AudioManager : MonoBehaviour
             {
                 return;
             }
-            audio_obj.transform.SetParent(source_trans, false);
+            audio_obj.transform.SetParent(source_trans);
             audio_obj.transform.position = source_trans.position;
+            src.spatialize = occluding;
+            src.spatialBlend = spacial_blend;
+            src.clip = clip_map[key];
+            src.enabled = true;
+            src.Play();
+            StartCoroutine(EndClip(src, src.clip.length));
+        }
+    }
+
+    public void PlayOneshot(string key, Vector3 coord, bool occluding = false, float volume = 1.0f, float spacial_blend = 0.0f, float pitch = 1.0f)
+    {
+        if (key != null)
+        {
+            if (source_pool.Peek() == null)
+            {
+                return;
+            }
+            AudioSource src = source_pool.Pop();
+            GameObject audio_obj = src.gameObject;
+            AudioClip clip;
+            clip_map.TryGetValue(key, out clip);
+            if (clip == null)
+            {
+                return;
+            }
+            audio_obj.transform.position = coord;
             src.spatialize = occluding;
             src.spatialBlend = spacial_blend;
             src.clip = clip_map[key];
@@ -215,7 +241,7 @@ public class AudioManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         src.enabled = false;
-        src.gameObject.transform.SetParent(gameObject.transform,false);
+        src.gameObject.transform.SetParent(gameObject.transform);
         source_pool.Push(src);
     }
 

@@ -25,7 +25,6 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        audioManager.LoadClip(@"Audio\SFX\explosion_large_01");
         EnableVehicle(PlayerVehicles.turretVR_A);
     }
 

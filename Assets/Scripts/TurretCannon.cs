@@ -20,8 +20,8 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     private float lastTimeFired;
     private float lastTimeSound;
 
-    private int leftCannonSource;
-    private int rightCannonSource;
+    private int leftCannonSource = -1;
+    private int rightCannonSource = -1;
     
     void Awake()
     {
@@ -32,12 +32,18 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     private void Start()
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        audioManager.LoadClip(@"Audio\SFX\big one");
-        leftCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
-        rightCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+        if(leftCannonSource < 0)
+        {
+            leftCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            audioManager.BindReserved(leftCannonSource, barrelLeftTip);
+        }
 
-        audioManager.BindReserved(leftCannonSource, barrelLeftTip);
-        audioManager.BindReserved(leftCannonSource, barrelRightTip);
+        if(rightCannonSource < 0)
+        {
+            rightCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            audioManager.BindReserved(leftCannonSource, barrelRightTip);
+        }
+
     }
 
     void Update()

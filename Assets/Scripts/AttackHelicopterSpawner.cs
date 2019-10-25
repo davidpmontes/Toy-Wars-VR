@@ -6,7 +6,6 @@ public class AttackHelicopterSpawner : MonoBehaviour
     void Start()
     {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        audioManager.LoadClip(@"Audio\SFX\helicopter_idle");
 
         for (int i = 0; i < 10; i++)
         {

@@ -13,9 +13,12 @@ public class Level1Manager : MonoBehaviour
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
     [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
+    [SerializeField] AudioClip[] sound_effects= default;
+
     private AudioSource audioSourceBackgroundMusic;
     private AudioSource audioSourceVoiceOver;
     private AudioManager audioManager;
+
 
     private void Awake()
     {
@@ -28,6 +31,11 @@ public class Level1Manager : MonoBehaviour
     {
         QualitySettings.shadowDistance = 450;
         UpdateState();
+    }
+
+    public void GetSoundEffects(out AudioClip[] fx)
+    {
+        fx = sound_effects;
     }
 
     public void UpdateState()

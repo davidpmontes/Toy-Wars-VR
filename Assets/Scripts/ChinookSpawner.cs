@@ -3,12 +3,8 @@
 
 public class ChinookSpawner : MonoBehaviour
 {
-    private AudioManager audioManager;
     void Start()
     {
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        audioManager.LoadClip(@"Audio\SFX\helicopter_idle");
-
         for (int i = 0; i < 10; i++)
         {
             var newChinook = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.EnemyChinook, transform);

@@ -13,12 +13,14 @@ public class Spitfire : MonoBehaviour, IEnemy
     private GameObject smoke;
     private Vector3 pos0;
     private Vector3 pos1;
+    private AudioManager audioManager;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -35,6 +37,7 @@ public class Spitfire : MonoBehaviour, IEnemy
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);
+        audioManager.PlayOneshot("explosion_large_01", position);
 
         if (life <= 0)
         {
@@ -80,6 +83,7 @@ public class Spitfire : MonoBehaviour, IEnemy
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.SetActive(true);
+            audioManager.PlayOneshot("explosion_large_04", transform.position);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }

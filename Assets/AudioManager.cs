@@ -32,8 +32,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        InitMixerGroups();
         ChangeBGM(bgm_clip);
+        InitMixerGroups();
         StartBGM(true);
     }
     void Awake()
@@ -43,10 +43,23 @@ public class AudioManager : MonoBehaviour
         InitNarration();
         narration.priority = 0;
         bgm.priority = 1;
+        LoadSoundEffects();
+
+    }
+    void LoadSoundEffects()
+    {
+        Level1Manager lvl_mgr = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<Level1Manager>();
+        AudioClip[] fx;
+        lvl_mgr.GetSoundEffects(out fx);
+        foreach (AudioClip clip in fx)
+        {
+            LoadClip(clip);
+        }
     }
 
     void InitMixerGroups()
     {
+
         mixer.SetFloat("MasterVol", mixer_group_volume[0]);
         mixer.SetFloat("Sound EffectsVol", mixer_group_volume[1]);
         mixer.SetFloat("PlayerVol", mixer_group_volume[2]);
@@ -89,37 +102,36 @@ public class AudioManager : MonoBehaviour
 
         AudioSource src;
         GameObject audio_object;
+        audio_object = new GameObject("Audio Object");
+        audio_object.transform.SetParent(transform, false);
+        audio_object.transform.localPosition = Vector3.zero;
+        src = audio_object.AddComponent(typeof(AudioSource)) as AudioSource;
+        src.spatialize = true;
+        src.spatialBlend = 1.0f;
+        src.playOnAwake = false;
+        src.outputAudioMixerGroup = mixer_groups[4];
+        src.rolloffMode = AudioRolloffMode.Linear;
+        src.maxDistance = rolloff_distance;
+        src.dopplerLevel = 0;
+
         for (int i = 0; i < max_sources; i++)
         {
-            audio_object = new GameObject("Audio Object");
-            audio_object.transform.SetParent(gameObject.transform);
-            obj_pool.Push(audio_object);
-            src = obj_pool.Peek().AddComponent(typeof(AudioSource)) as AudioSource;
-            src.outputAudioMixerGroup = mixer_groups[4];
-            src.rolloffMode = AudioRolloffMode.Linear;
-            src.maxDistance = rolloff_distance;
-            src.dopplerLevel = 0;
-            source_pool.Push(src);
+            GameObject temp = GameObject.Instantiate(audio_object, transform);
+            obj_pool.Push(temp);
+            source_pool.Push(temp.GetComponent<AudioSource>());
         }
     }
 
     public void LoadClip(string path)
     {
         string key = path.Split('\\').Last<string>();
-
-        if (clip_map.ContainsKey(key))
-        {
-            return;
-        }
-
         AudioClip clip = Resources.Load(path, typeof(AudioClip)) as AudioClip;
-
-        if(clip == null)
-        {
-            return;
-        }
-
         clip_map.Add(key, clip);
+    }
+
+    public void LoadClip(AudioClip clip)
+    {
+        clip_map.Add(clip.name, clip);
     }
 
     public void DeleteClip(string key)
@@ -143,124 +155,65 @@ public class AudioManager : MonoBehaviour
         
     }
 
-    public void PlayOneshot(AudioClip clip, Vector3 coord, bool occluding = false, float volume = 1.0f, float spacial_blend = 0.0f, float pitch = 1.0f)
+    public void PlayOneshot(string key, Vector3 coord)
     {
-        if (clip != null)
+        if(source_pool.Count < 1)
         {
-            if(source_pool.Peek() == null)
-            {
-                return;
-            }
-            AudioSource src = source_pool.Pop();
-            GameObject audio_obj = src.gameObject;
-            audio_obj.transform.position = coord;
-            src.spatialize = occluding;
-            src.spatialBlend = spacial_blend;
-            src.clip = clip;
-            src.enabled = true;
-            src.Play();
-            StartCoroutine(EndClip(src, clip.length));
+            print("no sources");
+            return;
         }
+        AudioSource src = source_pool.Pop();
+        GameObject audio_obj = src.gameObject;
+        src.clip = clip_map[key];
+        audio_obj.transform.position = coord;
+        src.enabled = true;
+        src.Play();
+        StartCoroutine(EndClipPoint(src, src.clip.length));
     }
 
-    public void PlayOneshot(AudioClip clip, Transform source_trans, bool occluding = false, float volume = 1.0f, float spacial_blend = 0.0f, float pitch = 1.0f)
+    public void PlayOneshot(string key, Transform source_trans)
     {
-        if (clip != null)
+        if (source_pool.Count < 1)
         {
-            if (source_pool.Peek() == null)
-            {
-                return;
-            }
-            AudioSource src = source_pool.Pop();
-            GameObject audio_obj = src.gameObject;
-            audio_obj.transform.SetParent(source_trans);
-            audio_obj.transform.position = source_trans.position;
-            src.spatialize = occluding;
-            src.spatialBlend = spacial_blend;
-            src.clip = clip;
-            src.enabled = true;
-            src.Play();
-            StartCoroutine(EndClip(src, clip.length));
+            print("no sources");
+            return;
         }
+        AudioSource src = source_pool.Pop();
+        GameObject audio_obj = src.gameObject;
+        src.clip = clip_map[key];
+        audio_obj.transform.SetParent(source_trans,false);
+        src.enabled = true;
+        src.Play();
+        StartCoroutine(EndClipPoint(src, src.clip.length));
     }
 
-    public void PlayOneshot(string key, Transform source_trans, bool occluding = false, float volume = 1.0f, float spacial_blend = 0.0f, float pitch = 1.0f)
-    {
-        if (key != null)
-        {
-            if (source_pool.Peek() == null)
-            {
-                return;
-            }
-            AudioSource src = source_pool.Pop();
-            GameObject audio_obj = src.gameObject;
-            AudioClip clip;
-            clip_map.TryGetValue(key, out clip);
-            if(clip == null)
-            {
-                return;
-            }
-            audio_obj.transform.SetParent(source_trans);
-            audio_obj.transform.position = source_trans.position;
-            src.spatialize = occluding;
-            src.spatialBlend = spacial_blend;
-            src.clip = clip_map[key];
-            src.enabled = true;
-            src.Play();
-            StartCoroutine(EndClip(src, src.clip.length));
-        }
-    }
 
-    public void PlayOneshot(string key, Vector3 coord, bool occluding = false, float volume = 1.0f, float spacial_blend = 0.0f, float pitch = 1.0f)
-    {
-        if (key != null)
-        {
-            if (source_pool.Peek() == null)
-            {
-                return;
-            }
-            AudioSource src = source_pool.Pop();
-            GameObject audio_obj = src.gameObject;
-            AudioClip clip;
-            clip_map.TryGetValue(key, out clip);
-            if (clip == null)
-            {
-                return;
-            }
-            audio_obj.transform.position = coord;
-            src.spatialize = occluding;
-            src.spatialBlend = spacial_blend;
-            src.clip = clip_map[key];
-            src.enabled = true;
-            src.Play();
-            StartCoroutine(EndClip(src, src.clip.length));
-        }
-    }
 
-    IEnumerator EndClip(AudioSource src, float time)
+    IEnumerator EndClipTransform(AudioSource src, float time)
     {
         yield return new WaitForSeconds(time);
         src.enabled = false;
-        src.gameObject.transform.SetParent(gameObject.transform);
+        src.gameObject.transform.SetParent(gameObject.transform, false);
         source_pool.Push(src);
+    }
+
+    IEnumerator EndClipPoint(AudioSource src, float time)
+    {
+        yield return new WaitForSeconds(time);
+        src.gameObject.transform.localPosition = Vector3.zero;
+        source_pool.Push(src);
+        src.enabled = false;
     }
 
     public int ReserveSource(string key, bool occluding = false, float spacial_blend = 0.0f, float pitch = 1.0f, bool looping = false)
     {
-        if(source_pool.Peek() == null)
+        if (source_pool.Peek() == null)
         {
             print("No Audio Sources Available");
             return -1;
         }
         AudioSource src = source_pool.Pop();
-        AudioClip clip;
-        clip_map.TryGetValue(key, out clip);
- 
-        if (clip == null)
-        {
-            print("Clip path is null");
-            return -1;
-        }
+        AudioClip clip = clip_map[key];
         int index = reserved_sources.Count;
         src.clip = clip;
         src.spatialize = occluding;
@@ -273,29 +226,27 @@ public class AudioManager : MonoBehaviour
     public void PlayReserved(int source_id, Vector3 coord, float volume = 1.0f)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
-        src.gameObject.transform.Translate(coord);
-        reserved_sources.ElementAt(source_id).Play();
+        src.enabled = true;
+        src.gameObject.transform.position = coord;
+        src.Play();
     }
 
     public void PlayReserved(int source_id, Transform source_trans, float volume = 1.0f)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
-        src.gameObject.transform.SetParent(source_trans);
-        src.gameObject.transform.position = source_trans.position;
-        reserved_sources.ElementAt(source_id).Play();
+        src.gameObject.transform.SetParent(source_trans, false);
+        src.Play();
     }
 
     public void PlayReserved(int source_id)
     {
-        AudioSource src = reserved_sources.ElementAt(source_id);
         reserved_sources.ElementAt(source_id).Play();
     }
 
     public void BindReserved(int source_id, Transform source_trans)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
-        src.gameObject.transform.SetParent(source_trans);
-        src.gameObject.transform.position = source_trans.position;
+        src.gameObject.transform.SetParent(source_trans, false);
     }
 
     public void UnbindReserved(int source_id)
@@ -303,7 +254,7 @@ public class AudioManager : MonoBehaviour
         AudioSource src = reserved_sources.ElementAt(source_id);
         src.Stop();
         src.loop = false;
-        src.gameObject.transform.SetParent(gameObject.transform);
+        src.gameObject.transform.SetParent(transform, false);
     }
 
     public void StopReserved(int source_id)
@@ -314,25 +265,25 @@ public class AudioManager : MonoBehaviour
     public void FreeReserved(int source_id)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
-        reserved_sources.RemoveAt(source_id);
         src.enabled = false;
-        src.gameObject.transform.SetParent(gameObject.transform);
+        src.loop = false;
+        src.outputAudioMixerGroup = mixer_groups[4];
+        src.gameObject.transform.SetParent(transform, false);
+        src.gameObject.transform.position = Vector3.zero;
+        reserved_sources.RemoveAt(source_id);
         source_pool.Push(src);
+    }
+
+    public void SetReservedMixer(int source_id, int mixer_num)
+    {
+        AudioSource src = reserved_sources.ElementAt(source_id);
+        src.outputAudioMixerGroup = mixer_groups[mixer_num];
     }
 
     public void PlayNarration(AudioClip clip, float volume = 1.0f)
     {
         narration.clip = clip;
-        mixer.SetFloat("Background MusicVol", mixer_group_volume[5] + volume_reduction);
-        mixer.SetFloat("Sound EffectsVol", mixer_group_volume[1] + volume_reduction);
         narration.Play();
-        StartCoroutine(EndNarration(clip.length));
-    }
-    IEnumerator EndNarration(float time)
-    {
-        yield return new WaitForSeconds(time);
-        mixer.SetFloat("Background MusicVol", mixer_group_volume[5]);
-        mixer.SetFloat("Sound EffectsVol", mixer_group_volume[1]);
     }
 
     public void StartBGM(AudioClip clip, bool loop = true)

@@ -322,6 +322,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8912311920669167600}
   - component: {fileID: 4527332268759295381}
+  - component: {fileID: -1600645394030631832}
   m_Layer: 9
   m_Name: lincolnLogsHQ
   m_TagString: Untagged
@@ -361,6 +362,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.65, y: 0.46, z: 0.61}
   m_Center: {x: 0.01, y: 0.25, z: 0}
+--- !u!114 &-1600645394030631832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5617604605130178019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79e99846fd75c4438917229c144155a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TerrainSimplificationLevel: 0
+  exportAllChildren: 1
 --- !u!1 &6507615601259241389
 GameObject:
   m_ObjectHideFlags: 0

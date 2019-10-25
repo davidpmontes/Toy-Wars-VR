@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2125593279062803421}
   - component: {fileID: 6927830817442904555}
   - component: {fileID: 3681710317986628882}
+  - component: {fileID: 497441409452956235}
   m_Layer: 0
   m_Name: SofaPillow
   m_TagString: Untagged
@@ -78,3 +79,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &497441409452956235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3108827396039111118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79e99846fd75c4438917229c144155a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TerrainSimplificationLevel: 0
+  exportAllChildren: 0

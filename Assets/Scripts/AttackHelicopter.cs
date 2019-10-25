@@ -15,11 +15,26 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     private int state = 1;
     private float nextFiringTime;
     private float nextActionTime;
+    private AudioManager audioManager;
+    private int sourceKey = -1;
 
     private void Awake()
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
+
+    private void Start()
+    {
+        if (audioManager != null)
+        {
+                sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+                audioManager.SetReservedMixer(sourceKey, 3);
+                audioManager.BindReserved(sourceKey, this.transform);
+                audioManager.PlayReserved(sourceKey);
+        }
+
     }
 
     private void Update()
@@ -82,6 +97,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);
+        audioManager.PlayOneshot("explosion_large_01", position);
 
         if (life <= 0)
         {
@@ -135,11 +151,27 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     {
         if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
         {
+            if (audioManager != null)
+            {
+                audioManager.UnbindReserved(sourceKey);
+                sourceKey = -1;
+            }
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.SetActive(true);
+            audioManager.PlayOneshot("explosion_large_04", transform.position);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }
+
+    private void OnDestroy()
+    {
+        if (sourceKey >= 0)
+        {
+            audioManager.UnbindReserved(sourceKey);
+            sourceKey = -1;
+        }
+    }
+
 }

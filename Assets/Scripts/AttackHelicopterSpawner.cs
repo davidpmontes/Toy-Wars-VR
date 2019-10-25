@@ -2,8 +2,11 @@
 
 public class AttackHelicopterSpawner : MonoBehaviour
 {
+    private AudioManager audioManager;
     void Start()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
         for (int i = 0; i < 10; i++)
         {
             var newAttackHelicopter = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.AttackHelicopter, transform);

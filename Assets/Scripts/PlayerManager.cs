@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
     private GameObject currentVehicle;
+    private AudioManager audioManager;
 
     [SerializeField] private GameObject turretVR_A;
     [SerializeField] private GameObject turretVR_B;
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         EnableVehicle(PlayerVehicles.turretVR_A);
     }
 

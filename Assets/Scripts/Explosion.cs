@@ -3,18 +3,11 @@
 public class Explosion : MonoBehaviour
 {
     private int lifespan = 1;
-    [SerializeField] private AudioClip explosionClip;
-    private AudioSource audiosource;
 
-    private void Awake()
-    {
-        audiosource = GetComponent<AudioSource>();
-    }
 
     private void OnEnable()
     {
         Invoke("Deactivate", lifespan);
-        //audiosource.PlayOneShot(explosionClip);
     }
 
     void Deactivate()

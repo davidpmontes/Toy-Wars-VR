@@ -19,8 +19,8 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     private float lastTimeFired;
     private float lastTimeSound;
 
-    public int leftCannonSource = -1;
-    public int rightCannonSource = -1;
+    private int leftCannonSource = -1;
+    private int rightCannonSource = -1;
     
     void Awake()
     {

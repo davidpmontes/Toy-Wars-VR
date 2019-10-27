@@ -16,8 +16,8 @@ public class TurretCannonAuto : MonoBehaviour
     private bool fireLeft;
     private AudioManager audioManager;
 
-    public int leftCannonSource = -1;
-    public int rightCannonSource = -1;
+    private int leftCannonSource = -1;
+    private int rightCannonSource = -1;
 
     private void Start()
     {

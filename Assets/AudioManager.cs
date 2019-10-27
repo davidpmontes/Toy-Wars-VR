@@ -25,10 +25,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource narration;
     private AudioSource bgm;
 
-
     public float[] mixer_group_volume;
-
-    // Start is called before the first frame update
 
     private void Start()
     {
@@ -59,7 +56,6 @@ public class AudioManager : MonoBehaviour
 
     void InitMixerGroups()
     {
-
         mixer.SetFloat("MasterVol", mixer_group_volume[0]);
         mixer.SetFloat("Sound EffectsVol", mixer_group_volume[1]);
         mixer.SetFloat("PlayerVol", mixer_group_volume[2]);
@@ -91,7 +87,6 @@ public class AudioManager : MonoBehaviour
 
     void InitSources()
     {
-
         obj_pool = new Stack<GameObject>();
         source_pool = new Stack<AudioSource>();
         clip_map = new Dictionary<string, AudioClip>();
@@ -149,12 +144,6 @@ public class AudioManager : MonoBehaviour
         clip_map.Clear();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void PlayOneshot(string key, Vector3 coord)
     {
         if(source_pool.Count < 1)
@@ -186,8 +175,6 @@ public class AudioManager : MonoBehaviour
         src.Play();
         StartCoroutine(EndClipPoint(src, src.clip.length));
     }
-
-
 
     IEnumerator EndClipTransform(AudioSource src, float time)
     {

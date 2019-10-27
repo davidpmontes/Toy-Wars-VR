@@ -14,11 +14,32 @@ public class TurretCannonAuto : MonoBehaviour
     private GameObject target;
     private float targetAlignment;
     private bool fireLeft;
+    private AudioManager audioManager;
+
+    private int leftCannonSource = -1;
+    private int rightCannonSource = -1;
 
     private void Start()
     {
+        LoadAudio();
         StartCoroutine(GetNearestTarget());
         StartCoroutine(FireOnTarget());
+    }
+
+    private void LoadAudio()
+    {
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        if (leftCannonSource < 0)
+        {
+            leftCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            audioManager.BindReserved(leftCannonSource, barrelLeftTip);
+        }
+
+        if (rightCannonSource < 0)
+        {
+            rightCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            audioManager.BindReserved(rightCannonSource, barrelRightTip);
+        }
     }
 
     private void Update()
@@ -70,6 +91,8 @@ public class TurretCannonAuto : MonoBehaviour
 
     private void SpawnBulletLeft()
     {
+        audioManager.PlayReserved(leftCannonSource);
+
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (LeftAim.position - barrelLeftTip.position).normalized;
@@ -82,6 +105,8 @@ public class TurretCannonAuto : MonoBehaviour
 
     private void SpawnBulletRight()
     {
+        audioManager.PlayReserved(rightCannonSource);
+
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
         Vector3 direction = (RightAim.position - barrelRightTip.position).normalized;

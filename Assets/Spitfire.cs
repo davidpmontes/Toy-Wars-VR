@@ -20,7 +20,7 @@ public class Spitfire : MonoBehaviour, IEnemy
         rigidBody = GetComponent<Rigidbody>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = AudioManager.GetAudioManager();
     }
 
     private void Update()

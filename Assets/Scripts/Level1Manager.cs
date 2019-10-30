@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class Level1Manager : MonoBehaviour
+public class Level1Manager : MonoBehaviour, ILevelManager
 {
     public static Level1Manager Instance { get; private set; }
 
@@ -25,8 +25,9 @@ public class Level1Manager : MonoBehaviour
         Instance = this;
         audioSourceBackgroundMusic = GetComponents<AudioSource>()[0];
         audioSourceVoiceOver = GetComponents<AudioSource>()[1];
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = AudioManager.GetAudioManager();
     }
+
     void Start()
     {
         QualitySettings.shadowDistance = 450;

@@ -49,7 +49,5 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
     private void PlayGameInTime()
     {
         SceneManager.LoadScene("Level1");
-        audioManager.StopAll();
-        audioManager.StopAllCoroutines();
     }
 }

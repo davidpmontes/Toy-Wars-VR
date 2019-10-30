@@ -83,8 +83,8 @@ TextMesh:
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 0
-  m_Alignment: 0
+  m_Anchor: 4
+  m_Alignment: 1
   m_TabSize: 4
   m_FontSize: 100
   m_FontStyle: 1
@@ -92,7 +92,7 @@ TextMesh:
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278244607
 --- !u!95 &4367696377247791740
 Animator:
   serializedVersion: 3
@@ -138,7 +138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4141018854296802311}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -71.43164, y: 193.07812, z: -76.59375}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1834141530463664815}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4bbbaa798d14949bd2831c7838f593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 2
+  lifespan: 1.5
 --- !u!114 &8272073223017711476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,4 +170,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a99344b8852f8e4449aa007e6a17d27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adjustment: 100
+  adjustment: 300

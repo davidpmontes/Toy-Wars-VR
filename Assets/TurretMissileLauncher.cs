@@ -7,6 +7,9 @@ public class TurretMissileLauncher : MonoBehaviour
     private float timeBetweenMissiles = 1;
     private float lastTimeFired;
 
+    [SerializeField] private GameObject missileLauncherTip;
+    [SerializeField] private GameObject missileLauncherAimingPoint;
+
 
     void Update()
     {
@@ -28,7 +31,7 @@ public class TurretMissileLauncher : MonoBehaviour
     private void SpawnMissile()
     {
         var turretMissile = ObjectPool.Instance.GetFromPoolInactive(Pools.TurretMissile);
-        //turretMissile.GetComponent<TurretMissile>().Init(EnemyManager.Instance.GetNearestEnemy(transform.position), );
+        turretMissile.GetComponent<TurretMissile>().Init(EnemyManager.Instance.GetNearestEnemy(transform.position), missileLauncherTip.transform.position, missileLauncherAimingPoint.transform.position - missileLauncherTip.transform.position);
         turretMissile.SetActive(true);
     }
 }

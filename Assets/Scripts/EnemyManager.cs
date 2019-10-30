@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-
-    public GameObject scoreText;
 	public static EnemyManager Instance { get; private set; }
 
     private List<GameObject> AllEnemies;

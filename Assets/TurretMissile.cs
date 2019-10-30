@@ -2,11 +2,13 @@
 
 public class TurretMissile : MonoBehaviour
 {
-    private GameObject target; 
+    private GameObject target;
+    private float speed = 150;
+    private GameObject missileSmoke;
 
     void Start()
     {
-        Invoke("DestroySelf", 5);
+        Invoke("DestroySelf", 10);
     }
 
     void Update()
@@ -14,19 +16,37 @@ public class TurretMissile : MonoBehaviour
         MoveToTarget();
     }
 
-    public void Init(GameObject target, Vector3 position, Vector3 rotation)
+    public void Init(GameObject target, Vector3 position, Vector3 forward)
     {
         this.target = target;
         transform.position = position;
+        transform.rotation = Quaternion.LookRotation(forward);
+
+        missileSmoke = ObjectPool.Instance.GetFromPoolInactive(Pools.MissileSmoke);
+        missileSmoke.transform.position = transform.position;
+        missileSmoke.transform.SetParent(transform);
+        missileSmoke.SetActive(true);
     }
 
     private void MoveToTarget()
     {
-        Vector3 targetDir = target.transform.position - transform.position;
-        Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime, 0.0f);
-        transform.rotation = Quaternion.LookRotation(newDir);
+        if (target != null)
+        {
+            Vector3 targetDir = target.transform.position - transform.position;
+            Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, Time.deltaTime * 100, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDir);
 
-        transform.Translate(transform.forward);
+            var distance = Vector3.Distance(target.transform.position, transform.position);
+            if (distance < 10)
+            {
+                target.GetComponent<IEnemy>().DamageEnemy(transform.position);
+                CancelInvoke();
+                ObjectPool.Instance.DeactivateAndAddToPool(missileSmoke);
+                ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+            }
+        }
+
+        transform.position += transform.forward * Time.deltaTime * speed;
     }
 
     private void DestroySelf()

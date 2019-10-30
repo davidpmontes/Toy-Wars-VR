@@ -35,7 +35,7 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
 
     private void LoadAudio()
     {
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = AudioManager.GetAudioManager();
         if (leftCannonSource < 0)
         {
             leftCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);

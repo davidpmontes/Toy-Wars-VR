@@ -13,6 +13,7 @@ public class MenuSelector : MonoBehaviour
 
     public Animator PlayButton;
     public Animator QuitButton;
+    private AudioManager audioManager;
 
     private void Start()
     {
@@ -21,6 +22,7 @@ public class MenuSelector : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        audioManager = AudioManager.GetAudioManager();
     }
 
     void Update()
@@ -49,6 +51,7 @@ public class MenuSelector : MonoBehaviour
                     explode.transform.position = PlayButton.gameObject.transform.position;
                     explode.transform.localScale = Vector3.one * 0.5f;
                     explode.SetActive(true);
+                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform);
                     PlayButton.gameObject.SetActive(false);
                     MainMenuManager.Instance.PlayButtonClicked();
                     enabled = false;
@@ -59,6 +62,7 @@ public class MenuSelector : MonoBehaviour
                     explode.transform.position = QuitButton.gameObject.transform.position;
                     explode.transform.localScale = Vector3.one * 0.5f;
                     explode.SetActive(true);
+                    audioManager.PlayOneshot("explosion_large_01", QuitButton.transform);
                     //QuitButton.gameObject.SetActive(false);
                     //MainMenuManager.Instance.QuitButtonClicked();
                     //enabled = false;

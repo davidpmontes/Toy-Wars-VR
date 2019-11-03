@@ -116,7 +116,7 @@ public class AudioManager : MonoBehaviour
         src.outputAudioMixerGroup = mixer_groups[4];
         src.rolloffMode = AudioRolloffMode.Linear;
         src.maxDistance = rolloff_distance;
-        src.dopplerLevel = 0;
+        src.dopplerLevel = 1.0f;
 
         for (int i = 0; i < max_sources; i++)
         {
@@ -278,8 +278,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlayNarration(AudioClip clip, float volume = 1.0f)
     {
-        narration.clip = clip;
-        narration.Play();
+            narration.clip = clip;
+            narration.Play();
     }
 
     public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)

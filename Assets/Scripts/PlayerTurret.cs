@@ -2,6 +2,8 @@
 
 public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
 {
+    public static PlayerTurret Instance { get; private set; }
+
     private float horizontal;
     private float vertical; 
 

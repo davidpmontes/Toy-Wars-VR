@@ -20,6 +20,7 @@ public class EnemyManager : MonoBehaviour
 
     public void DeregisterEnemy(GameObject oldEnemy)
     {
+        ShowFloatingText(oldEnemy.transform.position);
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
         ScoreScript.Instance.AddScore(1000);
@@ -32,6 +33,16 @@ public class EnemyManager : MonoBehaviour
             return AllEnemies[0];
         }
         return null;
+    }
+
+    private void ShowFloatingText(Vector3 position)
+    {
+        var ScoreText = ObjectPool.Instance.GetFromPoolInactive(Pools.ScoreText);
+        ScoreText.transform.position = position;
+        Vector3 direction = ScoreText.transform.position - Camera.main.transform.position;
+        ScoreText.transform.LookAt(Camera.main.transform.position);
+        ScoreText.transform.Rotate(0, 180, 0);
+        ScoreText.SetActive(true);
     }
 
     public GameObject GetNearestEnemy(Vector3 playerPosition)

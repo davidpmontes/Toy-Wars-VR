@@ -14,18 +14,18 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup[] mixer_groups;
     [SerializeField] private float rolloff_distance;
 
-    private List<AudioSource> reserved_sources;
-
     private Dictionary<string, AudioClip> clip_map;
-
     private Stack<GameObject> obj_pool;
     private Stack<AudioSource> source_pool;
-    private GameObject cam;
+    private List<AudioSource> reserved_sources;
 
+    private GameObject cam;
     private AudioSource narration;
     private AudioSource bgm;
-
+    private bool narr_blocking = false;
     public float[] mixer_group_volume;
+
+    private static AudioManager audioManager;
 
     private void Start()
     {
@@ -41,11 +41,20 @@ public class AudioManager : MonoBehaviour
         narration.priority = 0;
         bgm.priority = 1;
         LoadSoundEffects();
-
     }
+
+    public static AudioManager GetAudioManager()
+    {
+        if (audioManager == null)
+        {
+            audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        }
+        return audioManager;
+    }
+
     void LoadSoundEffects()
     {
-        Level1Manager lvl_mgr = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<Level1Manager>();
+        ILevelManager lvl_mgr = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<ILevelManager>();
         AudioClip[] fx;
         lvl_mgr.GetSoundEffects(out fx);
         foreach (AudioClip clip in fx)
@@ -271,6 +280,30 @@ public class AudioManager : MonoBehaviour
     {
         narration.clip = clip;
         narration.Play();
+    }
+
+    public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)
+    {
+        if(narr_blocking == true)
+        {
+            return;
+        }
+
+        narr_blocking = blocking;
+        StartCoroutine(NarrateSequence(clips, clips.Length, delay));
+    }
+
+    IEnumerator NarrateSequence(AudioClip[] clips, int pos, float delay)
+    {
+        pos++;
+        AudioClip clip = clips[pos];
+        narration.clip = clip;
+        narration.Play();
+        if(pos < clips.Length-1)
+        {
+            yield return new WaitForSeconds(clip.length + delay);
+            NarrateSequence(clips, pos, delay);
+        }
     }
 
     public void StartBGM(AudioClip clip, bool loop = true)

@@ -64,6 +64,11 @@ public class EnemyManager : MonoBehaviour
         return nearestEnemy;
     }
 
+    public List<GameObject> GetAllEnemyPositions()
+    {
+        return AllEnemies;
+    }
+
     public int GetEnemyCount()
     {
         return AllEnemies.Count;

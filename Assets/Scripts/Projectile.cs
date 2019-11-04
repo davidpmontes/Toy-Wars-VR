@@ -14,11 +14,15 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<IEnemy>(out IEnemy component))
+        if (collision.gameObject.TryGetComponent(out IEnemy component))
         {
             component.DamageEnemy(transform.position);
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+        if (collision.gameObject.TryGetComponent<Collectible>(out Collectible coinComponent))
+        {
+            coinComponent.Shot();
         }
     }
 

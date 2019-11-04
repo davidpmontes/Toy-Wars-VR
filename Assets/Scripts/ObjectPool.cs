@@ -11,7 +11,8 @@ public enum Pools { PingPongBall,
                     EnemyBullet,
                     Spitfire,
                     TurretMissile,
-                    ScoreText
+                    ScoreText,
+                    MissileSmoke
                 };
 
 public class ObjectPool : MonoBehaviour

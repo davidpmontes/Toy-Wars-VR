@@ -110,7 +110,6 @@ public class Chinook : MonoBehaviour, IEnemy
         if(sourceKey >= 0)
         {
             audioManager.UnbindReserved(sourceKey);
-            sourceKey = -1;
         }
     }
 }

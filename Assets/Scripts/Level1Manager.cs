@@ -7,24 +7,22 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     public static Level1Manager Instance { get; private set; }
 
     public int state;
+    public float start_delay;
 
     [SerializeField] GameObject[] enemySpawners = default;
-    [SerializeField] GameObject[] timelines = default;
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
     [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
+    [SerializeField] AudioClip thanksForPlaying = default;
     [SerializeField] AudioClip[] sound_effects= default;
-
-    private AudioSource audioSourceBackgroundMusic;
-    private AudioSource audioSourceVoiceOver;
+    [SerializeField] AudioClip[] narration_sequence = default;
+    
     private AudioManager audioManager;
 
 
     private void Awake()
     {
         Instance = this;
-        audioSourceBackgroundMusic = GetComponents<AudioSource>()[0];
-        audioSourceVoiceOver = GetComponents<AudioSource>()[1];
         audioManager = AudioManager.GetAudioManager();
     }
 
@@ -39,12 +37,44 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         fx = sound_effects;
     }
 
+    public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)
+    {
+        StartCoroutine(NarrateSequence(clips, -1, delay));
+    }
+
+    IEnumerator NarrateSequence(AudioClip[] clips, int pos, float delay)
+    {
+        int length = clips.Length;
+        for (int i = 0; i < clips.Length; i++)
+        {
+            audioManager.PlayNarration(clips[i]);
+            if(i != length - 1)
+            {
+                yield return new WaitForSeconds(clips[i].length);
+            }
+            else
+            {
+                yield return new WaitForSeconds(clips[i].length + delay);
+            }
+        }
+        NextState(1);
+    }
+
+    public void IntroStep()
+    {
+
+    }
+
     public void UpdateState()
     {
-        if (state == 0) //Opening scene, audio introduction
+        if(state == -1)
         {
-            timelines[0].SetActive(true);
-            NextState((float)timelines[0].GetComponent<PlayableDirector>().duration + 1);
+            NextState(start_delay);
+        }
+        else if (state == 0) //Opening scene, audio introduction
+        {
+            NarrateSequence(narration_sequence, 0.2f);
+
         }
         else if (state == 1) //Spawn enemies
         {
@@ -55,20 +85,17 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             if (EnemyManager.Instance.GetEnemyCount() == 9)
             {
-                //PlayAudio(audioClipWowGreatShot, 0);
                 audioManager.PlayNarration(audioClipWowGreatShot);
             }
 
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
-                //PlayAudio(audioClipYouGotAllTheTargets, 0);
                 audioManager.PlayNarration(audioClipYouGotAllTheTargets);
                 NextState(3);
             }
         }
         else if (state == 3)
         {
-            timelines[1].SetActive(true);
             NextState(3);
         }
         else if (state == 4)    //Attack Helicopter Spawner
@@ -85,19 +112,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 6)
         {
-            timelines[2].SetActive(true);
+            audioManager.PlayNarration(thanksForPlaying);
+            GameObject.Find("PlayerScore").SetActive(true);
+            GameObject.Find("Thanks for playing our demo!").SetActive(true);
         }
-    }
-
-    private void PlayAudio(AudioClip clip, float time)
-    {
-        StartCoroutine(PlayAudioInTime(clip, time));
-    }
-
-    IEnumerator PlayAudioInTime(AudioClip clip, float time)
-    {
-        yield return new WaitForSeconds(time);
-        audioSourceVoiceOver.PlayOneShot(clip);
     }
 
     private void NextState(float time)

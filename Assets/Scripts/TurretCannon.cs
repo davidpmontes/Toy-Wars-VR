@@ -25,7 +25,6 @@ public class TurretCannon : MonoBehaviour, ICameraRelocate
     void Awake()
     {
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()

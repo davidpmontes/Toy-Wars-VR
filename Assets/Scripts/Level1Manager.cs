@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class Level1Manager : MonoBehaviour, ILevelManager
 {
@@ -9,7 +8,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     public int state;
     public float start_delay;
 
-    [SerializeField] GameObject[] enemySpawners = default;
+    [SerializeField] GameObject chinookEnemySpawner = default;
+    [SerializeField] GameObject spitfireEnemySpawner = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawner = default;
+
+
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
     [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
@@ -78,7 +81,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 1) //Spawn enemies
         {
-            enemySpawners[0].SetActive(true);  //Chinook Spawner
+            chinookEnemySpawner.SetActive(true);  //Chinook Spawner
             NextState(0);
         }
         else if (state == 2) //Waiting for the Player to defeat all the targets
@@ -100,7 +103,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 4)    //Attack Helicopter Spawner
         {
-            enemySpawners[1].SetActive(true);
+            spitfireEnemySpawner.SetActive(true);
             NextState(0);
         }
         else if (state == 5)    //Waiting for the Player to defeat all the targets

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Playables;
 
 public class MainMenuManager : MonoBehaviour, ILevelManager
 {

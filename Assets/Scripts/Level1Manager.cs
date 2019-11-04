@@ -84,7 +84,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             chinookEnemySpawner.SetActive(true);  //Chinook Spawner
             NextState(0);
         }
-        else if (state == 2) //Waiting for the Player to defeat all the targets
+        else if (state == 2) //Waiting for the Player to defeat all the Chinooks
         {
             if (EnemyManager.Instance.GetEnemyCount() == 9)
             {
@@ -103,7 +103,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 4)    //Attack Helicopter Spawner
         {
-            spitfireEnemySpawner.SetActive(true);
+            attackHelicopterEnemySpawner.SetActive(true);
             NextState(0);
         }
         else if (state == 5)    //Waiting for the Player to defeat all the targets
@@ -116,8 +116,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 6)
         {
             audioManager.PlayNarration(thanksForPlaying);
-            GameObject.Find("PlayerScore").SetActive(true);
-            GameObject.Find("Thanks for playing our demo!").SetActive(true);
+            //GameObject.Find("PlayerScore").SetActive(true);
+            //GameObject.Find("Thanks for playing our demo!").SetActive(true);
         }
     }
 

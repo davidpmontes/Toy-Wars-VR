@@ -2,6 +2,8 @@
 
 public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
 {
+    public static PlayerTurret Instance { get; private set; }
+
     private float horizontal;
     private float vertical; 
 
@@ -33,8 +35,11 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
         if (targetPoint.activeSelf)
         {
             var direction = (targetPoint.transform.position - transform.position).normalized;
-            var lookRotation = Quaternion.LookRotation(direction);
-            Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation, lookRotation, Time.deltaTime * 10);
+            var rotateableLookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            var tiltableLookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+
+            Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation, rotateableLookRotation, Time.deltaTime * 10);
+            Tiltable.transform.rotation = Quaternion.Slerp(Tiltable.transform.rotation, tiltableLookRotation, Time.deltaTime * 10);
         }
     }
 
@@ -53,18 +58,18 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
         }
     }
 
-    private void Rotate()
-    {
-        Rotateable.transform.Rotate(Vector3.up, horizontal * Time.deltaTime * ROTATION_SPEED);
-    }
+    //private void Rotate()
+    //{
+    //    Rotateable.transform.Rotate(Vector3.up, horizontal * Time.deltaTime * ROTATION_SPEED);
+    //}
 
-    private void Tilt()
-    {
-        rotationX -= vertical * Time.deltaTime * TILT_SPEED;
-        rotationX = Mathf.Clamp(rotationX, -55, 55);
+    //private void Tilt()
+    //{
+    //    rotationX -= vertical * Time.deltaTime * TILT_SPEED;
+    //    rotationX = Mathf.Clamp(rotationX, -55, 55);
 
-        Tiltable.transform.localEulerAngles = new Vector3(rotationX - 15, Tiltable.transform.localEulerAngles.y, Tiltable.transform.localEulerAngles.z);
-    }
+    //    Tiltable.transform.localEulerAngles = new Vector3(rotationX - 15, Tiltable.transform.localEulerAngles.y, Tiltable.transform.localEulerAngles.z);
+    //}
 
     public GameObject GetRotateable()
     {

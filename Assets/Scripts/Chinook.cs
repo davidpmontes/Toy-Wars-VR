@@ -98,18 +98,11 @@ public class Chinook : MonoBehaviour, IEnemy
             }
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
+            explosion.transform.GetComponent<Explosion>().Init();
             explosion.SetActive(true);
-            audioManager.PlayOneshot("explosion_large_04", transform.position);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
-            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if(sourceKey >= 0)
-        {
             audioManager.UnbindReserved(sourceKey);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }
 }

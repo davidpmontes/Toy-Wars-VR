@@ -53,12 +53,6 @@ public class Soldier : MonoBehaviour
             state = 1;
         }
     }
-    
-    private void Watch()
-    {
-        animator.SetTrigger("watch");
-        state = 0;
-    }
 
     private void BasePatrolAction()
     {
@@ -77,6 +71,17 @@ public class Soldier : MonoBehaviour
                 navMeshAgent.SetDestination(path[currIndex] + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)));
             }
         }
+    }
+
+    private void Attack()
+    {
+        
+    }
+
+    private void Watch()
+    {
+        animator.SetTrigger("watch");
+        state = 0;
     }
 
     private void Walk()

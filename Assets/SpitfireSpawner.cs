@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SpitfireSpawner : MonoBehaviour
 {
-    [SerializeField] CinemachineSmoothPath[] path;
+    [SerializeField] CinemachineSmoothPath[] path = default;
     void Start()
     {
         for (int i = 0; i < 10; i++)

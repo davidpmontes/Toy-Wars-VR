@@ -2,8 +2,8 @@
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float lifespan;
+    [SerializeField] private float speed = default;
+    [SerializeField] private float lifespan = default;
 
     private Rigidbody rb;
 

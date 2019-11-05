@@ -160,7 +160,6 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             explosion.transform.GetComponent<Explosion>().Init();
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
-            audioManager.UnbindReserved(sourceKey);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }

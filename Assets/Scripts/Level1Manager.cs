@@ -8,7 +8,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     public int state;
     public float start_delay;
 
-    [SerializeField] GameObject chinookEnemySpawner = default;
+    [SerializeField] GameObject popUpTargetEnemySpawner = default;
     [SerializeField] GameObject spitfireEnemySpawner = default;
     [SerializeField] GameObject attackHelicopterEnemySpawner = default;
 
@@ -81,7 +81,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 1) //Spawn enemies
         {
-            chinookEnemySpawner.SetActive(true);  //Chinook Spawner
+            popUpTargetEnemySpawner.SetActive(true);  //Chinook Spawner
             NextState(0);
         }
         else if (state == 2) //Waiting for the Player to defeat all the Chinooks

@@ -11,10 +11,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     private GameObject currentVehicle;
 
-    [SerializeField] private GameObject turretVR_A;
-    [SerializeField] private GameObject turretVR_B;
-
-    private GameObject rotateable;
+    [SerializeField] private GameObject turretVR_A = default;
+    [SerializeField] private GameObject turretVR_B = default;
 
     void Awake()
     {
@@ -29,11 +27,6 @@ public class PlayerManager : MonoBehaviour
     public GameObject CurrentVehicle()
     {
         return currentVehicle;
-    }
-
-    public GameObject CurrentRotateable()
-    {
-        return rotateable;
     }
 
     private void Update()

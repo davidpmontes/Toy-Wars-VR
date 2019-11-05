@@ -2,22 +2,16 @@
 
 public class Explosion : MonoBehaviour
 {
-    private int lifespan = 1;
+    public float lifespan = 2f;
 
-
-    private void OnEnable()
+    public void Init()
     {
+        AudioManager.GetAudioManager().PlayOneshot("explosion_large_04", transform.position);
         Invoke("Deactivate", lifespan);
     }
 
     void Deactivate()
     {
         ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-    }
-
-    public void Init(Vector3 p, Vector3 r)
-    {
-        transform.position = p;
-        transform.rotation = Quaternion.Euler(r);
     }
 }

@@ -7,8 +7,8 @@ public class TurretMissileLauncher : MonoBehaviour
     private float timeBetweenMissiles = 1;
     private float lastTimeFired;
 
-    [SerializeField] private GameObject missileLauncherTip;
-    [SerializeField] private GameObject missileLauncherAimingPoint;
+    [SerializeField] private GameObject missileLauncherTip = default;
+    [SerializeField] private GameObject missileLauncherAimingPoint = default;
 
 
     void Update()

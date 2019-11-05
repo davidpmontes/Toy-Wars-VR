@@ -7,12 +7,12 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private int max_sources;
-    [SerializeField] private float volume_reduction;
-    [SerializeField] private AudioClip bgm_clip;
-    [SerializeField] private AudioMixer mixer;
-    [SerializeField] private AudioMixerGroup[] mixer_groups;
-    [SerializeField] private float rolloff_distance;
+    [SerializeField] private int max_sources = default;
+    [SerializeField] private float volume_reduction = default;
+    [SerializeField] private AudioClip bgm_clip = default;
+    [SerializeField] private AudioMixer mixer = default;
+    [SerializeField] private AudioMixerGroup[] mixer_groups = default;
+    [SerializeField] private float rolloff_distance = default;
 
     private Dictionary<string, AudioClip> clip_map;
     private Stack<GameObject> obj_pool;

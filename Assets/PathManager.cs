@@ -12,7 +12,7 @@ public class PathManager : MonoBehaviour
     private Dictionary<PATHS, List<Vector3>> paths;
 
 
-    [SerializeField] private GameObject[] wp;
+    [SerializeField] private GameObject[] wp = default;
 
     private void Awake()
     {

@@ -2,7 +2,7 @@
 
 public class ScoreTextScript : MonoBehaviour
 {
-    [SerializeField] private float lifespan;
+    [SerializeField] private float lifespan = default;
 
     void OnEnable()
     {

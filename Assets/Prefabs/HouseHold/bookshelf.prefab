@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 7265986411717972321}
   - component: {fileID: 4028875922714668440}
   - component: {fileID: -8915765632857633963}
+  - component: {fileID: 5584452550166859686}
   m_Layer: 0
   m_Name: bookshelf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1841689235347532631
 Transform:
@@ -93,3 +94,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TerrainSimplificationLevel: 0
   exportAllChildren: 0
+--- !u!64 &5584452550166859686
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446844995961231684}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 7214794309890079674, guid: 994c644f0236f724b9fc6660b8844a4e, type: 3}

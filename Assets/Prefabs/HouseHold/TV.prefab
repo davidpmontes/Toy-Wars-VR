@@ -13,12 +13,13 @@ GameObject:
   - component: {fileID: 4894534772231680673}
   - component: {fileID: 2166835355258200551}
   - component: {fileID: 2807685151920228081}
+  - component: {fileID: 5870679693393921425}
   m_Layer: 0
   m_Name: TV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7893524427880428654
 Transform:
@@ -135,3 +136,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TerrainSimplificationLevel: 0
   exportAllChildren: 0
+--- !u!65 &5870679693393921425
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6615848866144618109}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2163141, y: 1.2163141, z: 1.2681918}
+  m_Center: {x: 0.015814781, y: 0.6088885, z: 0.11126289}

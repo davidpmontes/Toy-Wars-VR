@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1299299591993735540
 Transform:
@@ -89,6 +89,18 @@ PrefabInstance:
     - target: {fileID: 100004, guid: 5540e0d1f2266d549a2abc99a353e720, type: 3}
       propertyPath: m_Name
       value: Darts
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 5540e0d1f2266d549a2abc99a353e720, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5540e0d1f2266d549a2abc99a353e720, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 5540e0d1f2266d549a2abc99a353e720, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 5540e0d1f2266d549a2abc99a353e720, type: 3}
       propertyPath: m_LocalPosition.x

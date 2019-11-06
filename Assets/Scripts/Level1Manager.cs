@@ -6,7 +6,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     public static Level1Manager Instance { get; private set; }
 
     public int state;
-    public float start_delay;
 
     [SerializeField] GameObject popUpTargetEnemySpawner = default;
     [SerializeField] GameObject spitfireEnemySpawner = default;
@@ -19,7 +18,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] AudioClip thanksForPlaying = default;
     [SerializeField] AudioClip[] sound_effects= default;
     [SerializeField] AudioClip[] narration_sequence = default;
-    
+
+    [SerializeField] GameObject playerStatistics;
+    [SerializeField] GameObject thanksForPlayingOurDemo;
+
+
     private AudioManager audioManager;
 
 
@@ -72,19 +75,18 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         if(state == -1)
         {
-            NextState(start_delay);
+            NextState(1);
         }
         else if (state == 0) //Opening scene, audio introduction
         {
             NarrateSequence(narration_sequence, 0.2f);
-
         }
-        else if (state == 1) //Spawn enemies
+        else if (state == 1) //pop up targets
         {
-            popUpTargetEnemySpawner.SetActive(true);  //Chinook Spawner
-            NextState(0);
+            popUpTargetEnemySpawner.SetActive(true);
+            NextState(0.5f);
         }
-        else if (state == 2) //Waiting for the Player to defeat all the Chinooks
+        else if (state == 2) //Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetEnemyCount() == 9)
             {
@@ -97,14 +99,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(3);
             }
         }
-        else if (state == 3)
+        else if (state == 3) //pause after defeating all enemies
         {
-            NextState(3);
+            NextState(2);
         }
-        else if (state == 4)    //Attack Helicopter Spawner
+        else if (state == 4)    //Attack Helicopter
         {
             attackHelicopterEnemySpawner.SetActive(true);
-            NextState(0);
+            NextState(0.5f);
         }
         else if (state == 5)    //Waiting for the Player to defeat all the targets
         {
@@ -113,11 +115,23 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(0);
             }
         }
-        else if (state == 6)
+        else if (state == 6)    //Spitfires Spawner
+        {
+            spitfireEnemySpawner.SetActive(true);
+            NextState(0.5f);
+        }
+        else if (state == 7)    //Waiting for the Player to defeat all the targets
+        {
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                NextState(0);
+            }
+        }
+        else if (state == 8)
         {
             audioManager.PlayNarration(thanksForPlaying);
-            //GameObject.Find("PlayerScore").SetActive(true);
-            //GameObject.Find("Thanks for playing our demo!").SetActive(true);
+            playerStatistics.SetActive(true);
+            thanksForPlayingOurDemo.SetActive(true);
         }
     }
 

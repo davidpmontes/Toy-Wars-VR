@@ -23,7 +23,7 @@ public class EnemyManager : MonoBehaviour
         ShowFloatingText(oldEnemy.transform.position);
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
-        ScoreScript.Instance.AddScore(1000);
+        ScoreScript.Instance.AddFinalScore(1000);
     }
 
     public GameObject GetAEnemy()

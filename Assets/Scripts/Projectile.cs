@@ -16,6 +16,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent(out IEnemy component))
         {
+            ScoreScript.Instance.AddNumberOfHits();
             component.DamageEnemy(transform.position);
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);

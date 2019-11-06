@@ -14,6 +14,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private Vector3 pos0;
     private Vector3 pos1;
     private AudioManager audioManager;
+    private CinemachineDollyCart cinemachineDollyCart;
 
     private void Awake()
     {
@@ -21,11 +22,22 @@ public class Spitfire : MonoBehaviour, IEnemy
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
         audioManager = AudioManager.GetAudioManager();
+        cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
     }
 
     private void Update()
     {
         StorePositions();
+        CheckReachedEndOfPath();
+    }
+
+    private void CheckReachedEndOfPath()
+    {
+        if (cinemachineDollyCart.m_Position > cinemachineDollyCart.m_Path.PathLength - 1)
+        {
+            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
     }
 
     public void DamageEnemy(Vector3 position)
@@ -37,7 +49,6 @@ public class Spitfire : MonoBehaviour, IEnemy
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);
-        audioManager.PlayOneshot("explosion_large_01", position);
 
         if (life <= 0)
         {
@@ -66,7 +77,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private void DestroySelf()
     {
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
-        GetComponent<CinemachineDollyCart>().enabled = false;
+        cinemachineDollyCart.enabled = false;
         rigidBody.isKinematic = false;
         rigidBody.velocity = (pos1 - pos0) / Time.deltaTime;
         rigidBody.AddRelativeTorque(new Vector3(Random.Range(1, 3), Random.Range(-3, 3), Random.Range(1, 2)), ForceMode.Impulse);
@@ -83,7 +94,6 @@ public class Spitfire : MonoBehaviour, IEnemy
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.SetActive(true);
-            audioManager.PlayOneshot("explosion_large_04", transform.position);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }

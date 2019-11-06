@@ -29,10 +29,10 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     {
         if (audioManager != null)
         {
-                sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
-                audioManager.SetReservedMixer(sourceKey, 3);
-                audioManager.BindReserved(sourceKey, this.transform);
-                audioManager.PlayReserved(sourceKey);
+            sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+            audioManager.SetReservedMixer(sourceKey, 3);
+            audioManager.BindReserved(sourceKey, this.transform);
+            audioManager.PlayReserved(sourceKey);
         }
     }
 
@@ -96,7 +96,6 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);
-        audioManager.PlayOneshot("explosion_large_01", position);
 
         if (life <= 0)
         {

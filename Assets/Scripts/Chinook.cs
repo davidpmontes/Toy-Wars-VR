@@ -37,7 +37,6 @@ public class Chinook : MonoBehaviour, IEnemy
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);
-        audioManager.PlayOneshot("explosion_large_01", position);
 
         if (life <= 0)
         {
@@ -101,7 +100,6 @@ public class Chinook : MonoBehaviour, IEnemy
             explosion.transform.GetComponent<Explosion>().Init();
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
-            audioManager.UnbindReserved(sourceKey);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }

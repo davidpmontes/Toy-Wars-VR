@@ -4876,8 +4876,8 @@ GameObject:
   - component: {fileID: 237083149393126078}
   - component: {fileID: 115904437797888680}
   - component: {fileID: 114935658162825284}
-  - component: {fileID: 2990380322391032465}
   - component: {fileID: -7920039375816034132}
+  - component: {fileID: 472928126991261333}
   m_Layer: 0
   m_Name: CFX_Explosion_B_Smoke_Text
   m_TagString: FxTemporaire
@@ -9511,19 +9511,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &2990380322391032465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 242453511318163416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43088b406b044dc49b5b1286702b98a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  disappearTime: 1.5
 --- !u!82 &-7920039375816034132
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9620,6 +9607,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &472928126991261333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242453511318163416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfb40785a085647079ef3004568bc010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifespan: 2
+  audiofileName: explosion_large_01
 --- !u!1 &242456695415563138
 GameObject:
   m_ObjectHideFlags: 0

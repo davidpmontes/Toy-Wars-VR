@@ -68,6 +68,7 @@ public class TurretCannonV2 : MonoBehaviour, ICameraRelocate
 
     private void SpawnBulletLeft()
     {
+        ScoreScript.Instance.AddShotsFired();
         audioManager.PlayReserved(leftCannonSource);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 
@@ -81,6 +82,7 @@ public class TurretCannonV2 : MonoBehaviour, ICameraRelocate
 
     private void SpawnBulletRight()
     {
+        ScoreScript.Instance.AddShotsFired();
         audioManager.PlayReserved(rightCannonSource);
         var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 

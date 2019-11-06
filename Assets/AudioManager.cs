@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
     private GameObject cam;
     private AudioSource narration;
     private AudioSource bgm;
+    private AudioSource ui;
     private bool narr_blocking = false;
     public float[] mixer_group_volume;
 
@@ -38,8 +39,7 @@ public class AudioManager : MonoBehaviour
         InitSources();
         InitBGM();
         InitNarration();
-        narration.priority = 0;
-        bgm.priority = 1;
+        InitUI();
         LoadSoundEffects();
     }
 
@@ -78,15 +78,23 @@ public class AudioManager : MonoBehaviour
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         bgm = cam.GetComponents<AudioSource>()[1];
-        bgm.priority = 1;
+        bgm.priority = 2;
         bgm.spatialize = false;
         bgm.volume = 0.2f;
         bgm.outputAudioMixerGroup = mixer_groups[5];
     }
 
+    void InitUI()
+    {
+        ui = cam.GetComponents<AudioSource>()[2];
+        ui.priority = 1;
+        ui.spatialize = false;
+        ui.volume = 0.2f;
+        ui.outputAudioMixerGroup = mixer_groups[7];
+    }
+
     void InitNarration()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
         narration = cam.GetComponents<AudioSource>()[0];
         narration.priority = 0;
         narration.spatialize = false;
@@ -182,7 +190,13 @@ public class AudioManager : MonoBehaviour
         audio_obj.transform.SetParent(source_trans,false);
         src.enabled = true;
         src.Play();
-        StartCoroutine(EndClipPoint(src, src.clip.length));
+        StartCoroutine(EndClipTransform(src, src.clip.length));
+    }
+
+    public void PlayUI(string key, float volume = 1.0f)
+    {
+        ui.clip = clip_map[key];
+        ui.Play();
     }
 
     IEnumerator EndClipTransform(AudioSource src, float time)

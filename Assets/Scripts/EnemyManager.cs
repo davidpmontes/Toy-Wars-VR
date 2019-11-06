@@ -6,10 +6,12 @@ public class EnemyManager : MonoBehaviour
 	public static EnemyManager Instance { get; private set; }
 
     private List<GameObject> AllEnemies;
+    private AudioManager audioManager;
 
     void Awake()
     {
         Instance = this;
+        audioManager = AudioManager.GetAudioManager();
         AllEnemies = new List<GameObject>();
     }
 
@@ -43,6 +45,7 @@ public class EnemyManager : MonoBehaviour
         ScoreText.transform.LookAt(Camera.main.transform.position);
         ScoreText.transform.Rotate(0, 180, 0);
         ScoreText.SetActive(true);
+        audioManager.PlayUI("coin_bag_ring_gemstone_item_11");
     }
 
     public GameObject GetNearestEnemy(Vector3 playerPosition)

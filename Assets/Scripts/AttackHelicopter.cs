@@ -167,10 +167,6 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
 
     private void OnDestroy()
     {
-        if (sourceKey >= 0 && audioManager.enabled)
-        {
-            audioManager.UnbindReserved(sourceKey);
-        }
     }
 
 }

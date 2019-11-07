@@ -51,7 +51,7 @@ public class MenuSelector : MonoBehaviour
                     explode.transform.position = PlayButton.gameObject.transform.position;
                     explode.transform.localScale = Vector3.one * 0.5f;
                     explode.SetActive(true);
-                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform);
+                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
                     PlayButton.gameObject.SetActive(false);
                     MainMenuManager.Instance.PlayButtonClicked();
                     enabled = false;
@@ -62,7 +62,7 @@ public class MenuSelector : MonoBehaviour
                     explode.transform.position = QuitButton.gameObject.transform.position;
                     explode.transform.localScale = Vector3.one * 0.5f;
                     explode.SetActive(true);
-                    audioManager.PlayOneshot("explosion_large_01", QuitButton.transform);
+                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
                     //QuitButton.gameObject.SetActive(false);
                     //MainMenuManager.Instance.QuitButtonClicked();
                     //enabled = false;

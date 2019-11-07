@@ -18,11 +18,11 @@ public class SpitfireSpawner : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         var newSpitfire = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.Spitfire, transform);
-        newSpitfire.SetActive(true);
-        var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
-        cart.enabled = true;
-        cart.m_Path = path[Random.Range(0, 2)];
         newSpitfire.GetComponent<Rigidbody>().isKinematic = true;
+        var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
+        cart.m_Path = path[Random.Range(0, 2)];
+        newSpitfire.SetActive(true);
+        cart.enabled = true;
         EnemyManager.Instance.RegisterEnemy(newSpitfire);
     }
 }

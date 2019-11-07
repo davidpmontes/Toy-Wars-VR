@@ -21,7 +21,8 @@ public class Projectile : MonoBehaviour
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
-        if (collision.gameObject.TryGetComponent<Collectible>(out Collectible coinComponent))
+
+        if (collision.gameObject.TryGetComponent<ICollectible>(out ICollectible coinComponent))
         {
             coinComponent.Shot();
         }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23872111415054184}
   - component: {fileID: 7736573700818557960}
   - component: {fileID: 4474760156069361811}
+  - component: {fileID: -7657463137549493991}
   m_Layer: 0
   m_Name: Rugby ball
   m_TagString: Untagged
@@ -110,3 +111,16 @@ CapsuleCollider:
   m_Height: 0.3
   m_Direction: 0
   m_Center: {x: 0.000000022351742, y: 0.0011761561, z: 0.000000014901161}
+--- !u!114 &-7657463137549493991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1138147147968628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a651fd82c34c8964a92efc742099b091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coin: {fileID: 3519281057076630503, guid: 712468b586e8bed43bf3ef72040354e8, type: 3}

@@ -95,6 +95,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         life--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
+        explosion.transform.GetComponent<Explosion>().Init();
         explosion.SetActive(true);
 
         if (life <= 0)
@@ -157,6 +158,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.transform.GetComponent<Explosion>().Init();
+
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);

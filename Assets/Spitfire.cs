@@ -15,6 +15,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private Vector3 pos1;
     private AudioManager audioManager;
     private CinemachineDollyCart cinemachineDollyCart;
+    private int sourceKey = -1;
 
     private void Awake()
     {
@@ -23,6 +24,16 @@ public class Spitfire : MonoBehaviour, IEnemy
         originalMaterial = meshRenderer.material;
         audioManager = AudioManager.GetAudioManager();
         cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
+    }
+    private void Start()
+    {
+        if (audioManager != null)
+        {
+            sourceKey = audioManager.ReserveSource("engine_generator_loop_03", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+            audioManager.SetReservedMixer(sourceKey, 3);
+            audioManager.BindReserved(sourceKey, this.transform);
+            audioManager.PlayReserved(sourceKey);
+        }
     }
 
     private void Update()
@@ -48,6 +59,7 @@ public class Spitfire : MonoBehaviour, IEnemy
         life--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
+        explosion.transform.GetComponent<Explosion>().Init();
         explosion.SetActive(true);
 
         if (life <= 0)
@@ -91,8 +103,14 @@ public class Spitfire : MonoBehaviour, IEnemy
     {
         if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
         {
+            if (audioManager != null)
+            {
+                audioManager.UnbindReserved(sourceKey);
+                sourceKey = -1;
+            }
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
+            explosion.transform.GetComponent<Explosion>().Init();
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);

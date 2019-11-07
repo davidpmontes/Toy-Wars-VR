@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 3519281057076630496}
   - component: {fileID: 3519281057076630499}
   - component: {fileID: 3519281057076630498}
-  - component: {fileID: 3519281057076630501}
   - component: {fileID: 3519281057076630500}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: CollectibleCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3519281057076630503}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 227.9, y: 45.5, z: -23.52}
+  m_LocalPosition: {x: 84.15633, y: 11.048223, z: -105.52386}
   m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,20 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &3519281057076630501
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3519281057076630503}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!114 &3519281057076630500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,5 +91,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea10a9bb3ce2b9040ac19a733b9bdbce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
-  scoreValue: 0
+  speed: 200
+  scoreValue: 1

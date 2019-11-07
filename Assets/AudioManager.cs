@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
     private GameObject cam;
     private AudioSource narration;
     private AudioSource bgm;
+    private AudioSource ui;
     private bool narr_blocking = false;
     public float[] mixer_group_volume;
 
@@ -38,8 +39,7 @@ public class AudioManager : MonoBehaviour
         InitSources();
         InitBGM();
         InitNarration();
-        narration.priority = 0;
-        bgm.priority = 1;
+        InitUI();
         LoadSoundEffects();
     }
 
@@ -50,6 +50,15 @@ public class AudioManager : MonoBehaviour
             audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         }
         return audioManager;
+    }
+
+    void InitUI()
+    {
+        ui = cam.GetComponents<AudioSource>()[2];
+        ui.priority = 1;
+        ui.spatialize = false;
+        ui.volume = 1.0f;
+        ui.outputAudioMixerGroup = mixer_groups[7];
     }
 
     void LoadSoundEffects()
@@ -72,13 +81,14 @@ public class AudioManager : MonoBehaviour
         mixer.SetFloat("GenericVol", mixer_group_volume[4]);
         mixer.SetFloat("Background MusicVol", mixer_group_volume[5]);
         mixer.SetFloat("NarrationVol", mixer_group_volume[6]);
+        mixer.SetFloat("UIVol", mixer_group_volume[7]);
     }
 
     void InitBGM()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         bgm = cam.GetComponents<AudioSource>()[1];
-        bgm.priority = 1;
+        bgm.priority = 2;
         bgm.spatialize = false;
         bgm.volume = 0.2f;
         bgm.outputAudioMixerGroup = mixer_groups[5];
@@ -86,7 +96,6 @@ public class AudioManager : MonoBehaviour
 
     void InitNarration()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
         narration = cam.GetComponents<AudioSource>()[0];
         narration.priority = 0;
         narration.spatialize = false;
@@ -169,6 +178,23 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(EndClipPoint(src, src.clip.length));
     }
 
+    public void PlayOneshot(string key, Vector3 coord, float pitch)
+    {
+        if (source_pool.Count < 1)
+        {
+            print("no sources");
+            return;
+        }
+        AudioSource src = source_pool.Pop();
+        GameObject audio_obj = src.gameObject;
+        src.clip = clip_map[key];
+        audio_obj.transform.position = coord;
+        src.enabled = true;
+        src.pitch = pitch;
+        src.Play();
+        StartCoroutine(EndClipPoint(src, src.clip.length));
+    }
+
     public void PlayOneshot(string key, Transform source_trans)
     {
         if (source_pool.Count < 1)
@@ -181,6 +207,23 @@ public class AudioManager : MonoBehaviour
         src.clip = clip_map[key];
         audio_obj.transform.SetParent(source_trans,false);
         src.enabled = true;
+        src.Play();
+        StartCoroutine(EndClipPoint(src, src.clip.length));
+    }
+
+    public void PlayOneshot(string key, Transform source_trans, float pitch)
+    {
+        if (source_pool.Count < 1)
+        {
+            print("no sources");
+            return;
+        }
+        AudioSource src = source_pool.Pop();
+        GameObject audio_obj = src.gameObject;
+        src.clip = clip_map[key];
+        audio_obj.transform.SetParent(source_trans, false);
+        src.enabled = true;
+        src.pitch = pitch;
         src.Play();
         StartCoroutine(EndClipPoint(src, src.clip.length));
     }
@@ -230,13 +273,16 @@ public class AudioManager : MonoBehaviour
     public void PlayReserved(int source_id, Transform source_trans, float volume = 1.0f)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
+        src.enabled = true;
         src.gameObject.transform.SetParent(source_trans, false);
         src.Play();
     }
 
     public void PlayReserved(int source_id)
     {
-        reserved_sources.ElementAt(source_id).Play();
+        AudioSource src = reserved_sources.ElementAt(source_id);
+        src.enabled = true;
+        src.Play();
     }
 
     public void BindReserved(int source_id, Transform source_trans)
@@ -280,6 +326,12 @@ public class AudioManager : MonoBehaviour
     {
             narration.clip = clip;
             narration.Play();
+    }
+
+    public void PlayUI(string key, float volume = 1.0f)
+    {
+        ui.clip = clip_map[key];
+        ui.Play();
     }
 
     public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)

@@ -56,6 +56,54 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!244 &-6252468129778943556
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 9b6562fc7f34bd14faea5cc04c4a77d1
+  m_EffectName: Duck Volume
+  m_MixLevel: 58e161adab5ce8a409b5a5b6db4d9908
+  m_Parameters:
+  - m_ParameterName: Threshold
+    m_GUID: 7a067050dbcc91749bd51ca5598d9d12
+  - m_ParameterName: Ratio
+    m_GUID: ff28d1bff7958d34d80976188e3a74d8
+  - m_ParameterName: Attack Time
+    m_GUID: 461f0841019acea4ea4460decbea7179
+  - m_ParameterName: Release Time
+    m_GUID: 313091846e803c34587af76057ad16a5
+  - m_ParameterName: Make-up Gain
+    m_GUID: 97584eeff86f4434c83f5c9fc3fef713
+  - m_ParameterName: Knee
+    m_GUID: 6eac2d847e33c7f419af22cf03411c43
+  - m_ParameterName: Sidechain Mix
+    m_GUID: 0ed0dca544e206646b9b57fe0610415a
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-5712161444775650964
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 5e94658061f40184a96f92a5ddfb7e0f
+  m_Children: []
+  m_Volume: 328a70c122ca6f84f9f64efe44ee71a0
+  m_Pitch: 0f789f80dbb31f4428d038cc73f98a44
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -2991396363779249754}
+  - {fileID: -6252468129778943556}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &-4967333851815830290
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -73,10 +121,25 @@ AudioMixerGroupController:
   - {fileID: -6702863319190952421}
   - {fileID: 307952901129554267}
   - {fileID: -7025303107676078755}
+  - {fileID: -2184806176162914575}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-2991396363779249754
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: f0caec8c1853e3e4290f453dfec03089
+  m_EffectName: Attenuation
+  m_MixLevel: 72d8a5bab4e8b384da7ea030ffd9161a
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-2883909493454568847
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -119,6 +182,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-2184806176162914575
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: b363bbe5aa20eb34abb6450b49e9322e
+  m_EffectName: Send
+  m_MixLevel: 8aa1c7ee498ed794fbd7fb089aa82a11
+  m_Parameters: []
+  m_SendTarget: {fileID: -6252468129778943556}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-1603301533985218503
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -196,6 +273,8 @@ AudioMixerController:
     name: PlayerVol
   - guid: 657dfd1d74ace9a418db5f3a3eebdd10
     name: Sound EffectsVol
+  - guid: 328a70c122ca6f84f9f64efe44ee71a0
+    name: UIVol
   m_AudioMixerGroupViews:
   - guids:
     - 930105dcaa6446a4d9009a9e273ad9db
@@ -205,6 +284,7 @@ AudioMixerController:
     - 6e3502aa9ad889446bc72445b8156972
     - 177280dbf997e394f81174855dc7700d
     - eebe00ab44986294fb224f3800f67036
+    - 5e94658061f40184a96f92a5ddfb7e0f
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -221,6 +301,7 @@ AudioMixerGroupController:
   - {fileID: -2738153658784311383}
   - {fileID: 8523121385285353626}
   - {fileID: -4967333851815830290}
+  - {fileID: -5712161444775650964}
   m_Volume: e1dbb6894df530740bf282babefc5361
   m_Pitch: 13ca387640402e046a6c76c38720e06d
   m_Send: 00000000000000000000000000000000
@@ -264,6 +345,7 @@ AudioMixerSnapshotController:
     bba7469bb71830f45a57a23f1d6d774d: -30
     d0c2e41d1cf532744a31e4f6500c11ed: -60
     657dfd1d74ace9a418db5f3a3eebdd10: 0
+    8aa1c7ee498ed794fbd7fb089aa82a11: -30
     ca9a6b4f5a8701e4f98b69771fffa3aa: 0.004972715
   m_TransitionOverrides: {}
 --- !u!244 &307952901129554267

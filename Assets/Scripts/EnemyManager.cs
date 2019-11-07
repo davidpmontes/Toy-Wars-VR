@@ -6,10 +6,12 @@ public class EnemyManager : MonoBehaviour
 	public static EnemyManager Instance { get; private set; }
 
     private List<GameObject> AllEnemies;
+    private AudioManager audioManager;
 
     void Awake()
     {
         Instance = this;
+        audioManager = AudioManager.GetAudioManager();
         AllEnemies = new List<GameObject>();
     }
 
@@ -24,6 +26,7 @@ public class EnemyManager : MonoBehaviour
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
         ScoreScript.Instance.AddFinalScore(1000);
+        audioManager.PlayUI("collect_coin_01");
     }
 
     public GameObject GetAEnemy()

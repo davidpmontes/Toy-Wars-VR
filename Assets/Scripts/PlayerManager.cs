@@ -3,7 +3,8 @@
 public enum PlayerVehicles
 {
     turretVR_A,
-    turretVR_B
+    turretVR_B,
+    TankA
 }
 
 public class PlayerManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private GameObject turretVR_A = default;
     [SerializeField] private GameObject turretVR_B = default;
+    [SerializeField] private GameObject tankVR_A = default;
 
     void Awake()
     {
@@ -22,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         EnableVehicle(PlayerVehicles.turretVR_A);
+        EnableVehicle(PlayerVehicles.TankA);
     }
 
     public GameObject CurrentVehicle()
@@ -39,6 +42,10 @@ public class PlayerManager : MonoBehaviour
         {
             EnableVehicle(PlayerVehicles.turretVR_B);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            EnableVehicle(PlayerVehicles.TankA);
+        }
     }
 
     private void SetCameraToVehicle()
@@ -52,6 +59,7 @@ public class PlayerManager : MonoBehaviour
     {
         turretVR_A.SetActive(false);
         turretVR_B.SetActive(false);
+        turretVR_B.SetActive(false);
 
         if (vehicle == PlayerVehicles.turretVR_A)
         {
@@ -62,6 +70,11 @@ public class PlayerManager : MonoBehaviour
         {
             turretVR_B.SetActive(true);
             currentVehicle = turretVR_B;
+        }
+        else if (vehicle == PlayerVehicles.TankA)
+        {
+            tankVR_A.SetActive(true);
+            currentVehicle = tankVR_A;
         }
 
         SetCameraToVehicle();

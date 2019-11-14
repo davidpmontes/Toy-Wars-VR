@@ -103,4 +103,9 @@ public class Chinook : MonoBehaviour, IEnemy
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }
+
+    public void DestroyEnemy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

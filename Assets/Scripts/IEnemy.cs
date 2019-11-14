@@ -3,4 +3,5 @@
 public interface IEnemy
 {
     void DamageEnemy(Vector3 position);
+    void DestroyEnemy();
 }

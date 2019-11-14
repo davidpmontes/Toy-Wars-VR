@@ -164,4 +164,9 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }
+
+    public void DestroyEnemy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

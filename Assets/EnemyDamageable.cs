@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class EnemyDamageable : MonoBehaviour, IEnemy
 {
+    private float life = 3;
+
     [SerializeField] private MeshRenderer[] meshRenderers;
     [SerializeField] private Material[] originalMaterials;
     [SerializeField] private Material flashRed;
+    [SerializeField] private GameObject[] blownOffParts;
+    [SerializeField] private GameObject firePoint;
 
     private void Awake()
     {
@@ -18,7 +22,23 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 
     public void DamageEnemy(Vector3 position)
     {
-        StartCoroutine(DamageFlash());
+        if (life <= 0)
+            return;
+
+        life--;
+        var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+        explosion.transform.position = position;
+        explosion.SetActive(true);
+
+        if (life <= 0)
+        {
+            //EnemyManager.Instance.DeregisterEnemy(gameObject);
+            DestroySelf();
+        }
+        else
+        {
+            StartCoroutine(DamageFlash());
+        }
     }
 
     IEnumerator DamageFlash()
@@ -34,5 +54,28 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
         {
             meshRenderers[i].sharedMaterial = originalMaterials[i];
         }
+    }
+
+    public void DestroyEnemy()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private void DestroySelf()
+    {
+        for (int i = 0; i < blownOffParts.Length; i++)
+        {
+            blownOffParts[i].SetActive(false);
+        }
+        var fire = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX4Fire);
+        fire.transform.SetParent(transform);
+        fire.transform.position = transform.position;
+        fire.SetActive(true);
+
+        gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
+        var smoke = ObjectPool.Instance.GetFromPoolInactive(Pools.Smoke);
+        smoke.transform.position = transform.position;
+        smoke.transform.SetParent(transform);
+        smoke.SetActive(true);
     }
 }

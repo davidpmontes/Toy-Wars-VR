@@ -223,6 +223,7 @@ Transform:
   - {fileID: 5299544977345052436}
   - {fileID: 827476918455081928}
   - {fileID: 1228114020924078597}
+  - {fileID: 4662950300813279480}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -265,6 +266,11 @@ MonoBehaviour:
   - {fileID: 3692527221128985433}
   originalMaterials: []
   flashRed: {fileID: 2100000, guid: 2656faf15c805154cb1654752195e671, type: 2}
+  blownOffParts:
+  - {fileID: 1054046296601048836}
+  - {fileID: 3005019111954559533}
+  - {fileID: 4812719464367171164}
+  firePoint: {fileID: 8670479025068786029}
 --- !u!65 &464798426850198061
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -591,3 +597,33 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &8670479025068786029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4662950300813279480}
+  m_Layer: 11
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4662950300813279480
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8670479025068786029}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.1, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5151020212177571600}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

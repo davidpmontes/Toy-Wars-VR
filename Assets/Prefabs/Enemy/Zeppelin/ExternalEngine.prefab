@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5396392280437255530}
   - component: {fileID: 4486870373569888282}
   - component: {fileID: 5003052606782609439}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 3364178230243072810}
   - component: {fileID: 6715467158481385737}
   - component: {fileID: 5345289171007514460}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 2884159193397955440}
   - component: {fileID: 2563259670197533069}
   - component: {fileID: 6037573754897935147}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 3134867590121002650}
   - component: {fileID: 1731115789001343425}
   - component: {fileID: 8091579329256949332}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Sphere004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 3164446044042238583}
   - component: {fileID: 6915872794422402624}
   - component: {fileID: 890241123564509646}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Line002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6473565555779643394}
   - component: {fileID: 2090561074196608811}
-  m_Layer: 0
+  - component: {fileID: 2258501675725569116}
+  - component: {fileID: 6008690694634148201}
+  m_Layer: 11
   m_Name: ExternalEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,6 +446,39 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &2258501675725569116
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8664290123372092410}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.44, y: 7.09, z: 6.98}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6008690694634148201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8664290123372092410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c65ca24017759418c7b47a178a336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderers:
+  - {fileID: 6037573754897935147}
+  - {fileID: 3044405848226832768}
+  - {fileID: 5003052606782609439}
+  - {fileID: 5345289171007514460}
+  - {fileID: 3216187812385356850}
+  originalMaterials: []
+  flashRed: {fileID: 2100000, guid: 2656faf15c805154cb1654752195e671, type: 2}
 --- !u!1 &8859562978053258315
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +488,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5909806338868638672}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +524,7 @@ GameObject:
   - component: {fileID: 7867983695375949627}
   - component: {fileID: 3690911723692066351}
   - component: {fileID: 3044405848226832768}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +602,7 @@ GameObject:
   - component: {fileID: 4415421705209056128}
   - component: {fileID: 4878458865265322276}
   - component: {fileID: 3216187812385356850}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Capsule004
   m_TagString: Untagged
   m_Icon: {fileID: 0}

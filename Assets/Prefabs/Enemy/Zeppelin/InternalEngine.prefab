@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5299544977345052436}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3391515108333776861}
   - component: {fileID: 7192702855728924254}
   - component: {fileID: 6780479527693655859}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 827476918455081928}
   - component: {fileID: 3924851750648392022}
   - component: {fileID: 6560817052367590698}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Axis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5151020212177571600}
   - component: {fileID: 3712836009461928203}
-  m_Layer: 0
+  - component: {fileID: 848084307999847027}
+  - component: {fileID: 464798426850198061}
+  m_Layer: 11
   m_Name: InternalEngine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,6 +245,39 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &848084307999847027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4063327368097866539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88c65ca24017759418c7b47a178a336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderers:
+  - {fileID: 8897037545190682581}
+  - {fileID: 2233001544060557225}
+  - {fileID: 1472118539335984675}
+  - {fileID: 6780479527693655859}
+  - {fileID: 3692527221128985433}
+  originalMaterials: []
+  flashRed: {fileID: 2100000, guid: 2656faf15c805154cb1654752195e671, type: 2}
+--- !u!65 &464798426850198061
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4063327368097866539}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.44, y: 6.54, z: 6.51}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4812719464367171164
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +289,7 @@ GameObject:
   - component: {fileID: 1228114020924078597}
   - component: {fileID: 851649041161313401}
   - component: {fileID: 3692527221128985433}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Tube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +368,7 @@ GameObject:
   - component: {fileID: 8782207488392858421}
   - component: {fileID: 5098520168095560424}
   - component: {fileID: 2233001544060557225}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +446,7 @@ GameObject:
   - component: {fileID: 200626382237239965}
   - component: {fileID: 5926667055491569580}
   - component: {fileID: 8897037545190682581}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +524,7 @@ GameObject:
   - component: {fileID: 4378261643194252337}
   - component: {fileID: 8176489790572610297}
   - component: {fileID: 1472118539335984675}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Prop3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleCoin : MonoBehaviour
+public class CollectibleCoin : MonoBehaviour, ICollectible
 {
     public float speed = 20.0f;
     private Transform target;
@@ -12,25 +12,21 @@ public class CollectibleCoin : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("CollectibleCount").transform;
+        target = GameObject.Find("CollectibleCoin").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (isCollected && !reachedPlayer)
+        if (isCollected)
         {
-            // TODO: add to score
             float step = speed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-            transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime);
+            transform.Rotate(new Vector3(0, 180, 0) * Time.deltaTime);
 
             if (transform.position == target.position)
             {
-                reachedPlayer = true;
-                // make parallel with camera
-                transform.rotation = Quaternion.identity;
-                transform.Rotate(new Vector3(90, 90, 0));
+                
                 StartCoroutine(ShowScore());
             }
                 
@@ -44,6 +40,8 @@ public class CollectibleCoin : MonoBehaviour
         //Show score over coin here
         yield return new WaitForSeconds(1);
         this.gameObject.SetActive(false);
+        ScoreScript.Instance.AddCollectiblesCount(); // add score to Collectibles text
+        ScoreScript.Instance.showCollectibleCount();
     }
 
     // call this function to begin the collection process

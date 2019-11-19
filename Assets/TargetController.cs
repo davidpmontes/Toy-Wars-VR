@@ -72,7 +72,7 @@ public class TargetController : MonoBehaviour
         explosion.transform.position = transform.position;
         explosion.transform.GetComponent<Explosion>().Init();
         explosion.SetActive(true);
-        EnemyManager.Instance.DeregisterEnemy(gameObject);
+        EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
         Destroy(gameObject);
     }
 }

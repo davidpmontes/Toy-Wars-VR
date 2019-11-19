@@ -56,7 +56,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
         if (life <= 0)
         {
-            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
             DestroySelf();
         }
         else
@@ -113,7 +113,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     {
         if (cinemachineDollyCart.m_Position > cinemachineDollyCart.m_Path.PathLength - 1)
         {
-            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            EnemyManager.Instance.DeregisterEnemyNoPoints(gameObject);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
     }

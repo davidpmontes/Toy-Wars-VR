@@ -7,9 +7,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public int state;
 
-    [SerializeField] GameObject popUpTargetEnemySpawner = default;
+    [SerializeField] GameObject popUpTargetEnemySpawner1 = default;
+    [SerializeField] GameObject popUpTargetEnemySpawner2 = default;
+    [SerializeField] GameObject popUpTargetEnemySpawner3 = default;
+
     [SerializeField] GameObject spitfireEnemySpawner = default;
     [SerializeField] GameObject attackHelicopterEnemySpawner = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
 
 
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
@@ -19,8 +24,50 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] AudioClip[] sound_effects= default;
     [SerializeField] AudioClip[] narration_sequence = default;
 
+    /* Misc */
+    [SerializeField] AudioClip SoldierOW;
+    [SerializeField] AudioClip SoldierStopThat;
+    [SerializeField] AudioClip SoldierWatchYourFire;
+
+    /* Level 0 */
+    [SerializeField] AudioClip CommanderYouMustBeOurNewRecruit;
+    [SerializeField] AudioClip CommanderImCaptainStiffNeck;
+    [SerializeField] AudioClip CommanderYouveObviouslyFoundYourTurret;
+    [SerializeField] AudioClip CommanderButCanYouHitAnythingWithIt;
+    [SerializeField] AudioClip CommanderLetsSeeWhatYouGot;
+    [SerializeField] AudioClip CommanderSoldierBringUpTwoMoreTargets;
+    [SerializeField] AudioClip CommanderPrettyEasyWhenTheyDontShootBack;
+    [SerializeField] AudioClip CommanderSoldierGimmeTwoMoreTargets;
+    [SerializeField] AudioClip CommanderYouveGotSomeSkillsNowFinishTheRestOff;
+    [SerializeField] AudioClip CommanderNotBadRecruit;
+
+
+
+    [SerializeField] AudioClip SoldierYesSir;
+    [SerializeField] AudioClip SoldierRogerThat;
+
+    /* Level 1 */
+    [SerializeField] AudioClip SoldierSirEnemyForcesApproaching;
+    [SerializeField] AudioClip CommanderAlrightThisIsTheRealDealDefendOurBase;
+
+    /* Level 2 */
+    [SerializeField] AudioClip SoldierSirTheEnemyHasRegroupedAndIsNowAttackingTheNorthBase;
+
+    /* Level 3 */
+    [SerializeField] AudioClip SoldierTheZepplenatorIsHere;
+    [SerializeField] AudioClip SoldierWereDoneFor;
+
+    [SerializeField] AudioClip CommanderGetAHoldOfYourselves;
+    [SerializeField] AudioClip CommanderWeveStillGotTheSecretWeapon;
+    [SerializeField] AudioClip CommanderRecruitChargeTheLaserCannon;
+
     [SerializeField] GameObject playerStatistics;
     [SerializeField] GameObject thanksForPlayingOurDemo;
+
+    [SerializeField] AudioClip[] NarrationSequences0_1;
+    [SerializeField] AudioClip[] NarrationSequences0_2;
+    [SerializeField] AudioClip[] NarrationSequences1_1;
+
 
 
     private AudioManager audioManager;
@@ -79,55 +126,73 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 0) //Opening scene, audio introduction
         {
-            NarrateSequence(narration_sequence, 0.2f);
+            NarrateSequence(NarrationSequences0_1, 0.2f);
         }
-        else if (state == 1) //pop up targets
+        else if (state == 1) //pop up first set of 5 targets
         {
-            popUpTargetEnemySpawner.SetActive(true);
+            popUpTargetEnemySpawner1.SetActive(true);
             NextState(0.5f);
         }
         else if (state == 2) //Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetEnemyCount() == 9)
-            {
-                audioManager.PlayNarration(audioClipWowGreatShot);
-            }
-
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
-                audioManager.PlayNarration(audioClipYouGotAllTheTargets);
-                NextState(3);
+                NarrateSequence(NarrationSequences0_2, 0.2f);
             }
         }
-        else if (state == 3) //pause after defeating all enemies
+        else if (state == 3) //pop up second set of 5 targets
         {
-            NextState(2);
-        }
-        else if (state == 4)    //Attack Helicopter
-        {
-            attackHelicopterEnemySpawner.SetActive(true);
+            popUpTargetEnemySpawner2.SetActive(true);
             NextState(0.5f);
         }
-        else if (state == 5)    //Waiting for the Player to defeat all the targets
+        else if (state == 4) //Waiting for the Player to defeat all the targets
+        {
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                audioManager.PlayNarration(CommanderYouveGotSomeSkillsNowFinishTheRestOff, 1f);
+                NextState(5f);
+            }
+        }
+        else if (state == 5) //pop up third set of 5 targets
+        {
+            popUpTargetEnemySpawner3.SetActive(true);
+            NextState(0.5f);
+        }
+        else if (state == 6) //Waiting for the Player to defeat all the targets
+        {
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                audioManager.PlayNarration(CommanderNotBadRecruit, 1f);
+                NextState(5f);
+            }
+        }
+        else if (state == 7)    //Narration Sequence
+        {
+            NarrateSequence(NarrationSequences1_1, 0.2f);
+        }
+        else if (state == 8)    //Attack Helicopters1
+        {
+            attackHelicopterEnemySpawnerDolly1.SetActive(true);
+            NextState(5);
+        }
+        else if (state == 9)    //Attack Helicopters2
+        {
+            attackHelicopterEnemySpawnerDolly2.SetActive(true);
+            NextState(5);
+        }
+        else if (state == 11)    //Sttack Helicopters2
+        {
+            attackHelicopterEnemySpawnerDolly2.SetActive(true);
+            NextState(0.5f);
+        }
+        else if (state == 11)    //Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
                 NextState(0);
             }
         }
-        else if (state == 6)    //Spitfires Spawner
-        {
-            spitfireEnemySpawner.SetActive(true);
-            NextState(0.5f);
-        }
-        else if (state == 7)    //Waiting for the Player to defeat all the targets
-        {
-            if (EnemyManager.Instance.GetEnemyCount() <= 0)
-            {
-                NextState(0);
-            }
-        }
-        else if (state == 8)
+        else if (state == 12)
         {
             audioManager.PlayNarration(thanksForPlaying);
             playerStatistics.SetActive(true);

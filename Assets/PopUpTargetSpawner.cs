@@ -9,9 +9,4 @@ public class PopUpTargetSpawner : MonoBehaviour
             EnemyManager.Instance.RegisterEnemy(transform.GetChild(i).gameObject);
         }
     }
-
-    void Update()
-    {
-        
-    }
 }

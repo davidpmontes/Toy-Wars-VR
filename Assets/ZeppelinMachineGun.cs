@@ -39,7 +39,6 @@ public class ZeppelinMachineGun : MonoBehaviour
 
             Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDir);
-            Debug.Log(Vector3.Dot(transform.forward.normalized, targetDir.normalized));
 
             if (Vector3.Dot(transform.forward.normalized, targetDir.normalized) > 0.99f)
             {

@@ -17,6 +17,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly3 = default;
 
+    [SerializeField] GameObject spitfireEnemySpawnerDolly1 = default;
+
 
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
@@ -68,6 +70,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] AudioClip[] NarrationSequences0_1;
     [SerializeField] AudioClip[] NarrationSequences0_2;
     [SerializeField] AudioClip[] NarrationSequences1_1;
+    [SerializeField] AudioClip[] NarrationSequences2_1;
+
 
 
 
@@ -167,7 +171,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(5f);
             }
         }
-        else if (state == 7)    //Narration Sequence
+        else if (state == 7)    // First wave Narration Sequence
         {
             NarrateSequence(NarrationSequences1_1, 0.2f);
         }
@@ -176,9 +180,21 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
-            NextState(30);
+            NextState(16);
         }
-        else if (state == 9)
+        else if (state == 9) //Waiting for the Player to defeat all the targets
+        {
+            if (EnemyManager.Instance.GetEnemyCount() <= 0)
+            {
+                NarrateSequence(NarrationSequences2_1, 0.2f);
+            }
+        }
+        else if (state == 10)    //Attack Helicopters2
+        {
+            ActivateSpawner(spitfireEnemySpawnerDolly1, 0); ;
+            NextState(10);
+        }
+        else if (state == 11)
         {
             audioManager.PlayNarration(thanksForPlaying);
             playerStatistics.SetActive(true);

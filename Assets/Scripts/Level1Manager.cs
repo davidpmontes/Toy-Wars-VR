@@ -15,13 +15,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject attackHelicopterEnemySpawner = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly3 = default;
 
 
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
     [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
     [SerializeField] AudioClip thanksForPlaying = default;
-    [SerializeField] AudioClip[] sound_effects= default;
+    [SerializeField] AudioClip[] sound_effects = default;
     [SerializeField] AudioClip[] narration_sequence = default;
 
     /* Misc */
@@ -101,7 +102,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         for (int i = 0; i < clips.Length; i++)
         {
             audioManager.PlayNarration(clips[i]);
-            if(i != length - 1)
+            if (i != length - 1)
             {
                 yield return new WaitForSeconds(clips[i].length);
             }
@@ -120,7 +121,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public void UpdateState()
     {
-        if(state == -1)
+        if (state == -1)
         {
             NextState(1);
         }
@@ -172,32 +173,28 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 8)    //Attack Helicopters1
         {
-            attackHelicopterEnemySpawnerDolly1.SetActive(true);
-            NextState(5);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
+            NextState(30);
         }
-        else if (state == 9)    //Attack Helicopters2
-        {
-            attackHelicopterEnemySpawnerDolly2.SetActive(true);
-            NextState(5);
-        }
-        else if (state == 11)    //Sttack Helicopters2
-        {
-            attackHelicopterEnemySpawnerDolly2.SetActive(true);
-            NextState(0.5f);
-        }
-        else if (state == 11)    //Waiting for the Player to defeat all the targets
-        {
-            if (EnemyManager.Instance.GetEnemyCount() <= 0)
-            {
-                NextState(0);
-            }
-        }
-        else if (state == 12)
+        else if (state == 9)
         {
             audioManager.PlayNarration(thanksForPlaying);
             playerStatistics.SetActive(true);
             thanksForPlayingOurDemo.SetActive(true);
         }
+    }
+
+    private void ActivateSpawner(GameObject spawner, float time)
+    {
+        StartCoroutine(ActivateSpawnerInTime(spawner, time));
+    }
+
+    IEnumerator ActivateSpawnerInTime(GameObject spawner, float time)
+    {
+        yield return new WaitForSeconds(time);
+        spawner.SetActive(true);
     }
 
     private void NextState(float time)

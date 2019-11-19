@@ -4,7 +4,8 @@ using Cinemachine;
 
 public class Spitfire : MonoBehaviour, IEnemy
 {
-    private float life = 3;
+    private float maxLife = 3;
+    private float currLife;
     private Material originalMaterial;
     private Material material;
     [SerializeField] private Material red = default;
@@ -22,10 +23,11 @@ public class Spitfire : MonoBehaviour, IEnemy
         rigidBody = GetComponent<Rigidbody>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
-        audioManager = AudioManager.GetAudioManager();
         cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
+        audioManager = AudioManager.GetAudioManager();
     }
-    private void Start()
+
+    public void Init()
     {
         if (audioManager != null)
         {
@@ -34,6 +36,7 @@ public class Spitfire : MonoBehaviour, IEnemy
             audioManager.BindReserved(sourceKey, this.transform);
             audioManager.PlayReserved(sourceKey);
         }
+        currLife = maxLife;
     }
 
     private void Update()
@@ -53,16 +56,16 @@ public class Spitfire : MonoBehaviour, IEnemy
 
     public void DamageEnemy(Vector3 position)
     {
-        if (life <= 0)
+        if (currLife <= 0)
             return;
 
-        life--;
+        currLife--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.transform.GetComponent<Explosion>().Init();
         explosion.SetActive(true);
 
-        if (life <= 0)
+        if (currLife <= 0)
         {
             EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
             DestroySelf();

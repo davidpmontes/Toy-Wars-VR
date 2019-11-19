@@ -13,6 +13,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] GameObject spitfireEnemySpawner = default;
     [SerializeField] GameObject attackHelicopterEnemySpawner = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
+
 
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip audioClipWowGreatShot = default;
@@ -61,10 +64,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject playerStatistics;
     [SerializeField] GameObject thanksForPlayingOurDemo;
 
-    [SerializeField] AudioClip[] CommanderNarrateSequence0_1;
-    [SerializeField] AudioClip[] CommanderNarrateSequence0_2;
-    [SerializeField] AudioClip[] SoldierNarrateSequence3_1;
-    [SerializeField] AudioClip[] CommanderNarrateSequence3_1;
+    [SerializeField] AudioClip[] NarrationSequences0_1;
+    [SerializeField] AudioClip[] NarrationSequences0_2;
+    [SerializeField] AudioClip[] NarrationSequences1_1;
+
+
 
     private AudioManager audioManager;
 
@@ -122,9 +126,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 0) //Opening scene, audio introduction
         {
-            NarrateSequence(CommanderNarrateSequence0_1, 0.2f);
+            NarrateSequence(NarrationSequences0_1, 0.2f);
         }
-        else if (state == 1) //pop up first 2 targets
+        else if (state == 1) //pop up first set of 5 targets
         {
             popUpTargetEnemySpawner1.SetActive(true);
             NextState(0.5f);
@@ -133,10 +137,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
-                NarrateSequence(CommanderNarrateSequence0_2, 0.2f);
+                NarrateSequence(NarrationSequences0_2, 0.2f);
             }
         }
-        else if (state == 3) //pop up second 2 targets
+        else if (state == 3) //pop up second set of 5 targets
         {
             popUpTargetEnemySpawner2.SetActive(true);
             NextState(0.5f);
@@ -146,10 +150,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
                 audioManager.PlayNarration(CommanderYouveGotSomeSkillsNowFinishTheRestOff, 1f);
-                NextState(1f);
+                NextState(5f);
             }
         }
-        else if (state == 5) //pop up second 2 targets
+        else if (state == 5) //pop up third set of 5 targets
         {
             popUpTargetEnemySpawner3.SetActive(true);
             NextState(0.5f);
@@ -159,27 +163,26 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             if (EnemyManager.Instance.GetEnemyCount() <= 0)
             {
                 audioManager.PlayNarration(CommanderNotBadRecruit, 1f);
+                NextState(5f);
             }
         }
-        else if (state == 7) //pause after defeating all enemies
+        else if (state == 7)    //Narration Sequence
         {
-            NextState(2);
+            NarrateSequence(NarrationSequences1_1, 0.2f);
         }
-        else if (state == 8)    //Attack Helicopter
+        else if (state == 8)    //Attack Helicopters1
         {
-            attackHelicopterEnemySpawner.SetActive(true);
-            NextState(0.5f);
+            attackHelicopterEnemySpawnerDolly1.SetActive(true);
+            NextState(5);
         }
-        else if (state == 9)    //Waiting for the Player to defeat all the targets
+        else if (state == 9)    //Attack Helicopters2
         {
-            if (EnemyManager.Instance.GetEnemyCount() <= 0)
-            {
-                NextState(0);
-            }
+            attackHelicopterEnemySpawnerDolly2.SetActive(true);
+            NextState(5);
         }
-        else if (state == 10)    //Spitfires Spawner
+        else if (state == 11)    //Sttack Helicopters2
         {
-            spitfireEnemySpawner.SetActive(true);
+            attackHelicopterEnemySpawnerDolly2.SetActive(true);
             NextState(0.5f);
         }
         else if (state == 11)    //Waiting for the Player to defeat all the targets

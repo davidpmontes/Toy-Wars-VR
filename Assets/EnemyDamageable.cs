@@ -20,6 +20,11 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
         }
     }
 
+    public void Init()
+    {
+        
+    }
+
     public void DamageEnemy(Vector3 position)
     {
         if (life <= 0)

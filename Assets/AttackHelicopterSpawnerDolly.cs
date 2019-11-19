@@ -20,10 +20,13 @@ public class AttackHelicopterSpawnerDolly : MonoBehaviour
 
         var newAttackHelicopterDolly = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.AttackHelicopterDolly, transform);
         newAttackHelicopterDolly.GetComponent<Rigidbody>().isKinematic = true;
+        newAttackHelicopterDolly.layer = LayerMask.NameToLayer("Enemy");
         var cart = newAttackHelicopterDolly.GetComponent<CinemachineDollyCart>();
         cart.m_Path = path;
+        cart.m_Position = 0;
         newAttackHelicopterDolly.SetActive(true);
         cart.enabled = true;
+        newAttackHelicopterDolly.GetComponent<IEnemy>().Init();
         EnemyManager.Instance.RegisterEnemy(newAttackHelicopterDolly);
     }
 }

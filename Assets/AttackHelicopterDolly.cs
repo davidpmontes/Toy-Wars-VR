@@ -5,7 +5,8 @@ using Cinemachine;
 
 public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 {
-    private float life = 3;
+    private float maxLife = 3;
+    private float currlife;
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private CinemachineDollyCart cinemachineDollyCart;
@@ -22,11 +23,11 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
         rigidBody = GetComponent<Rigidbody>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
-        audioManager = AudioManager.GetAudioManager();
         cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
+        audioManager = AudioManager.GetAudioManager();
     }
 
-    private void Start()
+    public void Init()
     {
         if (audioManager != null)
         {
@@ -35,6 +36,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
             audioManager.BindReserved(sourceKey, this.transform);
             audioManager.PlayReserved(sourceKey);
         }
+        currlife = maxLife;   
     }
 
     private void Update()
@@ -45,16 +47,16 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     public void DamageEnemy(Vector3 position)
     {
-        if (life <= 0)
+        if (currlife <= 0)
             return;
 
-        life--;
+        currlife--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.transform.GetComponent<Explosion>().Init();
         explosion.SetActive(true);
 
-        if (life <= 0)
+        if (currlife <= 0)
         {
             EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
             DestroySelf();

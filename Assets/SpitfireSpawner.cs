@@ -19,10 +19,13 @@ public class SpitfireSpawner : MonoBehaviour
 
         var newSpitfire = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.Spitfire, transform);
         newSpitfire.GetComponent<Rigidbody>().isKinematic = true;
+        newSpitfire.layer = LayerMask.NameToLayer("Enemy");
         var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
         cart.m_Path = path[Random.Range(0, 2)];
+        cart.m_Position = 0;
         newSpitfire.SetActive(true);
         cart.enabled = true;
+        newSpitfire.GetComponent<IEnemy>().Init();
         EnemyManager.Instance.RegisterEnemy(newSpitfire);
     }
 }

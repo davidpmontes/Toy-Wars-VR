@@ -25,7 +25,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         audioManager = AudioManager.GetAudioManager();
     }
 
-    private void Start()
+    public void Init()
     {
         if (audioManager != null)
         {

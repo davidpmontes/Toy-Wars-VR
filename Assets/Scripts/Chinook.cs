@@ -20,7 +20,7 @@ public class Chinook : MonoBehaviour, IEnemy
         audioManager = AudioManager.GetAudioManager();
     }
 
-    public void Start()
+    public void Init()
     {
         if (audioManager != null)
         {

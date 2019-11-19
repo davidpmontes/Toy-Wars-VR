@@ -20,7 +20,13 @@ public class EnemyManager : MonoBehaviour
         AllEnemies.Add(newEnemy);
     }
 
-    public void DeregisterEnemy(GameObject oldEnemy)
+    public void DeregisterEnemyNoPoints(GameObject oldEnemy)
+    {
+        AllEnemies.Remove(oldEnemy);
+        Level1Manager.Instance.UpdateState();
+    }
+
+    public void DeregisterEnemyWithPoints(GameObject oldEnemy)
     {
         ShowFloatingText(oldEnemy.transform.position);
         AllEnemies.Remove(oldEnemy);

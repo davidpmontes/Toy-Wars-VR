@@ -17,6 +17,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] GameObject spitfireEnemySpawnerDolly1 = default;
     [SerializeField] GameObject spitfireEnemySpawnerDolly2 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly4 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly5 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly6 = default;
+
+
 
 
 
@@ -125,6 +130,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public void UpdateState()
     {
+        Debug.Log(state);
         if (state == -1)
         {
             NextState(1);
@@ -180,7 +186,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
-            NextState(16);
+            NextState(0);
         }
         else if (state == 9) //Waiting for the Player to defeat all the targets
         {
@@ -193,11 +199,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
             ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly4, 13);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly5, 12);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
             NextState(0);
         }
         else if (state == 11) //Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 31)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 34)
             {
                 NarrateSequence(NarrationSequences2_1, 0.2f);
             }

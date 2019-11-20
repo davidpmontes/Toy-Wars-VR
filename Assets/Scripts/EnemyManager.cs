@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
 
     private List<GameObject> AllEnemies;
     private AudioManager audioManager;
-    private int totalEnemiesDeregistered = 12;
+    private int totalEnemiesDeregistered = 0;
 
     void Awake()
     {

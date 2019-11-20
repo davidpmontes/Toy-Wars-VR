@@ -23,9 +23,9 @@ public class SpitfireSpawner : MonoBehaviour
         var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
         cart.m_Path = path;
         cart.m_Position = 0;
+        newSpitfire.GetComponent<IEnemy>().Init();
         newSpitfire.SetActive(true);
         cart.enabled = true;
-        newSpitfire.GetComponent<IEnemy>().Init();
         EnemyManager.Instance.RegisterEnemy(newSpitfire);
     }
 }

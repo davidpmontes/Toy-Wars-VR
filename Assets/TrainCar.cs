@@ -4,8 +4,8 @@ public class TrainCar : MonoBehaviour, ICollectible
 {
     [SerializeField] private GameObject train_engine = default;
 
-    public void Shot()
+    public void Init()
     {
-        train_engine.GetComponent<Train>().Shot();
+        train_engine.GetComponent<Train>().Init();
     }
 }

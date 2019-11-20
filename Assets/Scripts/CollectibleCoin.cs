@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleCoin : MonoBehaviour, ICollectible
@@ -7,46 +6,55 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
     public float speed = 20.0f;
     private Transform target;
     public int scoreValue;
-    bool isCollected = false; // change to false initially
-    bool reachedPlayer = false;
-    // Start is called before the first frame update
+    bool isCollected;
+    bool reachedPlayer;
+
     void Awake()
     {
         target = GameObject.Find("CollectibleCoin").transform;
     }
 
-    // Update is called once per frame
+    public void Init()
+    {
+        isCollected = true;
+        reachedPlayer = false;
+    }
+
     void Update()
     {
         if (isCollected)
         {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-            transform.Rotate(new Vector3(0, 180, 0) * Time.deltaTime);
-
-            if (transform.position == target.position)
+            if (!reachedPlayer)
             {
-                
-                StartCoroutine(ShowScore());
+                float step = speed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+
+                if (transform.position == target.position)
+                {
+                    reachedPlayer = true;
+                    StartCoroutine(ShowAndHideScore());
+                }
             }
-                
-            
+            else
+            {
+                transform.position = target.position;
+            }
+
+            transform.Rotate(Vector3.up, Time.deltaTime * 150, Space.Self);
         }
-        
     }
 
-    IEnumerator ShowScore()
+    IEnumerator ShowAndHideScore()
     {
-        //Show score over coin here
-        yield return new WaitForSeconds(1);
-        this.gameObject.SetActive(false);
-        ScoreScript.Instance.AddCollectiblesCount(); // add score to Collectibles text
-        ScoreScript.Instance.showCollectibleCount();
+        ScoreScript.Instance.AddCollectiblesCount();
+        ScoreScript.Instance.UpdateCurrentCollectibleCount();
+        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(true);
+
+        yield return new WaitForSeconds(3);
+
+        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
+        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }
 
-    // call this function to begin the collection process
-    public void Shot()
-    {
-        isCollected = true;
-    }
+
 }

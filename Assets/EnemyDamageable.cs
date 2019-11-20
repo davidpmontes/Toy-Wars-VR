@@ -5,11 +5,11 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 {
     private float life = 3;
 
-    [SerializeField] private MeshRenderer[] meshRenderers;
-    [SerializeField] private Material[] originalMaterials;
-    [SerializeField] private Material flashRed;
-    [SerializeField] private GameObject[] blownOffParts;
-    [SerializeField] private GameObject firePoint;
+    [SerializeField] private MeshRenderer[] meshRenderers = default;
+    [SerializeField] private Material[] originalMaterials = default;
+    [SerializeField] private Material flashRed = default;
+    [SerializeField] private GameObject[] blownOffParts = default;
+    [SerializeField] private GameObject firePoint = default;
 
     private void Awake()
     {

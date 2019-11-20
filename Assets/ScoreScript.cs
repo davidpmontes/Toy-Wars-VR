@@ -11,7 +11,7 @@ public class ScoreScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hitMissRatioText = default;
     [SerializeField] private TextMeshProUGUI collectedCollectibles = default;
 
-    [SerializeField] TextMesh CollectibleText;
+    [SerializeField] TextMesh CollectibleText = default;
 
     private int finalScore = 0;
     private int shotsFired = 0;
@@ -56,7 +56,6 @@ public class ScoreScript : MonoBehaviour
 
     public void showCollectibleCount()
     {
-        
         CollectibleText.text = collectibleCount.ToString() + " / 5";
     }
 }

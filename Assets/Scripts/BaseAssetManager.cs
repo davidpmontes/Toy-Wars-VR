@@ -5,8 +5,8 @@ public class BaseAssetManager : MonoBehaviour
 {
     public static BaseAssetManager Instance { get; private set; }
     private int baseAssetCount;
-    [SerializeField] private List<GameObject> baseAssets;
-    [SerializeField] private List<GameObject> hiddenBaseTargets;
+    [SerializeField] private List<GameObject> baseAssets = default;
+    [SerializeField] private List<GameObject> hiddenBaseTargets = default;
 
     private void Awake()
     {

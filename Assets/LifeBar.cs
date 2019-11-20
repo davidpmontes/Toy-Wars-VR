@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class LifeBar : MonoBehaviour
 {
-    [SerializeField] GameObject innerParent;
-    [SerializeField] GameObject innerBar;
-    [SerializeField] Material redLifeBar;
-    [SerializeField] Material yellowLifeBar;
-    [SerializeField] Material greenLifeBar;
+    [SerializeField] GameObject innerParent = default;
+    [SerializeField] GameObject innerBar = default;
+    [SerializeField] Material redLifeBar = default;
+    [SerializeField] Material yellowLifeBar = default;
+    [SerializeField] Material greenLifeBar = default;
 
     private float MaxLife;
     private float CurrLife;

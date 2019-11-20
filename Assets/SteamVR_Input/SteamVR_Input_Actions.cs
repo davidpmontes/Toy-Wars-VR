@@ -41,6 +41,8 @@ namespace Valve.VR
         
         private static SteamVR_Action_Boolean p_default_TankGasPedal;
         
+        private static SteamVR_Action_Boolean p_default_jump;
+        
         private static SteamVR_Action_Vibration p_default_Haptic;
         
         private static SteamVR_Action_Pose p_mixedreality_ExternalCamera;
@@ -141,6 +143,14 @@ namespace Valve.VR
             }
         }
         
+        public static SteamVR_Action_Boolean default_jump
+        {
+            get
+            {
+                return SteamVR_Actions.p_default_jump.GetCopy<SteamVR_Action_Boolean>();
+            }
+        }
+        
         public static SteamVR_Action_Vibration default_Haptic
         {
             get
@@ -172,6 +182,7 @@ namespace Valve.VR
                     SteamVR_Actions.default_TurretMainWeapon,
                     SteamVR_Actions.default_TouchPadLeft,
                     SteamVR_Actions.default_TankGasPedal,
+                    SteamVR_Actions.default_jump,
                     SteamVR_Actions.default_Haptic,
                     SteamVR_Actions.mixedreality_ExternalCamera};
             Valve.VR.SteamVR_Input.actionsIn = new Valve.VR.ISteamVR_Action_In[] {
@@ -187,6 +198,7 @@ namespace Valve.VR
                     SteamVR_Actions.default_TurretMainWeapon,
                     SteamVR_Actions.default_TouchPadLeft,
                     SteamVR_Actions.default_TankGasPedal,
+                    SteamVR_Actions.default_jump,
                     SteamVR_Actions.mixedreality_ExternalCamera};
             Valve.VR.SteamVR_Input.actionsOut = new Valve.VR.ISteamVR_Action_Out[] {
                     SteamVR_Actions.default_Haptic};
@@ -202,7 +214,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_GrabGrip,
                     SteamVR_Actions.default_HeadsetOnHead,
                     SteamVR_Actions.default_TurretMainWeapon,
-                    SteamVR_Actions.default_TankGasPedal};
+                    SteamVR_Actions.default_TankGasPedal,
+                    SteamVR_Actions.default_jump};
             Valve.VR.SteamVR_Input.actionsSingle = new Valve.VR.SteamVR_Action_Single[] {
                     SteamVR_Actions.default_Squeeze};
             Valve.VR.SteamVR_Input.actionsVector2 = new Valve.VR.SteamVR_Action_Vector2[] {
@@ -220,7 +233,8 @@ namespace Valve.VR
                     SteamVR_Actions.default_HeadsetOnHead,
                     SteamVR_Actions.default_TurretMainWeapon,
                     SteamVR_Actions.default_TouchPadLeft,
-                    SteamVR_Actions.default_TankGasPedal};
+                    SteamVR_Actions.default_TankGasPedal,
+                    SteamVR_Actions.default_jump};
         }
         
         private static void PreInitActions()
@@ -237,6 +251,7 @@ namespace Valve.VR
             SteamVR_Actions.p_default_TurretMainWeapon = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/TurretMainWeapon")));
             SteamVR_Actions.p_default_TouchPadLeft = ((SteamVR_Action_Vector2)(SteamVR_Action.Create<SteamVR_Action_Vector2>("/actions/default/in/TouchPadLeft")));
             SteamVR_Actions.p_default_TankGasPedal = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/TankGasPedal")));
+            SteamVR_Actions.p_default_jump = ((SteamVR_Action_Boolean)(SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/jump")));
             SteamVR_Actions.p_default_Haptic = ((SteamVR_Action_Vibration)(SteamVR_Action.Create<SteamVR_Action_Vibration>("/actions/default/out/Haptic")));
             SteamVR_Actions.p_mixedreality_ExternalCamera = ((SteamVR_Action_Pose)(SteamVR_Action.Create<SteamVR_Action_Pose>("/actions/mixedreality/in/ExternalCamera")));
         }

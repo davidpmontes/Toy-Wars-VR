@@ -4,12 +4,12 @@ using System.Collections;
 
 public class SpitfireSpawner : MonoBehaviour
 {
-    [SerializeField] CinemachineSmoothPath[] path = default;
+    [SerializeField] CinemachineSmoothPath path = default;
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
-            StartCoroutine(Spawn(i * 1));
+            StartCoroutine(Spawn(i * 2));
         }
     }
 
@@ -21,7 +21,7 @@ public class SpitfireSpawner : MonoBehaviour
         newSpitfire.GetComponent<Rigidbody>().isKinematic = true;
         newSpitfire.layer = LayerMask.NameToLayer("Enemy");
         var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
-        cart.m_Path = path[Random.Range(0, 2)];
+        cart.m_Path = path;
         cart.m_Position = 0;
         newSpitfire.SetActive(true);
         cart.enabled = true;

@@ -9,6 +9,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private Material originalMaterial;
     private Material material;
     [SerializeField] private Material red = default;
+    [SerializeField] private GameObject target;
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private GameObject smoke;
@@ -17,6 +18,8 @@ public class Spitfire : MonoBehaviour, IEnemy
     private AudioManager audioManager;
     private CinemachineDollyCart cinemachineDollyCart;
     private int sourceKey = -1;
+    private int cannonSource = -1;
+
 
     private void Awake()
     {
@@ -37,6 +40,18 @@ public class Spitfire : MonoBehaviour, IEnemy
             audioManager.PlayReserved(sourceKey);
         }
         currLife = maxLife;
+        FireWeapon(Random.Range(8, 10), 5);
+        LoadAudio();
+
+    }
+
+    private void LoadAudio()
+    {
+        if (cannonSource < 0)
+        {
+            cannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            audioManager.BindReserved(cannonSource, transform);
+        }
     }
 
     private void Update()
@@ -91,6 +106,7 @@ public class Spitfire : MonoBehaviour, IEnemy
 
     private void DestroySelf()
     {
+        audioManager.UnbindReserved(cannonSource);
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
         cinemachineDollyCart.enabled = false;
         rigidBody.isKinematic = false;
@@ -111,12 +127,32 @@ public class Spitfire : MonoBehaviour, IEnemy
                 audioManager.UnbindReserved(sourceKey);
                 sourceKey = -1;
             }
+
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.position = transform.position;
             explosion.transform.GetComponent<Explosion>().Init();
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+    }
+
+    public void FireWeapon(float time, int repeat)
+    {
+        StartCoroutine(FireWeaponInTime(time, repeat));
+    }
+
+    IEnumerator FireWeaponInTime(float time, int repeat)
+    {
+        yield return new WaitForSeconds(time);
+
+        for (int i = 0; i < repeat; i++)
+        {
+            audioManager.PlayReserved(cannonSource);
+            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
+            enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
+            enemyBullet.SetActive(true);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 

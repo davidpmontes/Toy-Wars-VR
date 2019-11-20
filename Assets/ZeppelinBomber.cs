@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ZeppelinBomber : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> bombs;
-    [SerializeField] private GameObject[] bombSpawnPoints;
+    [SerializeField] private List<GameObject> bombs = default;
+    [SerializeField] private GameObject[] bombSpawnPoints = default;
 
     private void Awake()
     {

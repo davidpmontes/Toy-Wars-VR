@@ -1,22 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TrainCar : MonoBehaviour, ICollectible
 {
-    [SerializeField] private GameObject train_engine;
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    [SerializeField] private GameObject train_engine = default;
 
-    // Update is called once per frame
-    void Update()
+    public void Init()
     {
-    }
-
-    public void Shot()
-    {
-        train_engine.GetComponent<Train>().Shot();
+        train_engine.GetComponent<Train>().Init();
     }
 }

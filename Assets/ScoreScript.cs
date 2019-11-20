@@ -9,15 +9,13 @@ public class ScoreScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI shotsFiredText = default;
     [SerializeField] private TextMeshProUGUI numberOfHitsText = default;
     [SerializeField] private TextMeshProUGUI hitMissRatioText = default;
-    [SerializeField] private TextMeshProUGUI collectedCollectibles = default;
-
-    [SerializeField] TextMesh CollectibleText;
+    [SerializeField] private TextMeshProUGUI finalCollectedCollectibles = default;
+    [SerializeField] private TextMesh currentCollectedCollectibles = default;
 
     private int finalScore = 0;
     private int shotsFired = 0;
     private int numberOfHits = 0;
     private int collectibleCount = 0;
-    private int collectibles = 5;
 
     private void Awake()
     {
@@ -30,7 +28,7 @@ public class ScoreScript : MonoBehaviour
         shotsFiredText.text = string.Format("Shots Fired: {0}", shotsFired);
         numberOfHitsText.text = string.Format("Number of hits: {0}", numberOfHits);
         hitMissRatioText.text = string.Format("Hit-miss ratio: {0} %", System.Math.Round(((double)numberOfHits / shotsFired), 2) * 100);
-        collectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
+        finalCollectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
     }
 
     public void AddFinalScore(int newScoreValue)
@@ -54,9 +52,13 @@ public class ScoreScript : MonoBehaviour
         collectibleCount += 1;
     }
 
-    public void showCollectibleCount()
+    public void UpdateCurrentCollectibleCount()
     {
-        
-        CollectibleText.text = collectibleCount.ToString() + " / 5";
+        currentCollectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
+    }
+
+    public void SetCurrentCollectibleCountVisibility(bool value)
+    {
+        currentCollectedCollectibles.gameObject.SetActive(value);
     }
 }

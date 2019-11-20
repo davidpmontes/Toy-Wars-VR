@@ -12,7 +12,6 @@ public class TurretCannonV2 : MonoBehaviour, ICameraRelocate
     [SerializeField] private Transform cameraPosition = default;
 
     public SteamVR_Action_Boolean fireAction;
-    private AudioSource audioSource;
     private AudioManager audioManager;
     private Animator animator;
 
@@ -25,7 +24,6 @@ public class TurretCannonV2 : MonoBehaviour, ICameraRelocate
     void Awake()
     {
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()

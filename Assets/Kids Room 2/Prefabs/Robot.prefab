@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23082438276342938}
   - component: {fileID: 5738177119761760543}
   - component: {fileID: 9168377906502547453}
+  - component: {fileID: 5473058573310593589}
   m_Layer: 18
   m_Name: Robot
   m_TagString: Untagged
@@ -109,3 +110,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5473058573310593589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397800799951256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab3d0d212af86e4392f83e7311a6b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coin_prefab: {fileID: 3519281057076630503, guid: 712468b586e8bed43bf3ef72040354e8,
+    type: 3}

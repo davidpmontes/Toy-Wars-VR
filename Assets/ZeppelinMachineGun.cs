@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class ZeppelinMachineGun : MonoBehaviour
 {
-    [SerializeField] private GameObject target;
-    [SerializeField] private ParticleSystem flash;
+    [SerializeField] private GameObject target = default;
+    [SerializeField] private ParticleSystem flash = default;
     private bool targetAcquired;
     private bool newTargetSelected;
 

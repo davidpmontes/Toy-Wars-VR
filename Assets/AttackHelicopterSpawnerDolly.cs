@@ -24,9 +24,9 @@ public class AttackHelicopterSpawnerDolly : MonoBehaviour
         var cart = newAttackHelicopterDolly.GetComponent<CinemachineDollyCart>();
         cart.m_Path = path;
         cart.m_Position = 0;
+        newAttackHelicopterDolly.GetComponent<IEnemy>().Init();
         newAttackHelicopterDolly.SetActive(true);
         cart.enabled = true;
-        newAttackHelicopterDolly.GetComponent<IEnemy>().Init();
         EnemyManager.Instance.RegisterEnemy(newAttackHelicopterDolly);
     }
 }

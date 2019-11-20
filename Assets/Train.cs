@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Train : Collectible
@@ -9,22 +8,11 @@ public class Train : Collectible
     [SerializeField] private float toot_time = default;
     [SerializeField] private float cooldown_time = default;
     private bool on_cooldown = false;
-    // Start is called before the first frame update
-    override protected void Start()
-    {
-        base.Start();
-    }
 
-    // Update is called once per frame
-    override protected void Update()
-    {
-        base.Update();
-    }
-
-    override public void Shot()
+    override public void Init()
     {
         StartCoroutine(Toot());
-        base.Shot();
+        base.Init();
     }
 
     IEnumerator Toot()

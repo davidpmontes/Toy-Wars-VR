@@ -17,6 +17,9 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private GameObject smoke;
     [SerializeField] private Material red = default;
     private Material originalMaterial;
+    private int cannonSource = -1;
+    [SerializeField] private GameObject target;
+
 
     private void Awake()
     {
@@ -36,7 +39,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
             audioManager.BindReserved(sourceKey, this.transform);
             audioManager.PlayReserved(sourceKey);
         }
-        currlife = maxLife;   
+        currlife = maxLife;
     }
 
     private void Update()
@@ -117,6 +120,25 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
         {
             EnemyManager.Instance.DeregisterEnemyNoPoints(gameObject);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+    }
+
+    public void FireWeapon()
+    {
+        StartCoroutine(FireWeaponInTime(0, 3));
+    }
+
+    IEnumerator FireWeaponInTime(float time, int repeat)
+    {
+        yield return new WaitForSeconds(time);
+
+        for (int i = 0; i < repeat; i++)
+        {
+            audioManager.PlayReserved(cannonSource);
+            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
+            enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
+            enemyBullet.SetActive(true);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 

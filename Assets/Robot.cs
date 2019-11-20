@@ -1,5 +1,6 @@
-﻿
-public class Bin : Collectible
+﻿using UnityEngine;
+
+public class Robot : Collectible
 {
     public override void Init()
     {

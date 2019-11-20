@@ -4,7 +4,7 @@ using Valve.VR;
 public class TankDrive : MonoBehaviour, ICameraRelocate
 {
     public SteamVR_Action_Vector2 TouchPadPosition;
-    public SteamVR_Action_Boolean touch;
+    //public SteamVR_Action_Boolean touch;
 
     private float strafeLeftRight;
     private float forwardReverse;

@@ -7,7 +7,6 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
     [SerializeField] private GameObject Rotateable = default;
     [SerializeField] private GameObject Tiltable = default;
     [SerializeField] private Transform cameraPosition = default;
-    [SerializeField] private GameObject cam = default;
 
     void Update()
     {

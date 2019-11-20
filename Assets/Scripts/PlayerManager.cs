@@ -23,8 +23,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
+        //EnableVehicle(PlayerVehicles.TankA);
         EnableVehicle(PlayerVehicles.turretVR_A);
-        EnableVehicle(PlayerVehicles.TankA);
     }
 
     public GameObject CurrentVehicle()

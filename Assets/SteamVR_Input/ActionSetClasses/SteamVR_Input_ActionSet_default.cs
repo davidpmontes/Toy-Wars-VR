@@ -113,6 +113,14 @@ namespace Valve.VR
             }
         }
         
+        public virtual SteamVR_Action_Boolean CalibrateTank
+        {
+            get
+            {
+                return SteamVR_Actions.default_CalibrateTank;
+            }
+        }
+        
         public virtual SteamVR_Action_Vibration Haptic
         {
             get

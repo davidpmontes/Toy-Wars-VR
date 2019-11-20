@@ -2,21 +2,29 @@
 
 public class PlayerTankTurret : MonoBehaviour
 {
-    [SerializeField] private Transform targetPoint = default;
     [SerializeField] private Transform barrel = default;
+
+    private Transform targetPoint;
+    private Transform cam;
+
+    private void Awake()
+    {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        targetPoint = GameObject.Find("TargetPoint").transform;
+    }
 
     void Update()
     {
-        RotateTurretToController();
+        RotateTurretWithCamera();
         RotateBarrelToController();
     }
 
 
 
-    private void RotateTurretToController()
+    private void RotateTurretWithCamera()
     {
         //find the vector pointing from our position to the target
-        var direction = (targetPoint.position - transform.position).normalized;
+        var direction = (cam.position - transform.position).normalized;
         direction.y = 0;
 
         //create the rotation we need to be in to look at the target

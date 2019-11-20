@@ -24,14 +24,15 @@ public class PlayerTankTurret : MonoBehaviour
     private void RotateTurretWithCamera()
     {
         //find the vector pointing from our position to the target
-        var direction = (cam.position - transform.position).normalized;
+        var direction = ((cam.position + cam.forward*10) - transform.position);
         direction.y = 0;
+        direction = direction.normalized;
 
         //create the rotation we need to be in to look at the target
         var lookRotation = Quaternion.LookRotation(direction);
 
         //rotate us over time according to speed until we are in the required rotation
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2);
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 4);
     }
 
     private void RotateBarrelToController()
@@ -43,6 +44,6 @@ public class PlayerTankTurret : MonoBehaviour
         var lookRotation = Quaternion.LookRotation(direction);
 
         //rotate us over time according to speed until we are in the required rotation
-        barrel.rotation = Quaternion.Slerp(barrel.rotation, lookRotation, Time.deltaTime * 2);
+        barrel.rotation = Quaternion.Slerp(barrel.rotation, lookRotation, Time.deltaTime * 4);
     }
 }

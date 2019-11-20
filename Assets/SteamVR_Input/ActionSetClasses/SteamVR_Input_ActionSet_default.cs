@@ -113,11 +113,11 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Boolean CalibrateTank
+        public virtual SteamVR_Action_Boolean MoveTank
         {
             get
             {
-                return SteamVR_Actions.default_CalibrateTank;
+                return SteamVR_Actions.default_MoveTank;
             }
         }
         

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Valve.VR;
+public enum DriveScheme {FreeTurret, lockedTurret}
 
 public class TankDrive : MonoBehaviour, ICameraRelocate
 {
@@ -18,6 +19,8 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     [SerializeField] private Transform tracks = default;
     [SerializeField] private Transform cameraPosition = default;
 
+    [SerializeField] private Transform body_transform = default;
+    [SerializeField] private Rigidbody body_rb = default;
     [SerializeField] private Transform left_tread = default;
     [SerializeField] private Transform right_tread = default;
 
@@ -40,6 +43,9 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     private Rigidbody rb;
     private Vector3 gravityDirection;
 
+    private DriveScheme drive_scheme;
+
+
     void Awake()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
@@ -47,6 +53,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         pose = GetComponentInParent<SteamVR_Behaviour_Pose>();
         click.AddOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
         click.AddOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
+        SetDriveScheme(DriveScheme.FreeTurret);
     }
 
     private void Update()
@@ -54,10 +61,30 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         GetInput();
     }
 
+    void SetDriveScheme(DriveScheme scheme)
+    {
+        drive_scheme = scheme;
+        if(scheme == DriveScheme.FreeTurret)
+        {
+            //body_transform.GetComponent<ConfigurableJoint>().yMotion = ConfigurableJointMotion.Free;
+            return;
+        }
+        //body_transform.GetComponent<ConfigurableJoint>().yMotion = ConfigurableJointMotion.Locked;
+    }
+
     private void GetInput()
     {
-        //strafeLeftRight = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).x;
-        //forwardReverse = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(drive_scheme == DriveScheme.FreeTurret)
+            {
+                SetDriveScheme(DriveScheme.lockedTurret);
+            }
+            else
+            {
+                SetDriveScheme(DriveScheme.FreeTurret);
+            }
+        }
     }
 
     void FixedUpdate ()
@@ -74,30 +101,66 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         //when let go of, the pad recalibrates, but the coordinate system is held while the pad is held regardless of head position
 
         if (moving)
-        { 
+        {
             pad_position = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).normalized;
 
-            float angle = Vector2.SignedAngle(pad_position, Vector2.up);
-            target_point = Quaternion.AngleAxis(angle, Vector3.up) * rel_cam_angle;
+            if(drive_scheme == DriveScheme.FreeTurret)
+            {
+                FreeTurretMotion();
+            }
+            else
+            {
+                LockedTurretMotion();   
+            }
 
-            target_point = target_point.normalized;
-
-            float accel_x = target_point.x - transform.forward.x;
-            float accel_y = target_point.z - transform.forward.z + 1;
-
-            //Vector2.SignedAngle(pad_position.normalized, new Vector2(rel_cam_angle.x, rel_cam_angle.z));
-            //Desired speed of left and right tank treads
-            left_tread_speed = (((2 * pad_position.y * accel_scale) + (8* accel_x * accel_scale))) * left_tread.forward;
-            right_tread_speed = (((2 * pad_position.y * accel_scale) - (8 * accel_x * accel_scale))) * right_tread.forward;
-            print("left: " + left_tread.position);
-            print("right: " + right_tread.position);
-            
-            rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
-            rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
+            //body_rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
+            //body_rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
         }   
-        //desiredVelocity = (TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).magnitude * -tracks.forward) * 25;  //new Vector3(moveHorizontal, 0, moveVertical) * 5;
-        //forceDirection = (desiredVelocity - rb.velocity);
-        //rb.AddForce(forceDirection, ForceMode.Acceleration);
+    }
+
+    private void FreeTurretMotion()
+    {
+        float angle = Vector2.SignedAngle(pad_position, Vector2.up);
+        target_point = Quaternion.AngleAxis(angle, Vector3.up) * rel_cam_angle;
+        target_point.y = body_transform.position.y;
+        target_point = target_point.normalized;
+        float dot = Vector3.Dot(target_point, body_transform.forward);
+        Vector3 prd = Vector3.Cross(target_point, body_transform.forward).normalized;
+        float cross = prd.magnitude;
+        if (Vector3.Dot(prd, body_transform.up) < 0)
+        {
+            cross = -cross;
+        }
+
+        float accel_x = target_point.x - body_transform.forward.x;
+        float accel_y = target_point.z - body_transform.forward.z + 1;
+
+        left_tread_speed = ((dot * accel_scale) - (2 * cross * accel_scale)) * left_tread.forward;
+        right_tread_speed = ((dot * accel_scale) + (2 * cross * accel_scale)) * right_tread.forward;
+        body_rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
+        body_rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
+    }
+
+    private void LockedTurretMotion()
+    {
+        target_point = new Vector3(pad_position.x, transform.position.y, pad_position.y).normalized;
+        float dot = Vector3.Dot(target_point, transform.forward);
+        Vector3 prd = Vector3.Cross(target_point, transform.forward);
+        float cross = prd.magnitude;
+        if (Vector3.Dot(prd, transform.up) < 0)
+        {
+            cross = -cross;
+        }
+
+        print(target_point);
+
+        float accel_x = target_point.x - transform.forward.x;
+        float accel_y = target_point.z - transform.forward.z + 1;
+
+        left_tread_speed = ((dot * accel_scale) - (2 *cross * accel_scale)) * left_tread.forward;
+        right_tread_speed = ((dot * accel_scale) + (2 * cross * accel_scale)) * right_tread.forward;
+        rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
+        rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
     }
 
     private void ClickDown(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)
@@ -131,5 +194,4 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         click.RemoveOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
 
     }
-
 }

@@ -7,14 +7,6 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     public SteamVR_Action_Vector2 TouchPadPosition;
     public SteamVR_Action_Boolean click;
 
-    private float strafeLeftRight;
-    private float forwardReverse;
-
-    public Vector3 desiredVelocity;
-    public Vector3 forceDirection;
-
-    [SerializeField] private Transform CameraTrackingTracks = default;
-
     [SerializeField] private Transform turret = default;
     [SerializeField] private Transform tracks = default;
     [SerializeField] private Transform cameraPosition = default;
@@ -24,19 +16,24 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     [SerializeField] private Transform left_tread = default;
     [SerializeField] private Transform right_tread = default;
 
-    [SerializeField] private float max_velocity;
-    [SerializeField] private float accel_scale;
+    [SerializeField] private float max_velocity = default;
+    [SerializeField] private float max_rotation = default;
+    [SerializeField] private float accel_scale = default;
+    [SerializeField] private float torque_scale = default;
+    [SerializeField] private float max_accel = default;
+    [SerializeField] private float max_torque = default;
 
     private Vector3 left_tread_speed;
     private Vector3 right_tread_speed;
     private Vector2 pad_position;
     private bool moving = false;
 
+    private Vector3 drag_force;
+    private Vector3 drag_direction;
+
     private Transform cam;
     private Vector3 rel_cam_angle;
     private Vector3 target_point;
-
-    public float currTurnRate;
 
     private SteamVR_Behaviour_Pose pose = null;
 
@@ -66,10 +63,14 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         drive_scheme = scheme;
         if(scheme == DriveScheme.FreeTurret)
         {
-            //body_transform.GetComponent<ConfigurableJoint>().yMotion = ConfigurableJointMotion.Free;
+            rb.freezeRotation = true;
+            rb.position = body_rb.position;
+            body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
             return;
         }
-        //body_transform.GetComponent<ConfigurableJoint>().yMotion = ConfigurableJointMotion.Locked;
+        rb.freezeRotation = false;
+        rb.position = body_rb.position;
+        body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Locked;
     }
 
     private void GetInput()
@@ -78,6 +79,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         {
             if(drive_scheme == DriveScheme.FreeTurret)
             {
+                print("locking turret");
                 SetDriveScheme(DriveScheme.lockedTurret);
             }
             else
@@ -122,45 +124,32 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     {
         float angle = Vector2.SignedAngle(pad_position, Vector2.up);
         target_point = Quaternion.AngleAxis(angle, Vector3.up) * rel_cam_angle;
-        target_point.y = body_transform.position.y;
         target_point = target_point.normalized;
         float dot = Vector3.Dot(target_point, body_transform.forward);
-        Vector3 prd = Vector3.Cross(target_point, body_transform.forward).normalized;
+        Vector3 prd = Vector3.Cross(target_point, body_transform.forward);
         float cross = prd.magnitude;
         if (Vector3.Dot(prd, body_transform.up) < 0)
         {
             cross = -cross;
         }
-
-        float accel_x = target_point.x - body_transform.forward.x;
-        float accel_y = target_point.z - body_transform.forward.z + 1;
-
-        left_tread_speed = ((dot * accel_scale) - (2 * cross * accel_scale)) * left_tread.forward;
-        right_tread_speed = ((dot * accel_scale) + (2 * cross * accel_scale)) * right_tread.forward;
-        body_rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
-        body_rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
+        drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
+        drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
+        print(drag_force);
+        left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
+        right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+        body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
+        body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
     }
 
     private void LockedTurretMotion()
     {
-        target_point = new Vector3(pad_position.x, transform.position.y, pad_position.y).normalized;
-        float dot = Vector3.Dot(target_point, transform.forward);
-        Vector3 prd = Vector3.Cross(target_point, transform.forward);
-        float cross = prd.magnitude;
-        if (Vector3.Dot(prd, transform.up) < 0)
-        {
-            cross = -cross;
-        }
-
-        print(target_point);
-
-        float accel_x = target_point.x - transform.forward.x;
-        float accel_y = target_point.z - transform.forward.z + 1;
-
-        left_tread_speed = ((dot * accel_scale) - (2 *cross * accel_scale)) * left_tread.forward;
-        right_tread_speed = ((dot * accel_scale) + (2 * cross * accel_scale)) * right_tread.forward;
-        rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
-        rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
+        drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
+        drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
+        left_tread_speed = (Mathf.Min(pad_position.y * accel_scale, max_accel) + Mathf.Min((torque_scale) * pad_position.x, max_torque)) * left_tread.forward;
+        right_tread_speed = (Mathf.Min(pad_position.y * accel_scale, max_accel) - Mathf.Min((torque_scale) * pad_position.x, max_torque)) * right_tread.forward;
+        body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
+        body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
+        print(pad_position);
     }
 
     private void ClickDown(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)

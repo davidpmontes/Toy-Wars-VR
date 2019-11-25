@@ -231,6 +231,7 @@ public class AudioManager : MonoBehaviour
     IEnumerator EndClipTransform(AudioSource src, float time)
     {
         yield return new WaitForSeconds(time);
+        src.Stop();
         src.enabled = false;
         src.gameObject.transform.SetParent(gameObject.transform, false);
         source_pool.Push(src);
@@ -239,6 +240,7 @@ public class AudioManager : MonoBehaviour
     IEnumerator EndClipPoint(AudioSource src, float time)
     {
         yield return new WaitForSeconds(time);
+        src.Stop();
         src.gameObject.transform.localPosition = Vector3.zero;
         source_pool.Push(src);
         src.enabled = false;
@@ -259,6 +261,7 @@ public class AudioManager : MonoBehaviour
         src.spatialBlend = spacial_blend;
         src.loop = looping;
         reserved_sources.Add(src);
+        print("reserved sources: " + reserved_sources.Count);
         return index;
     }
 
@@ -291,6 +294,30 @@ public class AudioManager : MonoBehaviour
         src.gameObject.transform.SetParent(source_trans, false);
     }
 
+    public void SetReservedPitch(int source_id, float pitch)
+    {
+        reserved_sources.ElementAt(source_id).pitch = pitch;
+    }
+
+    public void InterPitch(int source_id, float start, float finish, float time)
+    {
+        StartCoroutine(InterPitch(reserved_sources.ElementAt(source_id), start, finish, (finish - start)/5f, time));
+    }
+
+    private IEnumerator InterPitch(AudioSource src, float start, float finish, float inc, float time)
+    {
+        yield return new WaitForSeconds(time / 5);
+        if(Mathf.Abs(finish - start) > Mathf.Abs(inc))
+        {
+            src.pitch = start + inc;
+            yield return InterPitch(src, start + inc, finish, inc, time);
+        }
+        else
+        {
+            src.pitch = finish;
+        }
+    }
+
     public void UnbindReserved(int source_id)
     {
         AudioSource src = reserved_sources.ElementAt(source_id);
@@ -314,6 +341,7 @@ public class AudioManager : MonoBehaviour
         src.gameObject.transform.position = Vector3.zero;
         reserved_sources.RemoveAt(source_id);
         source_pool.Push(src);
+        print("reserved sources: " + reserved_sources.Count);
     }
 
     public void SetReservedMixer(int source_id, int mixer_num)

@@ -41,6 +41,8 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     private Vector3 gravityDirection;
 
     private DriveScheme drive_scheme;
+    private AudioManager audio_manager;
+    private int key = -1;
 
 
     void Awake()
@@ -51,6 +53,15 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         click.AddOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
         click.AddOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
         SetDriveScheme(DriveScheme.FreeTurret);
+        audio_manager = AudioManager.GetAudioManager();
+    }
+
+    private void Start()
+    {
+        key = audio_manager.ReserveSource("engine_generator_loop_01", true, 1, 1, true);
+        audio_manager.SetReservedMixer(key, 2);
+        audio_manager.BindReserved(key, body_transform);
+        audio_manager.PlayReserved(key);
     }
 
     private void Update()
@@ -134,7 +145,6 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         }
         drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
         drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
-        print(drag_force);
         left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
         right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
         body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
@@ -149,22 +159,21 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         right_tread_speed = (Mathf.Min(pad_position.y * accel_scale, max_accel) - Mathf.Min((torque_scale) * pad_position.x, max_torque)) * right_tread.forward;
         body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
         body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
-        print(pad_position);
     }
 
     private void ClickDown(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)
     {
-        print("clickdown");
         rel_cam_angle = cam.forward;
         rel_cam_angle.y = 0;
         rel_cam_angle = rel_cam_angle.normalized;
         moving = true;
+        audio_manager.InterPitch(key, 1f, 1.3f, 0.3f);
     }
 
     private void ClickUp(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)
     {
-        print("clickup");
         moving = false;
+        audio_manager.InterPitch(key, 1.3f, 1f, 0.3f);
     }
 
     public Vector3 GetRelocatePosition()

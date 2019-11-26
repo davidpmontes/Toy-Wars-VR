@@ -82,6 +82,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private AudioManager audioManager;
 
+    private readonly float POPUPTIMER_TIME_LIMIT = 10;
+    private float PopUpTargetEndTime;
 
     private void Awake()
     {
@@ -98,6 +100,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     public void GetSoundEffects(out AudioClip[] fx)
     {
         fx = sound_effects;
+    }
+
+    private void PopUpTargetTimerNotification()
+    {
+        UpdateState();
     }
 
     public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)
@@ -123,14 +130,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         NextState(1);
     }
 
-    public void IntroStep()
-    {
-
-    }
-
     public void UpdateState()
     {
-        Debug.Log(state);
         if (state == -1)
         {
             NextState(1);
@@ -139,63 +140,105 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             NarrateSequence(NarrationSequences0_1, 0.2f);
         }
-        else if (state == 1) //pop up first set of 5 targets
+        else if (state == 1) //pop up first set of 4 targets
         {
+            PopUpTargetEndTime = Time.time + POPUPTIMER_TIME_LIMIT;
+            Invoke("PopUpTargetTimerNotification", POPUPTIMER_TIME_LIMIT);
+
             popUpTargetEnemySpawner1.SetActive(true);
             NextState(0);
         }
-        else if (state == 2) //Waiting for the Player to defeat all the targets
+        else if (state == 2) //pop up second set of 4 targets
         {
+            if (PopUpTargetEndTime < Time.time)
+            {
+                GotoState(5, 0);
+                return;
+            }
+
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 4)
             {
-                NarrateSequence(NarrationSequences0_2, 0.2f);
+                popUpTargetEnemySpawner2.SetActive(true);
+                NextState(0);
             }
         }
-        else if (state == 3) //pop up second set of 5 targets
+        else if (state == 3) //pop up third set of 4 targets
         {
-            popUpTargetEnemySpawner2.SetActive(true);
-            NextState(0);
-        }
-        else if (state == 4) //Waiting for the Player to defeat all the targets
-        {
+            if (PopUpTargetEndTime < Time.time)
+            {
+                GotoState(5, 0);
+                return;
+            }
+
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
+            {
+                popUpTargetEnemySpawner3.SetActive(true);
+                NextState(0);
+            }
+        }
+        else if (state == 4) //All targets defeated or time expires
+        {
+            if (PopUpTargetEndTime < Time.time)
+            {
+                GotoState(5, 0);
+                return;
+            }
+
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
             {
                 audioManager.PlayNarration(CommanderYouveGotSomeSkillsNowFinishTheRestOff, 1f);
                 NextState(5f);
             }
         }
-        else if (state == 5) //pop up third set of 5 targets
+        else if (state == 5) //Time fail
         {
-            popUpTargetEnemySpawner3.SetActive(true);
+            popUpTargetEnemySpawner1.SetActive(false);
+            popUpTargetEnemySpawner2.SetActive(false);
+            popUpTargetEnemySpawner3.SetActive(false);
+
+            //Buzzer sounds
+            //Display Score
+            //NarrateSequence();
             NextState(0);
         }
-        else if (state == 6) //Waiting for the Player to defeat all the targets
+        else if (state == 6)  //Time fail transition
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
-            {
-                audioManager.PlayNarration(CommanderNotBadRecruit, 1f);
-                NextState(5f);
-            }
+            GotoState(9, 0);
         }
-        else if (state == 7)    // First wave Narration Sequence
+        else if (state == 7) //Time success
+        {
+            popUpTargetEnemySpawner1.SetActive(false);
+            popUpTargetEnemySpawner2.SetActive(false);
+            popUpTargetEnemySpawner3.SetActive(false);
+
+            //Success Sound
+            //Display Score
+            //NarrateSequence();
+            NextState(0);
+        }
+        else if (state == 8) //Time success transition
+        {
+            GotoState(9, 0);
+        }
+        else if (state == 9) // Wave #1: Narration
         {
             NarrateSequence(NarrationSequences1_1, 0.2f);
         }
-        else if (state == 8)    //Attack Helicopters
+        else if (state == 10) // Wave #1: Attack Helicopters appear
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
             NextState(0);
         }
-        else if (state == 9) //Waiting for the Player to defeat all the targets
+        else if (state == 11) // Wave #1: Waiting for the Player to defeat all the targets && Wave #2: Narration
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 21)
             {
                 NarrateSequence(NarrationSequences2_1, 0.2f);
             }
         }
-        else if (state == 10)    //Spitfires
+        else if (state == 12) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
             ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
@@ -204,14 +247,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
             NextState(0);
         }
-        else if (state == 11) //Waiting for the Player to defeat all the targets
+        else if (state == 13) // Wave #2: Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 34)
             {
                 NarrateSequence(NarrationSequences2_1, 0.2f);
             }
         }
-        else if (state == 12)
+        else if (state == 14)
         {
             audioManager.PlayNarration(thanksForPlaying);
             playerStatistics.SetActive(true);
@@ -239,6 +282,18 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         yield return new WaitForSeconds(time);
         state++;
+        UpdateState();
+    }
+
+    private void GotoState(int newState, float time)
+    {
+        StartCoroutine(NextStateInTime(newState, time));
+    }
+
+    IEnumerator NextStateInTime(int newState, float time)
+    {
+        yield return new WaitForSeconds(time);
+        state = newState;
         UpdateState();
     }
 }

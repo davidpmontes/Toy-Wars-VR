@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LaserProjectile : MonoBehaviour, IProjectile
 {
@@ -32,12 +30,6 @@ public class LaserProjectile : MonoBehaviour, IProjectile
         Deactivate();
     }
 
-
-    private void OnEnable()
-    {
-        Invoke("Deactivate", lifespan);
-    }
-
     void Deactivate()
     {
         ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
@@ -45,6 +37,7 @@ public class LaserProjectile : MonoBehaviour, IProjectile
 
     public void Init(Transform t, Vector3 direction)
     {
+        Invoke("Deactivate", lifespan);
         transform.position = t.position;
         transform.rotation = t.rotation;
         rb.velocity = direction * speed;

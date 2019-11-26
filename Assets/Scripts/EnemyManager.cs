@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour
 
     private List<GameObject> AllEnemies;
     private AudioManager audioManager;
+    private int totalEnemiesDeregistered = 0;
 
     void Awake()
     {
@@ -20,8 +21,16 @@ public class EnemyManager : MonoBehaviour
         AllEnemies.Add(newEnemy);
     }
 
-    public void DeregisterEnemy(GameObject oldEnemy)
+    public void DeregisterEnemyNoPoints(GameObject oldEnemy)
     {
+        totalEnemiesDeregistered++;
+        AllEnemies.Remove(oldEnemy);
+        Level1Manager.Instance.UpdateState();
+    }
+
+    public void DeregisterEnemyWithPoints(GameObject oldEnemy)
+    {
+        totalEnemiesDeregistered++;
         ShowFloatingText(oldEnemy.transform.position);
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
@@ -75,5 +84,10 @@ public class EnemyManager : MonoBehaviour
     public int GetEnemyCount()
     {
         return AllEnemies.Count;
+    }
+
+    public int GetTotalEnemiesDeregistered()
+    {
+        return totalEnemiesDeregistered;
     }
 }

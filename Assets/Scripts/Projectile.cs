@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IProjectile
 {
     [SerializeField] private float speed = default;
     [SerializeField] private float lifespan = default;
@@ -22,11 +22,12 @@ public class Projectile : MonoBehaviour
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
 
-        if (collision.gameObject.TryGetComponent<ICollectible>(out ICollectible coinComponent))
+        if (collision.gameObject.TryGetComponent(out ICollectible coinComponent))
         {
-            coinComponent.Shot();
+            coinComponent.Init();
         }
     }
+
 
     private void OnEnable()
     {

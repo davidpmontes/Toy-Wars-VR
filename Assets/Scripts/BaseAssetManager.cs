@@ -5,11 +5,17 @@ public class BaseAssetManager : MonoBehaviour
 {
     public static BaseAssetManager Instance { get; private set; }
     private int baseAssetCount;
-    [SerializeField] private List<GameObject> baseAssets;
+    [SerializeField] private List<GameObject> baseAssets = default;
+    [SerializeField] private List<GameObject> hiddenBaseTargets = default;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    public GameObject GetRandomHiddenBaseTarget()
+    {
+        return hiddenBaseTargets[Random.Range(0, hiddenBaseTargets.Count)];
     }
 
     public GameObject GetTopBaseAsset()

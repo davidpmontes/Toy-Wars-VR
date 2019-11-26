@@ -12,7 +12,12 @@ public enum Pools { PingPongBall,
                     Spitfire,
                     TurretMissile,
                     ScoreText,
-                    MissileSmoke
+                    MissileSmoke,
+                    Bomb,
+                    CFX4Fire,
+                    AttackHelicopterDolly,
+                    CollectibleStar,
+                    BlueLaserMissile
                 };
 
 public class ObjectPool : MonoBehaviour

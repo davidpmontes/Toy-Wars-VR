@@ -20,7 +20,7 @@ public class Chinook : MonoBehaviour, IEnemy
         audioManager = AudioManager.GetAudioManager();
     }
 
-    public void Start()
+    public void Init()
     {
         if (audioManager != null)
         {
@@ -40,7 +40,7 @@ public class Chinook : MonoBehaviour, IEnemy
 
         if (life <= 0)
         {
-            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
             DestroySelf();
         }
         else
@@ -102,5 +102,10 @@ public class Chinook : MonoBehaviour, IEnemy
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
+    }
+
+    public void DestroyEnemy()
+    {
+        throw new System.NotImplementedException();
     }
 }

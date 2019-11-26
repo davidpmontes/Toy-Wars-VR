@@ -7,7 +7,7 @@ public class Cannon : MonoBehaviour
 
     [SerializeField] private float delay = 0.5f;
     [SerializeField] private float soundDelay = 0.2f;
-    [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] private GameObject muzzleFlash = default;
 
     private MuzzleFlash muzzleFlashScript;
 

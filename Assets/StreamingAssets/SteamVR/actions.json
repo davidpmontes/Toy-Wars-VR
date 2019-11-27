@@ -53,7 +53,7 @@
       "type": "boolean"
     },
     {
-      "name": "/actions/default/in/jump",
+      "name": "/actions/default/in/MoveTank",
       "type": "boolean"
     },
     {
@@ -64,6 +64,26 @@
       "name": "/actions/mixedreality/in/ExternalCamera",
       "type": "pose",
       "requirement": "optional"
+    },
+    {
+      "name": "/actions/Tank/in/MoveTank",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/Tank/in/CalibrateTank",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/Tank/in/FireCannon",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/Tank/in/TankDirection",
+      "type": "vector2"
+    },
+    {
+      "name": "/actions/Tank/in/Pose",
+      "type": "pose"
     }
   ],
   "action_sets": [
@@ -73,6 +93,10 @@
     },
     {
       "name": "/actions/mixedreality",
+      "usage": "single"
+    },
+    {
+      "name": "/actions/Tank",
       "usage": "single"
     }
   ],

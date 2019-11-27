@@ -17,6 +17,7 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
     {
         GameObject targetPoint = VRAimer.Instance.GetTargetPoint();
 
+
         if (targetPoint.activeSelf)
         {
             var direction = (targetPoint.transform.position - transform.position).normalized;

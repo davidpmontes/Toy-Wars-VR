@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectibleCoin : MonoBehaviour, ICollectible
@@ -8,14 +9,21 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
     public int scoreValue;
     bool isCollected;
     bool reachedPlayer;
+    static Queue<GameObject> coins = new Queue<GameObject>();
 
     void Awake()
     {
         target = GameObject.Find("CollectibleCoin").transform;
+        
+    }
+    void Start()
+    {
+        Init();
     }
 
     public void Init()
     {
+        coins.Enqueue(gameObject);
         isCollected = true;
         reachedPlayer = false;
     }
@@ -33,6 +41,12 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
                 {
                     reachedPlayer = true;
                     StartCoroutine(ShowAndHideScore());
+                    if (coins.Count > 1)
+                    {
+                        //StopAllCoroutines();
+                        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+                    }
+                    
                 }
             }
             else
@@ -49,11 +63,16 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
         ScoreScript.Instance.AddCollectiblesCount();
         ScoreScript.Instance.UpdateCurrentCollectibleCount();
         ScoreScript.Instance.SetCurrentCollectibleCountVisibility(true);
-
+        coins.Dequeue();
         yield return new WaitForSeconds(3);
+        
+        if(coins.Count == 0)
+        {
+            ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+        
 
-        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
-        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }
 
 

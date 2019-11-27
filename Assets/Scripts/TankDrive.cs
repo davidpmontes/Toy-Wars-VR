@@ -1,97 +1,179 @@
 ﻿using UnityEngine;
 using Valve.VR;
+public enum DriveScheme {FreeTurret, lockedTurret}
 
 public class TankDrive : MonoBehaviour, ICameraRelocate
 {
     public SteamVR_Action_Vector2 TouchPadPosition;
-
-    private float strafeLeftRight;
-    private float forwardReverse;
-
-    public Vector3 desiredVelocity;
-    public Vector3 forceDirection;
-
-    [SerializeField] private float MAX_MOVE_RATE = default;
-    [SerializeField] private float MAX_TURN_RATE = default;
-    [SerializeField] private float MOVE_ACCELERATION = default;
-    [SerializeField] private float TURN_ACCELERATION = default;
-    [SerializeField] private Transform GroundDetectorOrigin = default;
-    [SerializeField] private Transform TurningPoint = default;
-    [SerializeField] private Transform CameraTrackingTracks = default;
+    public SteamVR_Action_Boolean click;
 
     [SerializeField] private Transform turret = default;
     [SerializeField] private Transform tracks = default;
     [SerializeField] private Transform cameraPosition = default;
-    public float currTurnRate;
+
+    [SerializeField] private Transform body_transform = default;
+    [SerializeField] private Rigidbody body_rb = default;
+    [SerializeField] private Transform left_tread = default;
+    [SerializeField] private Transform right_tread = default;
+
+    [SerializeField] private float max_velocity = default;
+    [SerializeField] private float max_rotation = default;
+    [SerializeField] private float accel_scale = default;
+    [SerializeField] private float torque_scale = default;
+    [SerializeField] private float max_accel = default;
+    [SerializeField] private float max_torque = default;
+
+    private Vector3 left_tread_speed;
+    private Vector3 right_tread_speed;
+    private Vector2 pad_position;
+    private bool moving = false;
+
+    private Vector3 drag_force;
+    private Vector3 drag_direction;
+
+    private Transform cam;
+    private Vector3 rel_cam_angle;
+    private Vector3 target_point;
 
     private SteamVR_Behaviour_Pose pose = null;
 
     private Rigidbody rb;
     private Vector3 gravityDirection;
 
+    private DriveScheme drive_scheme;
+    private AudioManager audio_manager;
+    private int key = -1;
+
+
     void Awake()
     {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = GetComponent<Rigidbody>();
         pose = GetComponentInParent<SteamVR_Behaviour_Pose>();
+        click.AddOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
+        click.AddOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
+        SetDriveScheme(DriveScheme.FreeTurret);
+        audio_manager = AudioManager.GetAudioManager();
+    }
+
+    private void Start()
+    {
+        key = audio_manager.ReserveSource("engine_generator_loop_01", true, 1, 1, true);
+        audio_manager.SetReservedMixer(key, 2);
+        audio_manager.BindReserved(key, body_transform);
+        audio_manager.PlayReserved(key);
     }
 
     private void Update()
     {
-        DetectGround();
         GetInput();
-        SetTurningPoint();
-        RotateTracks();
     }
 
-    private void DetectGround()
+    void SetDriveScheme(DriveScheme scheme)
     {
-        if (Physics.Raycast(GroundDetectorOrigin.position, -transform.up, out RaycastHit hit, 10f, LayerMask.GetMask("Statics")))
+        drive_scheme = scheme;
+        if(scheme == DriveScheme.FreeTurret)
         {
-            gravityDirection = hit.normal;
+            rb.freezeRotation = true;
+            rb.position = body_rb.position;
+            body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
+            return;
         }
+        rb.freezeRotation = false;
+        rb.position = body_rb.position;
+        body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Locked;
     }
 
     private void GetInput()
     {
-        strafeLeftRight = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).x;
-        forwardReverse = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(drive_scheme == DriveScheme.FreeTurret)
+            {
+                print("locking turret");
+                SetDriveScheme(DriveScheme.lockedTurret);
+            }
+            else
+            {
+                SetDriveScheme(DriveScheme.FreeTurret);
+            }
+        }
     }
 
     void FixedUpdate ()
     {
         MoveTank();
-        GravityToSurface();
-    }
-
-    private void SetTurningPoint()
-    {
-        TurningPoint.localPosition = new Vector3(TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).x, 0, TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).y);
-    }
-
-    private void RotateTracks()
-    {
-        CameraTrackingTracks.rotation = Quaternion.Euler(new Vector3(transform.localRotation.eulerAngles.x, turret.rotation.eulerAngles.y, transform.localRotation.eulerAngles.z));
-
-        var direction = (TurningPoint.position - transform.position).normalized;
-        direction.y = 0;
-
-        //create the rotation we need to be in to look at the target
-        var lookRotation = Quaternion.LookRotation(direction);
-
-        //rotate us over time according to speed until we are in the required rotation
-        tracks.localRotation = Quaternion.Slerp(tracks.localRotation, lookRotation, Time.deltaTime * 2);
     }
 
     private void MoveTank()
     {
-        desiredVelocity = (TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).magnitude * -tracks.forward) * 25;  //new Vector3(moveHorizontal, 0, moveVertical) * 5;
-        forceDirection = (desiredVelocity - rb.velocity);
-        rb.AddForce(forceDirection, ForceMode.Acceleration);
+        //assuming x and y go from -1 to 1
+        //Left tread accel = (y*speed) + (0.5 * x_axis*speed)
+        //Right tread accel = (y*speed) - (0.5 * x_axis*speed)
+        //this angle is the angle between the tank position and the turret position
+        //when let go of, the pad recalibrates, but the coordinate system is held while the pad is held regardless of head position
+
+        if (moving)
+        {
+            pad_position = TouchPadPosition.GetAxis(SteamVR_Input_Sources.Any).normalized;
+
+            if(drive_scheme == DriveScheme.FreeTurret)
+            {
+                FreeTurretMotion();
+            }
+            else
+            {
+                LockedTurretMotion();   
+            }
+
+            //body_rb.AddForceAtPosition(left_tread_speed, left_tread.position, ForceMode.Acceleration);
+            //body_rb.AddForceAtPosition(right_tread_speed, right_tread.position, ForceMode.Acceleration);
+        }   
     }
 
-    private void GravityToSurface()
+    private void FreeTurretMotion()
     {
-        rb.AddForce(gravityDirection * Physics.gravity.y, ForceMode.Acceleration);
+        float angle = Vector2.SignedAngle(pad_position, Vector2.up);
+        target_point = Quaternion.AngleAxis(angle, Vector3.up) * rel_cam_angle;
+        target_point = target_point.normalized;
+        float dot = Vector3.Dot(target_point, body_transform.forward);
+        Vector3 prd = Vector3.Cross(target_point, body_transform.forward);
+        float cross = prd.magnitude;
+        if (Vector3.Dot(prd, body_transform.up) < 0)
+        {
+            cross = -cross;
+        }
+        drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
+        drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
+        left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
+        right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+        body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
+        body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
+    }
+
+    private void LockedTurretMotion()
+    {
+        drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
+        drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
+        left_tread_speed = (Mathf.Min(pad_position.y * accel_scale, max_accel) + Mathf.Min((torque_scale) * pad_position.x, max_torque)) * left_tread.forward;
+        right_tread_speed = (Mathf.Min(pad_position.y * accel_scale, max_accel) - Mathf.Min((torque_scale) * pad_position.x, max_torque)) * right_tread.forward;
+        body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
+        body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
+    }
+
+    private void ClickDown(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)
+    {
+        rel_cam_angle = cam.forward;
+        rel_cam_angle.y = 0;
+        rel_cam_angle = rel_cam_angle.normalized;
+        moving = true;
+        audio_manager.InterPitch(key, 1f, 1.3f, 0.3f);
+    }
+
+    private void ClickUp(SteamVR_Action_Boolean action_In, SteamVR_Input_Sources source)
+    {
+        moving = false;
+        audio_manager.InterPitch(key, 1.3f, 1f, 0.3f);
     }
 
     public Vector3 GetRelocatePosition()
@@ -102,5 +184,12 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     public float GetRelocateRotation()
     {
         return transform.rotation.eulerAngles.y;
+    }
+
+    private void OnDisable()
+    {
+        click.RemoveOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
+        click.RemoveOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
+
     }
 }

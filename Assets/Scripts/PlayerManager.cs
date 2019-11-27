@@ -2,9 +2,8 @@
 
 public enum PlayerVehicles
 {
-    turretVR_A,
-    turretVR_B,
-    TankA
+    TURRET,
+    TANK
 }
 
 public class PlayerManager : MonoBehaviour
@@ -12,9 +11,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     private GameObject currentVehicle;
 
-    [SerializeField] private GameObject turretVR_A = default;
-    [SerializeField] private GameObject turretVR_B = default;
-    [SerializeField] private GameObject tankVR_A = default;
+    [SerializeField] private GameObject turret = default;
+    [SerializeField] private GameObject tank = default;
 
     void Awake()
     {
@@ -23,8 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.TankA);
-        //EnableVehicle(PlayerVehicles.turretVR_A);
+        EnableVehicle(PlayerVehicles.TURRET);
     }
 
     public GameObject CurrentVehicle()
@@ -36,15 +33,11 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            EnableVehicle(PlayerVehicles.turretVR_A);
+            EnableVehicle(PlayerVehicles.TURRET);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            EnableVehicle(PlayerVehicles.turretVR_B);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            EnableVehicle(PlayerVehicles.TankA);
+            EnableVehicle(PlayerVehicles.TANK);
         }
     }
 
@@ -57,24 +50,18 @@ public class PlayerManager : MonoBehaviour
 
     public void EnableVehicle(PlayerVehicles vehicle)
     {
-        turretVR_A.SetActive(false);
-        turretVR_B.SetActive(false);
-        turretVR_B.SetActive(false);
+        turret.SetActive(false);
+        tank.SetActive(false);
 
-        if (vehicle == PlayerVehicles.turretVR_A)
+        if (vehicle == PlayerVehicles.TURRET)
         {
-            turretVR_A.SetActive(true);
-            currentVehicle = turretVR_A;
+            turret.SetActive(true);
+            currentVehicle = turret;
         }
-        else if (vehicle == PlayerVehicles.turretVR_B)
+        else if (vehicle == PlayerVehicles.TANK)
         {
-            turretVR_B.SetActive(true);
-            currentVehicle = turretVR_B;
-        }
-        else if (vehicle == PlayerVehicles.TankA)
-        {
-            tankVR_A.SetActive(true);
-            currentVehicle = tankVR_A;
+            tank.SetActive(true);
+            currentVehicle = tank;
         }
 
         SetCameraToVehicle();

@@ -16,6 +16,11 @@ public class EnemyManager : MonoBehaviour
         AllEnemies = new List<GameObject>();
     }
 
+    public void ResetTotalEnemiesDeregistered()
+    {
+        totalEnemiesDeregistered = 0;
+    }
+
     public void RegisterEnemy(GameObject newEnemy)
     {
         AllEnemies.Add(newEnemy);

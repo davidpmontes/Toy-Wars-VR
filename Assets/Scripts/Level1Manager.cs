@@ -21,20 +21,36 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly5 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly6 = default;
 
+    [SerializeField] GameObject zeppelin = default;
 
-
-
-
-    [SerializeField] AudioClip audioClipBackgroundMusic = default;
     [SerializeField] AudioClip[] sound_effects = default;
 
     [SerializeField] GameObject playerStatistics = default;
     [SerializeField] GameObject thanksForPlayingOurDemo = default;
 
     [SerializeField] AudioClip[] NarrationSequences1 = default;
+
+    [SerializeField] AudioClip PrettyEasyWhenTheyDontShootBack = default;
+    [SerializeField] AudioClip YouveGotSomeSkills = default;
+    [SerializeField] AudioClip YoureDownToTheFinalFour = default;
+
+    [SerializeField] AudioClip AngelsAndMinistersOfGraceDefendUs = default;
+    [SerializeField] AudioClip NotBadRecruit = default;
+    [SerializeField] AudioClip YouMustPlayALotOfFortnite = default;
+
     [SerializeField] AudioClip[] NarrationSequences2 = default;
     [SerializeField] AudioClip[] NarrationSequences3 = default;
+
+    [SerializeField] AudioClip ILoveTheSmellOfOrangeJuiceInTheMorning = default;
+
     [SerializeField] AudioClip[] NarrationSequences4 = default;
+
+    [SerializeField] AudioClip BGM_MainMenu = default;
+    [SerializeField] AudioClip BGM_PopUpTargets = default;
+    [SerializeField] AudioClip BGM_Action = default;
+    [SerializeField] AudioClip BGM_Boss = default;
+    [SerializeField] AudioClip BGM_Win = default;
+
 
 
     private AudioManager audioManager;
@@ -61,7 +77,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void PopUpTargetTimerNotification()
     {
-        UpdateState();
+        GotoState(5, 0);
     }
 
     private void NarrateSequenceAndNextState(AudioClip[] clips, float delay, int nextState)
@@ -92,6 +108,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         if (state == -1)
         {
             NextState(1);
+            audioManager.ChangeBGM(BGM_PopUpTargets);
+            audioManager.StartBGM();
         }
         else if (state == 0) //Opening scene, audio introduction
         {
@@ -99,6 +117,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 1) //pop up first set of 4 targets
         {
+            audioManager.ChangeBGM(BGM_PopUpTargets);
+
             PopUpTargetEndTime = Time.time + POPUPTIMER_TIME_LIMIT;
             Invoke("PopUpTargetTimerNotification", POPUPTIMER_TIME_LIMIT);
 
@@ -107,12 +127,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 2) //pop up second set of 4 targets
         {
-            if (PopUpTargetEndTime < Time.time)
-            {
-                GotoState(5, 0);
-                return;
-            }
-
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 4)
             {
                 popUpTargetEnemySpawner2.SetActive(true);
@@ -121,12 +135,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 3) //pop up third set of 4 targets
         {
-            if (PopUpTargetEndTime < Time.time)
-            {
-                GotoState(5, 0);
-                return;
-            }
-
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
                 popUpTargetEnemySpawner3.SetActive(true);
@@ -135,12 +143,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 4) //All targets defeated or time expires
         {
-            if (PopUpTargetEndTime < Time.time)
-            {
-                GotoState(5, 0);
-                return;
-            }
-
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
             {
                 NarrateSequenceAndNextState(NarrationSequences2, 0.2f, state + 1);
@@ -152,47 +154,47 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             popUpTargetEnemySpawner2.SetActive(false);
             popUpTargetEnemySpawner3.SetActive(false);
 
-            //Buzzer sounds
-            //Display Score
-            //NarrateSequence();
-            NextState(0);
-        }
-        else if (state == 6)  //Time fail transition
-        {
-            GotoState(9, 0);
-        }
-        else if (state == 7) //Time success
-        {
-            popUpTargetEnemySpawner1.SetActive(false);
-            popUpTargetEnemySpawner2.SetActive(false);
-            popUpTargetEnemySpawner3.SetActive(false);
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() <= 4)
+            {
+                audioManager.PlayNarration(AngelsAndMinistersOfGraceDefendUs);
+                NextState(AngelsAndMinistersOfGraceDefendUs.length + 1);
+            }
+            else if (EnemyManager.Instance.GetTotalEnemiesDeregistered() <= 8)
+            {
+                audioManager.PlayNarration(NotBadRecruit);
+                NextState(NotBadRecruit.length + 1);
+            }
+            else
+            {
+                audioManager.PlayNarration(YouMustPlayALotOfFortnite);
+                NextState(YouMustPlayALotOfFortnite.length + 1);
+            }
 
-            //Success Sound
-            //Display Score
-            //NarrateSequence();
-            NextState(0);
+            EnemyManager.Instance.ResetTotalEnemiesDeregistered();
         }
-        else if (state == 8) //Time success transition
+
+        else if (state == 6) // Wave #1: Narration
         {
-            GotoState(9, 0);
+            audioManager.ChangeBGM(BGM_Action);
+            audioManager.StartBGM();
+            NarrateSequenceAndNextState(NarrationSequences2, 0.2f, state + 1);
         }
-        else if (state == 9) // Wave #1: Narration
-        {
-        }
-        else if (state == 10) // Wave #1: Attack Helicopters appear
+        else if (state == 7) // Wave #1: Attack Helicopters appear
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
             NextState(0);
         }
-        else if (state == 11) // Wave #1: Waiting for the Player to defeat all the targets && Wave #2: Narration
+        else if (state == 8) // Wave #1: Waiting for the Player to defeat all the targets && Wave #2: Narration
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 21)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 9)
             {
+                EnemyManager.Instance.ResetTotalEnemiesDeregistered();
+                NarrateSequenceAndNextState(NarrationSequences3, 0.2f, state + 1);
             }
         }
-        else if (state == 12) // Wave #2: Spitfires appear
+        else if (state == 9) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
             ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
@@ -201,13 +203,27 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
             NextState(0);
         }
-        else if (state == 13) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 10) // Wave #2: Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 34)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 10)
             {
+                audioManager.ChangeBGM(BGM_Boss);
+                audioManager.StartBGM();
+                NarrateSequenceAndNextState(NarrationSequences4, 0.2f, state + 1);
             }
         }
-        else if (state == 14)
+        else if (state == 11) // Wave #2: Spitfires appear
+        {
+            ActivateSpawner(zeppelin, 0);
+            NextState(0);
+        }
+        else if (state == 12) // Wave #2: Waiting for the Player to defeat all the targets
+        {
+
+        }
+
+
+        else if (state == 20)
         {
             playerStatistics.SetActive(true);
             thanksForPlayingOurDemo.SetActive(true);

@@ -9,7 +9,6 @@ public class AudioManager : MonoBehaviour
 {
     [SerializeField] private int max_sources = default;
     [SerializeField] private float volume_reduction = default;
-    [SerializeField] private AudioClip bgm_clip = default;
     [SerializeField] private AudioMixer mixer = default;
     [SerializeField] private AudioMixerGroup[] mixer_groups = default;
     [SerializeField] private float rolloff_distance = default;
@@ -28,12 +27,6 @@ public class AudioManager : MonoBehaviour
 
     private static AudioManager audioManager;
 
-    private void Start()
-    {
-        ChangeBGM(bgm_clip);
-        InitMixerGroups();
-        StartBGM(true);
-    }
     void Awake()
     {
         InitSources();
@@ -41,6 +34,12 @@ public class AudioManager : MonoBehaviour
         InitNarration();
         InitUI();
         LoadSoundEffects();
+    }
+
+    private void Start()
+    {
+        //ChangeBGM(bgm_clip);
+        InitMixerGroups();
     }
 
     public static AudioManager GetAudioManager()
@@ -90,7 +89,7 @@ public class AudioManager : MonoBehaviour
         bgm = cam.GetComponents<AudioSource>()[1];
         bgm.priority = 2;
         bgm.spatialize = false;
-        bgm.volume = 0.2f;
+        bgm.volume = 1f;
         bgm.outputAudioMixerGroup = mixer_groups[5];
     }
 
@@ -324,8 +323,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlayNarration(AudioClip clip, float volume = 1.0f)
     {
-            narration.clip = clip;
-            narration.Play();
+        narration.clip = clip;
+        narration.Play();
     }
 
     public void PlayUI(string key, float volume = 1.0f)

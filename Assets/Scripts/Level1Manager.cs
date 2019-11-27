@@ -26,58 +26,15 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
 
     [SerializeField] AudioClip audioClipBackgroundMusic = default;
-    [SerializeField] AudioClip audioClipWowGreatShot = default;
-    [SerializeField] AudioClip audioClipYouGotAllTheTargets = default;
-    [SerializeField] AudioClip thanksForPlaying = default;
     [SerializeField] AudioClip[] sound_effects = default;
-    [SerializeField] AudioClip[] narration_sequence = default;
-
-    /* Misc */
-    [SerializeField] AudioClip SoldierOW = default;
-    [SerializeField] AudioClip SoldierStopThat = default;
-    [SerializeField] AudioClip SoldierWatchYourFire = default;
-
-    /* Level 0 */
-    [SerializeField] AudioClip CommanderYouMustBeOurNewRecruit = default;
-    [SerializeField] AudioClip CommanderImCaptainStiffNeck = default;
-    [SerializeField] AudioClip CommanderYouveObviouslyFoundYourTurret = default;
-    [SerializeField] AudioClip CommanderButCanYouHitAnythingWithIt = default;
-    [SerializeField] AudioClip CommanderLetsSeeWhatYouGot = default;
-    [SerializeField] AudioClip CommanderSoldierBringUpTwoMoreTargets = default;
-    [SerializeField] AudioClip CommanderPrettyEasyWhenTheyDontShootBack = default;
-    [SerializeField] AudioClip CommanderSoldierGimmeTwoMoreTargets = default;
-    [SerializeField] AudioClip CommanderYouveGotSomeSkillsNowFinishTheRestOff = default;
-    [SerializeField] AudioClip CommanderNotBadRecruit = default;
-
-
-
-    [SerializeField] AudioClip SoldierYesSir = default;
-    [SerializeField] AudioClip SoldierRogerThat = default;
-
-    /* Level 1 */
-    [SerializeField] AudioClip SoldierSirEnemyForcesApproaching = default;
-    [SerializeField] AudioClip CommanderAlrightThisIsTheRealDealDefendOurBase = default;
-
-    /* Level 2 */
-    [SerializeField] AudioClip SoldierSirTheEnemyHasRegroupedAndIsNowAttackingTheNorthBase = default;
-
-    /* Level 3 */
-    [SerializeField] AudioClip SoldierTheZepplenatorIsHere = default;
-    [SerializeField] AudioClip SoldierWereDoneFor = default;
-
-    [SerializeField] AudioClip CommanderGetAHoldOfYourselves = default;
-    [SerializeField] AudioClip CommanderWeveStillGotTheSecretWeapon = default;
-    [SerializeField] AudioClip CommanderRecruitChargeTheLaserCannon = default;
 
     [SerializeField] GameObject playerStatistics = default;
     [SerializeField] GameObject thanksForPlayingOurDemo = default;
 
-    [SerializeField] AudioClip[] NarrationSequences0_1 = default;
-    [SerializeField] AudioClip[] NarrationSequences0_2 = default;
-    [SerializeField] AudioClip[] NarrationSequences1_1 = default;
-    [SerializeField] AudioClip[] NarrationSequences2_1 = default;
-
-
+    [SerializeField] AudioClip[] NarrationSequences1 = default;
+    [SerializeField] AudioClip[] NarrationSequences2 = default;
+    [SerializeField] AudioClip[] NarrationSequences3 = default;
+    [SerializeField] AudioClip[] NarrationSequences4 = default;
 
 
     private AudioManager audioManager;
@@ -107,12 +64,12 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         UpdateState();
     }
 
-    public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)
+    private void NarrateSequenceAndNextState(AudioClip[] clips, float delay, int nextState)
     {
-        StartCoroutine(NarrateSequence(clips, -1, delay));
+        StartCoroutine(NarrateSequenceAndNextStateCR(clips, delay, nextState));
     }
 
-    IEnumerator NarrateSequence(AudioClip[] clips, int pos, float delay)
+    IEnumerator NarrateSequenceAndNextStateCR(AudioClip[] clips, float delay, int nextState)
     {
         int length = clips.Length;
         for (int i = 0; i < clips.Length; i++)
@@ -127,7 +84,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 yield return new WaitForSeconds(clips[i].length + delay);
             }
         }
-        NextState(1);
+        NextState(nextState);
     }
 
     public void UpdateState()
@@ -138,7 +95,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 0) //Opening scene, audio introduction
         {
-            NarrateSequence(NarrationSequences0_1, 0.2f);
+            NarrateSequenceAndNextState(NarrationSequences1, 0.2f, state + 1);
         }
         else if (state == 1) //pop up first set of 4 targets
         {
@@ -186,8 +143,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
             {
-                audioManager.PlayNarration(CommanderYouveGotSomeSkillsNowFinishTheRestOff, 1f);
-                NextState(5f);
+                NarrateSequenceAndNextState(NarrationSequences2, 0.2f, state + 1);
             }
         }
         else if (state == 5) //Time fail
@@ -222,7 +178,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 9) // Wave #1: Narration
         {
-            NarrateSequence(NarrationSequences1_1, 0.2f);
         }
         else if (state == 10) // Wave #1: Attack Helicopters appear
         {
@@ -235,7 +190,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 21)
             {
-                NarrateSequence(NarrationSequences2_1, 0.2f);
             }
         }
         else if (state == 12) // Wave #2: Spitfires appear
@@ -251,12 +205,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 34)
             {
-                NarrateSequence(NarrationSequences2_1, 0.2f);
             }
         }
         else if (state == 14)
         {
-            audioManager.PlayNarration(thanksForPlaying);
             playerStatistics.SetActive(true);
             thanksForPlayingOurDemo.SetActive(true);
         }

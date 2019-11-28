@@ -29,6 +29,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject thanksForPlayingOurDemo = default;
 
     [SerializeField] AudioClip[] NarrationSequences1 = default;
+    [SerializeField] AudioClip[] NarrationSequences1_1 = default;
+
 
     [SerializeField] AudioClip PrettyEasyWhenTheyDontShootBack = default;
     [SerializeField] AudioClip YouveGotSomeSkills = default;
@@ -56,7 +58,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private AudioManager audioManager;
 
-    private readonly float POPUPTIMER_TIME_LIMIT = 15;
+    public readonly float POPUPTIMER_TIME_LIMIT = 5;
     private float PopUpTargetEndTime;
 
     private void Awake()
@@ -78,7 +80,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void PopUpTargetTimerNotification()
     {
-        GotoState(5, 0);
+        GotoState(6, 0);
     }
 
     private void NarrateSequenceAndNextState(AudioClip[] clips)
@@ -108,9 +110,13 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             NarrateSequenceAndNextState(NarrationSequences1);
         }
-        else if (state == 1) //pop up first set of 4 targets
+        else if (state == 1) //Opening scene, audio introduction
         {
             TVCamera.Instance.ScreenOn();
+            NarrateSequenceAndNextState(NarrationSequences1_1);
+        }
+        else if (state == 2) //pop up first set of 4 targets
+        {
             PopUpTargetEndTime = Time.time + POPUPTIMER_TIME_LIMIT;
             TVCamera.Instance.StartTimer();
             Invoke("PopUpTargetTimerNotification", POPUPTIMER_TIME_LIMIT);
@@ -118,7 +124,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             popUpTargetEnemySpawner1.SetActive(true);
             NextState(0);
         }
-        else if (state == 2) //pop up second set of 4 targets
+        else if (state == 3) //pop up second set of 4 targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 4)
             {
@@ -126,7 +132,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(0);
             }
         }
-        else if (state == 3) //pop up third set of 4 targets
+        else if (state == 4) //pop up third set of 4 targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
@@ -134,19 +140,19 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(0);
             }
         }
-        else if (state == 4) //All targets defeated or time expires
+        else if (state == 5) //All targets defeated or time expires
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
             {
-                NarrateSequenceAndNextState(NarrationSequences2);
+                TVCamera.Instance.FreezeTimer();
+                NextState(0);
             }
         }
-        else if (state == 5) //Time fail
+        else if (state == 6) //Time fail
         {
             popUpTargetEnemySpawner1.SetActive(false);
             popUpTargetEnemySpawner2.SetActive(false);
             popUpTargetEnemySpawner3.SetActive(false);
-            TVCamera.Instance.StopTimer();
 
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() <= 4)
             {
@@ -166,42 +172,42 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             
             EnemyManager.Instance.ResetTotalEnemiesDeregistered();
         }
-        else if (state == 6)
+        else if (state == 7)
         {
             NextState(1);
             TVCamera.Instance.Screenoff();
         }
-        else if (state == 7)
+        else if (state == 8)
         {
             audioManager.PlayNarration(BaseWarning);
             NextState(3);
         }
-        else if (state == 8) // Wave #1: Narration
+        else if (state == 9) // Wave #1: Narration
         {
             NarrateSequenceAndNextState(NarrationSequences2);
             audioManager.ChangeBGM(BGM_Action);
             audioManager.StartBGM();
         }
-        else if (state == 9) // Wave #1: Attack Helicopters appear
+        else if (state == 10) // Wave #1: Attack Helicopters appear
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
             NextState(0);
         }
-        else if (state == 10)
+        else if (state == 11)
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 15)
             {
                 NextState(0);
             }
         }
-        else if (state == 11)
+        else if (state == 12)
         {
             EnemyManager.Instance.ResetTotalEnemiesDeregistered();
             NarrateSequenceAndNextState(NarrationSequences3); //"Sir the enemy has regrouped..."
         }
-        else if (state == 12) // Wave #2: Spitfires appear
+        else if (state == 13) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
             ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
@@ -210,7 +216,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
             NextState(0);
         }
-        else if (state == 13) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 14) // Wave #2: Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 10)
             {
@@ -219,12 +225,12 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NarrateSequenceAndNextState(NarrationSequences4);
             }
         }
-        else if (state == 14) // Wave #2: Spitfires appear
+        else if (state == 15) // Wave #2: Spitfires appear
         {
             ActivateSpawner(zeppelin, 0);
             NextState(0);
         }
-        else if (state == 15) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 16) // Wave #2: Waiting for the Player to defeat all the targets
         {
 
         }

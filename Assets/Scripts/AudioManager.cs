@@ -352,7 +352,7 @@ public class AudioManager : MonoBehaviour
     public void PlayNarration(AudioClip clip, float volume = 1.0f)
     {
         narration.clip = clip;
-        narration.Play();
+        narration.PlayOneShot(clip);
     }
 
     public void PlayUI(string key, float volume = 1.0f)

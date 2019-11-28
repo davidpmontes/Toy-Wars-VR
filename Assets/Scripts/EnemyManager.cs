@@ -41,6 +41,10 @@ public class EnemyManager : MonoBehaviour
         Level1Manager.Instance.UpdateState();
         ScoreScript.Instance.AddFinalScore(1000);
         audioManager.PlayUI("collect_coin_01");
+        if (oldEnemy.name == "Target")
+        {
+            TVCamera.Instance.TargetHit();
+        }
     }
 
     public GameObject GetAEnemy()

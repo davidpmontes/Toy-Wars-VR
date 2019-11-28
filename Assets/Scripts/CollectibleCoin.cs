@@ -2,53 +2,78 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleCoin : MonoBehaviour
+public class CollectibleCoin : MonoBehaviour, ICollectible
 {
     public float speed = 20.0f;
     private Transform target;
     public int scoreValue;
-    bool isCollected = false; // change to false initially
-    bool reachedPlayer = false;
-    // Start is called before the first frame update
+    bool isCollected;
+    bool reachedPlayer;
+    static Queue<GameObject> coins = new Queue<GameObject>();
+
     void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("CollectibleCount").transform;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (isCollected && !reachedPlayer)
-        {
-            // TODO: add to score
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-            transform.Rotate(new Vector3(0, 0, 180) * Time.deltaTime);
-
-            if (transform.position == target.position)
-            {
-                reachedPlayer = true;
-                // make parallel with camera
-                transform.rotation = Quaternion.identity;
-                transform.Rotate(new Vector3(90, 90, 0));
-                StartCoroutine(ShowScore());
-            }
-                
-            
-        }
+        target = GameObject.Find("CollectibleCoin").transform;
         
     }
-
-    IEnumerator ShowScore()
+    void Start()
     {
-        //Show score over coin here
-        yield return new WaitForSeconds(1);
-        this.gameObject.SetActive(false);
+        Init();
     }
 
-    // call this function to begin the collection process
-    public void Shot()
+    public void Init()
     {
+        coins.Enqueue(gameObject);
         isCollected = true;
+        reachedPlayer = false;
     }
+
+    void Update()
+    {
+        if (isCollected)
+        {
+            if (!reachedPlayer)
+            {
+                float step = speed * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+
+                if (transform.position == target.position)
+                {
+                    reachedPlayer = true;
+                    StartCoroutine(ShowAndHideScore());
+                    if (coins.Count > 1)
+                    {
+                        //StopAllCoroutines();
+                        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+                    }
+                    
+                }
+            }
+            else
+            {
+                transform.position = target.position;
+            }
+
+            transform.Rotate(Vector3.up, Time.deltaTime * 150, Space.Self);
+        }
+    }
+
+    IEnumerator ShowAndHideScore()
+    {
+        ScoreScript.Instance.AddCollectiblesCount();
+        ScoreScript.Instance.UpdateCurrentCollectibleCount();
+        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(true);
+        coins.Dequeue();
+        yield return new WaitForSeconds(3);
+        
+        if(coins.Count == 0)
+        {
+            ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
+            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
+        }
+        
+
+    }
+
+
 }

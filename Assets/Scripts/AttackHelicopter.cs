@@ -25,7 +25,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
         audioManager = AudioManager.GetAudioManager();
     }
 
-    private void Start()
+    public void Init()
     {
         if (audioManager != null)
         {
@@ -100,7 +100,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
 
         if (life <= 0)
         {
-            EnemyManager.Instance.DeregisterEnemy(gameObject);
+            EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
             DestroySelf();
         }
         else

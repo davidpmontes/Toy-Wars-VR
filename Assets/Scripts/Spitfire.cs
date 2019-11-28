@@ -36,7 +36,7 @@ public class Spitfire : MonoBehaviour, IEnemy
         {
             sourceKey = audioManager.ReserveSource("engine_generator_loop_03", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
             audioManager.SetReservedMixer(sourceKey, 3);
-            audioManager.BindReserved(sourceKey, this.transform);
+            audioManager.BindReserved(sourceKey, transform);
             audioManager.PlayReserved(sourceKey);
         }
         currLife = maxLife;

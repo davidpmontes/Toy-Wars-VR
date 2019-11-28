@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
@@ -11,14 +10,16 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private Rigidbody rigidBody;
     private CinemachineDollyCart cinemachineDollyCart;
     private AudioManager audioManager;
-    private int sourceKey = -1;
     private Vector3 pos0;
     private Vector3 pos1;
     private GameObject smoke;
     [SerializeField] private Material red = default;
     private Material originalMaterial;
-    private int cannonSource = -1;
     [SerializeField] private GameObject target;
+
+    private int sourceKey = -1;
+    private int cannonSource = -1;
+
 
 
     private void Awake()
@@ -36,7 +37,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
         {
             sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
             audioManager.SetReservedMixer(sourceKey, 3);
-            audioManager.BindReserved(sourceKey, this.transform);
+            audioManager.BindReserved(sourceKey, transform);
             audioManager.PlayReserved(sourceKey);
         }
         currlife = maxLife;

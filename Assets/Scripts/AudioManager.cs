@@ -323,6 +323,7 @@ public class AudioManager : MonoBehaviour
         src.Stop();
         src.loop = false;
         src.gameObject.transform.SetParent(transform, false);
+        print("reserved sources: " + reserved_sources.Count);
     }
 
     public void StopReserved(int source_id)

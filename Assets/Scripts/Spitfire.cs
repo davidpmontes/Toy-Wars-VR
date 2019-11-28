@@ -111,7 +111,14 @@ public class Spitfire : MonoBehaviour, IEnemy
 
     private void DestroySelf()
     {
-        audioManager.UnbindReserved(cannonSource);
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+            sourceKey = -1;
+            audioManager.UnbindReserved(cannonSource);
+            cannonSource = -1;
+        }
+
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
         cinemachineDollyCart.enabled = false;
         rigidBody.isKinematic = false;
@@ -131,6 +138,8 @@ public class Spitfire : MonoBehaviour, IEnemy
             {
                 audioManager.UnbindReserved(sourceKey);
                 sourceKey = -1;
+                audioManager.UnbindReserved(cannonSource);
+                cannonSource = -1;
             }
 
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);

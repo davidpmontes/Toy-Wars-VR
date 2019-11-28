@@ -42,26 +42,23 @@ public class TVCamera : MonoBehaviour
         enemyCount.text = string.Format("{0}/12", EnemyManager.Instance.GetTotalEnemiesDeregistered());
     }
 
-    public void StopTimer()
+    public void FreezeTimer()
     {
         StopAllCoroutines();
     }
 
     IEnumerator Timer()
     {
-        timer = Time.time + 20;
-        while (timer > Time.time)
+        timer = Time.time + Level1Manager.Instance.POPUPTIMER_TIME_LIMIT;
+        while (true)
         {
-            timer -= Time.deltaTime;
-            if (timer <= 0)
+            if (timer <= Time.time)
             {
-                timer = 0;
                 timeRemaining.text = "00:00";
                 break;
             }
             timeRemaining.text = string.Format("{0:#.00}", timer - Time.time);
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
-        yield return null;
     }
 }

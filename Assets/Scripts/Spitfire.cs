@@ -81,8 +81,7 @@ public class Spitfire : MonoBehaviour, IEnemy
 
         currLife--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-        explosion.transform.position = position;
-        explosion.transform.GetComponent<Explosion>().Init();
+        explosion.transform.GetComponent<Explosion>().Init(position);
         explosion.SetActive(true);
 
         if (currLife <= 0)
@@ -143,8 +142,7 @@ public class Spitfire : MonoBehaviour, IEnemy
             }
 
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
-            explosion.transform.position = transform.position;
-            explosion.transform.GetComponent<Explosion>().Init();
+            explosion.transform.GetComponent<Explosion>().Init(transform.position);
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);

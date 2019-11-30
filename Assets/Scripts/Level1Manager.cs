@@ -220,17 +220,21 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 10)
             {
-                audioManager.ChangeBGM(BGM_Boss);
-                audioManager.StartBGM();
-                NarrateSequenceAndNextState(NarrationSequences4);
+                NextState(0);
             }
         }
         else if (state == 15) // Wave #2: Spitfires appear
         {
+            audioManager.ChangeBGM(BGM_Boss);
+            audioManager.StartBGM();
+            NarrateSequenceAndNextState(NarrationSequences4);
+        }
+        else if (state == 16) // Wave #2: Spitfires appear
+        {
             ActivateSpawner(zeppelin, 0);
             NextState(0);
         }
-        else if (state == 16) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 17) // Wave #2: Waiting for the Player to defeat all the targets
         {
 
         }

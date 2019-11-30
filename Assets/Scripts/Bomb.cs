@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
@@ -23,7 +21,7 @@ public class Bomb : MonoBehaviour
         }
 
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-        explosion.transform.position = transform.position;
+        explosion.transform.GetComponent<Explosion>().Init(transform.position);
         explosion.SetActive(true);
         ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }

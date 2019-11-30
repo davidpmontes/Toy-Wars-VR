@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e98f117f2500ca44a90d326ae88c51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 3
+  life: 3000000
 --- !u!1001 &2483368031635358057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,6 +118,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LifeBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 6022262143436536576, guid: 3be166b5c8adb96468c5397e30cfc984,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1769720221980211150, guid: 3be166b5c8adb96468c5397e30cfc984,
         type: 3}

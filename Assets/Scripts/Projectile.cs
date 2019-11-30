@@ -26,6 +26,11 @@ public class Projectile : MonoBehaviour, IProjectile
         {
             coinComponent.Init();
         }
+
+        if (collision.gameObject.TryGetComponent(out Soldier soldier))
+        {
+            soldier.Fratricide();
+        }
     }
 
 

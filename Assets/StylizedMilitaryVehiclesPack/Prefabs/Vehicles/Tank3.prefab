@@ -983,7 +983,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4545590229214924}
-  - component: {fileID: 5222499732487562974}
+  - component: {fileID: 8534782384747130739}
+  - component: {fileID: 80708468777577846}
   m_Layer: 0
   m_Name: Tank3
   m_TagString: Untagged
@@ -1027,8 +1028,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5222499732487562974
-BoxCollider:
+--- !u!64 &8534782384747130739
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1037,9 +1038,23 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.48, y: 3.13, z: 10.12}
-  m_Center: {x: 0, y: 1.56, z: 0}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
+--- !u!114 &80708468777577846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458464620896378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e98f117f2500ca44a90d326ae88c51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 3000000
 --- !u!1 &1463932632435660
 GameObject:
   m_ObjectHideFlags: 0

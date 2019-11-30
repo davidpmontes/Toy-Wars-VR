@@ -26,9 +26,11 @@ public class AudioManager : MonoBehaviour
     public float[] mixer_group_volume;
 
     private static AudioManager audioManager;
+    public static AudioManager Instance { get; private set; }
 
     void Awake()
     {
+        Instance = this;
         InitSources();
         InitBGM();
         InitNarration();

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4464782382882454}
   - component: {fileID: 33467662979575446}
   - component: {fileID: 23331250973749422}
-  - component: {fileID: 2958409918652510200}
   - component: {fileID: 4242049109116465518}
+  - component: {fileID: 6702221847052626881}
   m_Layer: 14
   m_Name: Tower
   m_TagString: Untagged
@@ -81,19 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2958409918652510200
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1154042086742874}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.489769, y: 12.248863, z: 6.489769}
-  m_Center: {x: 0, y: 6.0714216, z: 0}
 --- !u!114 &4242049109116465518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,7 +93,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e98f117f2500ca44a90d326ae88c51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 30
+  life: 3000000
+--- !u!64 &6702221847052626881
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154042086742874}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 732983e0a319f8347aa668ecdd07a125, type: 3}
 --- !u!1001 &3601141120920081542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -172,6 +173,11 @@ PrefabInstance:
     - target: {fileID: 1769720221980211150, guid: 3be166b5c8adb96468c5397e30cfc984,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180084194242317477, guid: 3be166b5c8adb96468c5397e30cfc984,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

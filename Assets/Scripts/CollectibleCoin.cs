@@ -16,10 +16,6 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
         target = GameObject.Find("CollectibleCoin").transform;
         
     }
-    void Start()
-    {
-        Init();
-    }
 
     public void Init()
     {
@@ -40,13 +36,8 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
                 if (transform.position == target.position)
                 {
                     reachedPlayer = true;
-                    StartCoroutine(ShowAndHideScore());
-                    if (coins.Count > 1)
-                    {
-                        //StopAllCoroutines();
-                        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-                    }
-                    
+
+                    StartCoroutine(HideCoinAfterTime());
                 }
             }
             else
@@ -58,22 +49,12 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
         }
     }
 
-    IEnumerator ShowAndHideScore()
+    IEnumerator HideCoinAfterTime()
     {
         ScoreScript.Instance.AddCollectiblesCount();
-        ScoreScript.Instance.UpdateCurrentCollectibleCount();
-        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(true);
-        coins.Dequeue();
-        yield return new WaitForSeconds(3);
-        
-        if(coins.Count == 0)
-        {
-            ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
-            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-        }
-        
 
+        yield return new WaitForSeconds(ScoreScript.Instance.GetCollectibleCountDuration());
+        
+        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }
-
-
 }

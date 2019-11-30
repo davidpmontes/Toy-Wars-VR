@@ -16,6 +16,8 @@ public class ScoreScript : MonoBehaviour
     private int shotsFired = 0;
     private int numberOfHits = 0;
     private int collectibleCount = 0;
+    private float collectibleTimer;
+    private float COLLECTIBLE_COUNT_DURATION = 3;
 
     private void Awake()
     {
@@ -29,6 +31,11 @@ public class ScoreScript : MonoBehaviour
         numberOfHitsText.text = string.Format("Number of hits: {0}", numberOfHits);
         hitMissRatioText.text = string.Format("Hit-miss ratio: {0} %", System.Math.Round(((double)numberOfHits / shotsFired), 2) * 100);
         finalCollectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
+    }
+
+    public float GetCollectibleCountDuration()
+    {
+        return COLLECTIBLE_COUNT_DURATION;
     }
 
     public void AddFinalScore(int newScoreValue)
@@ -50,15 +57,15 @@ public class ScoreScript : MonoBehaviour
     public void AddCollectiblesCount()
     {
         collectibleCount += 1;
-    }
-
-    public void UpdateCurrentCollectibleCount()
-    {
         currentCollectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
+
+        CancelInvoke("HideCollectiblesCount");
+        currentCollectedCollectibles.gameObject.SetActive(true);
+        Invoke("HideCollectiblesCount", COLLECTIBLE_COUNT_DURATION);
     }
 
-    public void SetCurrentCollectibleCountVisibility(bool value)
+    private void HideCollectiblesCount()
     {
-        currentCollectedCollectibles.gameObject.SetActive(value);
+        currentCollectedCollectibles.gameObject.SetActive(false);
     }
 }

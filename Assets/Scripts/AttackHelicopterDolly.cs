@@ -20,8 +20,6 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private int sourceKey = -1;
     private int cannonSource = -1;
 
-
-
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -33,6 +31,12 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     public void Init()
     {
+        BindAudio();
+        currlife = maxLife;
+    }
+
+    private void BindAudio()
+    {
         if (audioManager != null)
         {
             sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
@@ -40,7 +44,15 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
             audioManager.BindReserved(sourceKey, transform);
             audioManager.PlayReserved(sourceKey);
         }
-        currlife = maxLife;
+    }
+
+    private void UnbindAudio()
+    {
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+            sourceKey = -1;
+        }
     }
 
     private void Update()
@@ -94,11 +106,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     {
         if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-            }
+            UnbindAudio();
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.GetComponent<Explosion>().Init(transform.position);
             explosion.SetActive(true);
@@ -117,11 +125,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     {
         if (cinemachineDollyCart.m_Position > cinemachineDollyCart.m_Path.PathLength - 1)
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-            }
+            UnbindAudio();
             EnemyManager.Instance.DeregisterEnemyNoPoints(gameObject);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }

@@ -10,6 +10,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private Material material;
     [SerializeField] private Material red = default;
     [SerializeField] private GameObject target;
+    [SerializeField] private Transform barrel;
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private GameObject smoke;
@@ -150,10 +151,10 @@ public class Spitfire : MonoBehaviour, IEnemy
         for (int i = 0; i < repeat; i++)
         {
             audioManager.PlayReserved(cannonSource);
-            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
-            enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
+            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.YellowLaserMissile);
+            enemyBullet.GetComponent<LaserProjectile>().Init(barrel, target.transform.position - transform.position);
             enemyBullet.SetActive(true);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

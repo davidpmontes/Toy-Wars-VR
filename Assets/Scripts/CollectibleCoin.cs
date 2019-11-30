@@ -5,20 +5,15 @@ using UnityEngine;
 public class CollectibleCoin : MonoBehaviour, ICollectible
 {
     public float speed = 20.0f;
-    private Transform target;
+    [SerializeField] private Transform target;
     public int scoreValue;
     bool isCollected;
     bool reachedPlayer;
     static Queue<GameObject> coins = new Queue<GameObject>();
 
-    void Awake()
-    {
-        target = GameObject.Find("CollectibleCoin").transform;
-        
-    }
-
     public void Init()
     {
+        target = GameObject.Find("CollectibleCoin").transform;
         coins.Enqueue(gameObject);
         isCollected = true;
         reachedPlayer = false;

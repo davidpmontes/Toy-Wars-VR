@@ -58,7 +58,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private AudioManager audioManager;
 
-    public readonly float POPUPTIMER_TIME_LIMIT = 5;
+    public readonly float POPUPTIMER_TIME_LIMIT = 60;
     private float PopUpTargetEndTime;
 
     private void Awake()
@@ -80,6 +80,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void PopUpTargetTimerNotification()
     {
+        if (state >= 6)
+            return;
+
         GotoState(6, 0);
     }
 
@@ -150,6 +153,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 6) //Time fail
         {
+            CancelInvoke("PopUpTargetTimerNotification");
             popUpTargetEnemySpawner1.SetActive(false);
             popUpTargetEnemySpawner2.SetActive(false);
             popUpTargetEnemySpawner3.SetActive(false);

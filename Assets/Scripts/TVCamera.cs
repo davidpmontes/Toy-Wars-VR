@@ -27,7 +27,7 @@ public class TVCamera : MonoBehaviour
 
     public void ScreenOn()
     {
-        timeRemaining.text = "00:00";
+        timeRemaining.text = "60:00";
         enemyCount.text = "0/12";
     }
 

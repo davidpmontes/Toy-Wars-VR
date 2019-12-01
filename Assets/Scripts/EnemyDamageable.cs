@@ -11,6 +11,8 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
     [SerializeField] private GameObject[] blownOffParts = default;
     [SerializeField] private GameObject firePoint = default;
 
+    private bool vulnerability = true;
+
     private void Awake()
     {
         originalMaterials = new Material[meshRenderers.Length];
@@ -67,7 +69,7 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
     {
     }
 
-    private void DestroySelf()
+    virtual public void DestroySelf()
     {
         for (int i = 0; i < blownOffParts.Length; i++)
         {
@@ -83,5 +85,15 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
+    }
+
+    public bool IsVulnerable()
+    {
+        return vulnerability;
+    }
+
+    public void SetVulnerability(bool value)
+    {
+        vulnerability = value;
     }
 }

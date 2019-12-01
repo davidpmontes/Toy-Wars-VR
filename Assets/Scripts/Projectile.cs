@@ -16,6 +16,9 @@ public class Projectile : MonoBehaviour, IProjectile
     {
         if (collision.gameObject.TryGetComponent(out IEnemy component))
         {
+            if (!component.IsVulnerable())
+                return;
+
             ScoreScript.Instance.AddNumberOfHits();
             component.DamageEnemy(transform.position);
             CancelInvoke();

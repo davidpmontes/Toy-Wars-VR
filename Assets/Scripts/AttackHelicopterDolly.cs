@@ -152,6 +152,14 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     public void DestroyEnemy()
     {
-        throw new System.NotImplementedException();
+    }
+
+    public bool IsVulnerable()
+    {
+        return true;
+    }
+
+    public void SetVulnerability(bool value)
+    {
     }
 }

@@ -260,9 +260,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             //controlled by zeppelin
         }
-
         else if (state == 20)
         {
+            NextState(2);
+        }
+        else if (state == 21)
+        {
+            audioManager.ChangeBGM(BGM_Win);
+            audioManager.StartBGM();
             playerStatistics.SetActive(true);
             thanksForPlayingOurDemo.SetActive(true);
         }
@@ -311,5 +316,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         yield return new WaitForSeconds(time);
         state = newState;
         UpdateState();
+    }
+
+    public void ZeppelinDestroyed()
+    {
+        GotoState(20, 0);
     }
 }

@@ -38,12 +38,15 @@ public class TurretCannonV2 : MonoBehaviour, ICameraRelocate
         {
             leftCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
             audioManager.BindReserved(leftCannonSource, barrelLeftTip);
+            audioManager.SetReservedMixer(leftCannonSource, 2);
         }
 
         if (rightCannonSource < 0)
         {
             rightCannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
             audioManager.BindReserved(rightCannonSource, barrelRightTip);
+            audioManager.SetReservedMixer(rightCannonSource, 2);
+
         }
     }
 

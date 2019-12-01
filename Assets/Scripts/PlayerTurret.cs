@@ -36,12 +36,17 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
         }
     }
 
-    public void SetWeapon(string value)
+    public void ToggleWeapon()
     {
-        if (value == "laser")
+        if (pingpong.enabled)
         {
             pingpong.enabled = false;
             laserCannon.enabled = true;
+        }
+        else
+        {
+            pingpong.enabled = true;
+            laserCannon.enabled = false;
         }
     }
 

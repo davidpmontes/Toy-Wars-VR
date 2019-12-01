@@ -28,6 +28,18 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
         AudioManager.Instance.StartBGM();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+    }
     public void PlayButtonClicked()
     {
         Invoke("PlayGameInTime", 1);

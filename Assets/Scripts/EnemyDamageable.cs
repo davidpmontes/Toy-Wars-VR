@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyDamageable : MonoBehaviour, IEnemy
 {
-    private float life = 3;
+    [SerializeField] private float life = default;
 
     [SerializeField] private MeshRenderer[] meshRenderers = default;
     [SerializeField] private Material[] originalMaterials = default;
@@ -32,18 +32,20 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 
         life--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+        explosion.transform.GetComponent<Explosion>().Init(transform.position);
         explosion.transform.position = position;
         explosion.SetActive(true);
 
         if (life <= 0)
         {
-            //EnemyManager.Instance.DeregisterEnemy(gameObject);
+            Zeppelin.Instance.PartDestroyed(gameObject);
             DestroySelf();
         }
         else
         {
             StartCoroutine(DamageFlash());
         }
+        Zeppelin.Instance.TakeDamage();
     }
 
     IEnumerator DamageFlash()
@@ -63,7 +65,6 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 
     public void DestroyEnemy()
     {
-        throw new System.NotImplementedException();
     }
 
     private void DestroySelf()

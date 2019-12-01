@@ -17,6 +17,16 @@ public class ZeppelinBomber : MonoBehaviour
         InvokeRepeating("Cycle", 0, 10);
     }
 
+    public void StopCycle()
+    {
+        CancelInvoke();
+        for (int i = 0; i < bombs.Count; i++)
+        {
+            StartCoroutine(DropBombDelayed(bombs[i], 0));
+        }
+        bombs.Clear();
+    }
+
     private void Cycle()
     {
         LoadBombs();

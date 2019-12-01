@@ -7,6 +7,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public int state;
 
+    [SerializeField] GameObject ZeppelinSpawner = default;
+
     [SerializeField] GameObject popUpTargetEnemySpawner1 = default;
     [SerializeField] GameObject popUpTargetEnemySpawner2 = default;
     [SerializeField] GameObject popUpTargetEnemySpawner3 = default;
@@ -22,8 +24,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly4 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly5 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly6 = default;
-
-    [SerializeField] GameObject zeppelin = default;
 
     [SerializeField] AudioClip[] sound_effects = default;
 
@@ -44,10 +44,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] AudioClip[] NarrationSequences2 = default;
     [SerializeField] AudioClip[] NarrationSequences3 = default;
-
-    [SerializeField] AudioClip ILoveTheSmellOfOrangeJuiceInTheMorning = default;
-
     [SerializeField] AudioClip[] NarrationSequences4 = default;
+    [SerializeField] AudioClip[] NarrationSequences5 = default;
 
     [SerializeField] AudioClip BGM_PopUpTargets = default;
     [SerializeField] AudioClip BGM_Action = default;
@@ -236,22 +234,25 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         {
             NextState(2);
         }
-        else if (state == 16) // Wave #2: Spitfires appear
+        else if (state == 16)
         {
             audioManager.ChangeBGM(BGM_Boss);
             audioManager.StartBGM();
             NarrateSequenceAndNextState(NarrationSequences4);
         }
-        else if (state == 17) // Wave #2: Spitfires appear
+        else if (state == 17)
         {
-            ActivateSpawner(zeppelin, 0);
-            NextState(0);
+            ActivateSpawner(ZeppelinSpawner, 0);
+            NextState(6);
         }
-        else if (state == 18) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 18)
         {
-
+            NarrateSequenceAndNextState(NarrationSequences5);
         }
-
+        else if (state == 19)
+        {
+            //controlled by zeppelin
+        }
 
         else if (state == 20)
         {
@@ -269,6 +270,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         yield return new WaitForSeconds(time);
         spawner.SetActive(true);
+        spawner.GetComponent<IEnemySpawner>().Init();
     }
 
     private void NextState(float time)

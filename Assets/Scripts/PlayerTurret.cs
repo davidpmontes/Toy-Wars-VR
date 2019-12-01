@@ -7,6 +7,13 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
     [SerializeField] private GameObject Rotateable = default;
     [SerializeField] private GameObject Tiltable = default;
     [SerializeField] private Transform cameraPosition = default;
+    [SerializeField] private TurretCannonV2 pingpong = default;
+    [SerializeField] private LaserCannon laserCannon = default;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Update()
     {
@@ -26,6 +33,15 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
 
             Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation, rotateableLookRotation, Time.deltaTime * 10);
             Tiltable.transform.rotation = Quaternion.Slerp(Tiltable.transform.rotation, tiltableLookRotation, Time.deltaTime * 10);
+        }
+    }
+
+    public void SetWeapon(string value)
+    {
+        if (value == "laser")
+        {
+            pingpong.enabled = false;
+            laserCannon.enabled = true;
         }
     }
 

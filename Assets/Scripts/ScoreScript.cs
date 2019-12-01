@@ -41,7 +41,7 @@ public class ScoreScript : MonoBehaviour
     public void AddCollectiblesCount()
     {
         collectibleCount += 1;
-        currentCollectedCollectibles.text = string.Format("{0} / 5", collectibleCount);
+        currentCollectedCollectibles.text = string.Format("{0}", collectibleCount);
 
         CancelInvoke("HideCollectiblesCount");
         currentCollectedCollectibles.gameObject.SetActive(true);

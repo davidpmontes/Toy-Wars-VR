@@ -262,7 +262,6 @@ public class AudioManager : MonoBehaviour
         src.spatialBlend = spacial_blend;
         src.loop = looping;
         reserved_sources.Add(src);
-        //print("reserved sources: " + reserved_sources.Count);
         return index;
     }
 

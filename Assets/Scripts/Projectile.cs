@@ -35,12 +35,6 @@ public class Projectile : MonoBehaviour, IProjectile
         }
     }
 
-
-    private void OnEnable()
-    {
-        Invoke("Deactivate", lifespan);
-    }
-
     void Deactivate()
     {
         ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
@@ -51,5 +45,6 @@ public class Projectile : MonoBehaviour, IProjectile
         transform.position = t.position;
         transform.rotation = t.rotation;
         rb.velocity = direction * speed;
+        Invoke("Deactivate", lifespan);
     }
 }

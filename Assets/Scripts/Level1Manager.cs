@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level1Manager : MonoBehaviour, ILevelManager
 {
@@ -66,6 +67,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         Instance = this;
         audioManager = AudioManager.GetAudioManager();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     void Start()
@@ -185,15 +194,19 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 8)
         {
             audioManager.PlayNarration(BaseWarning);
-            NextState(5);
+            NextState(2);
         }
-        else if (state == 9) // Wave #1: Narration
+        else if (state == 9)
         {
-            NarrateSequenceAndNextState(NarrationSequences2);
             audioManager.ChangeBGM(BGM_Action);
             audioManager.StartBGM();
+            NextState(2);
         }
-        else if (state == 10) // Wave #1: Attack Helicopters appear
+        else if (state == 10)
+        {
+            NarrateSequenceAndNextState(NarrationSequences2);
+        }
+        else if (state == 11)
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1_1, 2);
@@ -204,19 +217,19 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2_1, 12);
             NextState(0);
         }
-        else if (state == 11)
+        else if (state == 12)
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
                 NextState(0);
             }
         }
-        else if (state == 12)
+        else if (state == 13)
         {
             EnemyManager.Instance.ResetTotalEnemiesDeregistered();
             NarrateSequenceAndNextState(NarrationSequences3); //"Sir the enemy has regrouped..."
         }
-        else if (state == 13) // Wave #2: Spitfires appear
+        else if (state == 14) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
             ActivateSpawner(spitfireEnemySpawnerDolly2, 1.5f);
@@ -225,25 +238,26 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 18);
             NextState(0);
         }
-        else if (state == 14) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 15) // Wave #2: Waiting for the Player to defeat all the targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 11)
             {
                 NextState(0);
             }
         }
-        else if (state == 15)
+        else if (state == 16)
         {
             NextState(2);
         }
-        else if (state == 16)
+        else if (state == 17)
         {
             audioManager.ChangeBGM(BGM_Boss);
             audioManager.StartBGM();
             NarrateSequenceAndNextState(NarrationSequences4);
         }
-        else if (state == 17)
+        else if (state == 18)
         {
+            PlayerTurret.Instance.SetWeapon("laser");
             ActivateSpawner(ZeppelinSpawner, 0);
 
             Invoke("DestroyWindow", 0);
@@ -252,19 +266,19 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
             NextState(6);
         }
-        else if (state == 18)
+        else if (state == 19)
         {
             NarrateSequenceAndNextState(NarrationSequences5);
         }
-        else if (state == 19)
+        else if (state == 20)
         {
             //controlled by zeppelin
         }
-        else if (state == 20)
+        else if (state == 21)
         {
             NextState(2);
         }
-        else if (state == 21)
+        else if (state == 22)
         {
             audioManager.ChangeBGM(BGM_Win);
             audioManager.StartBGM();
@@ -319,6 +333,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public void ZeppelinDestroyed()
     {
-        GotoState(20, 0);
+        GotoState(21, 0);
     }
 }

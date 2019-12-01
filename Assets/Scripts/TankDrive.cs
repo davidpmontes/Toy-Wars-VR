@@ -2,6 +2,10 @@
 using Valve.VR;
 public enum DriveScheme {FreeTurret, lockedTurret}
 
+/**List of needed assets for tank room:
+ * Light Switch, Gameboy?, TV?, fireworks?, gate hinge?, chain link fence?, general metal clang?
+ * **/
+
 public class TankDrive : MonoBehaviour, ICameraRelocate
 {
     public SteamVR_Action_Vector2 TouchPadPosition;

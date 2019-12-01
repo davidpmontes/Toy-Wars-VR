@@ -12,7 +12,7 @@ public class MenuSelector : MonoBehaviour
     private string buttonDownName;
 
     public Animator PlayButton;
-    public Animator QuitButton;
+    //public Animator QuitButton;
     private AudioManager audioManager;
 
     private void Start()
@@ -56,17 +56,17 @@ public class MenuSelector : MonoBehaviour
                     MainMenuManager.Instance.PlayButtonClicked();
                     enabled = false;
                 }
-                else if (buttonDownName == "QuitButton")
-                {
-                    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-                    explode.transform.position = QuitButton.gameObject.transform.position;
-                    explode.transform.localScale = Vector3.one * 0.5f;
-                    explode.SetActive(true);
-                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
-                    //QuitButton.gameObject.SetActive(false);
-                    //MainMenuManager.Instance.QuitButtonClicked();
-                    //enabled = false;
-                }
+                //else if (buttonDownName == "QuitButton")
+                //{
+                //    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+                //    explode.transform.position = QuitButton.gameObject.transform.position;
+                //    explode.transform.localScale = Vector3.one * 0.5f;
+                //    explode.SetActive(true);
+                //    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
+                //    //QuitButton.gameObject.SetActive(false);
+                //    //MainMenuManager.Instance.QuitButtonClicked();
+                //    //enabled = false;
+                //}
             }
             buttonDownName = "None";
         }
@@ -87,17 +87,17 @@ public class MenuSelector : MonoBehaviour
                     PlayButton.Play("Hover");
                 }
 
-                if (obj.name == "QuitButton")
-                {
-                    QuitButton.Play("Hover");
-                }
+                //if (obj.name == "QuitButton")
+                //{
+                //    QuitButton.Play("Hover");
+                //}
 
                 return;
             }
         }
 
         PlayButton.Play("Idle");
-        QuitButton.Play("Idle");
+        //QuitButton.Play("Idle");
         currentButtonName = "None";
     }
 }

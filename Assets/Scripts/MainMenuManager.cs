@@ -6,6 +6,7 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
 
     private AudioManager audioManager;
     [SerializeField] private AudioClip[] sound_effects = default;
+    [SerializeField] AudioClip BGM_MainMenu = default;
 
     public static MainMenuManager Instance { get; private set; }
     private void Awake()
@@ -19,15 +20,12 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
         fx = sound_effects;
     }
 
-    public void UpdateState()
-    {
-
-    }
-
     void Start()
     {
         QualitySettings.shadowDistance = 10;
         SetCameraToMainMenu();
+        AudioManager.Instance.ChangeBGM(BGM_MainMenu);
+        AudioManager.Instance.StartBGM();
     }
 
     public void PlayButtonClicked()
@@ -48,5 +46,9 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
     private void PlayGameInTime()
     {
         SceneManager.LoadScene("Level1");
+    }
+
+    public void UpdateState()
+    {
     }
 }

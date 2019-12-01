@@ -12,7 +12,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject popUpTargetEnemySpawner3 = default;
 
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly3 = default;
 
     [SerializeField] GameObject spitfireEnemySpawnerDolly1 = default;
@@ -47,7 +49,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] AudioClip[] NarrationSequences4 = default;
 
-    [SerializeField] AudioClip BGM_MainMenu = default;
     [SerializeField] AudioClip BGM_PopUpTargets = default;
     [SerializeField] AudioClip BGM_Action = default;
     [SerializeField] AudioClip BGM_Boss = default;
@@ -195,13 +196,17 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 10) // Wave #1: Attack Helicopters appear
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly1_1, 2);
+
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 11);
+
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly2_1, 12);
             NextState(0);
         }
         else if (state == 11)
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 9)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
                 NextState(0);
             }

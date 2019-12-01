@@ -18,7 +18,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     [SerializeField] private GameObject target;
 
     private int sourceKey = -1;
-    private int cannonSource = -1;
+    //private int cannonSource = -1;
 
     private void Awake()
     {
@@ -48,7 +48,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     private void UnbindAudio()
     {
-        if (audioManager != null)
+        if (audioManager != null && sourceKey == -1)
         {
             audioManager.UnbindReserved(sourceKey);
             sourceKey = -1;
@@ -142,7 +142,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
         for (int i = 0; i < repeat; i++)
         {
-            audioManager.PlayReserved(cannonSource);
+            //audioManager.PlayReserved(cannonSource);
             var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
             enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
             enemyBullet.SetActive(true);

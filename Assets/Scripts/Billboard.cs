@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    public float repeatRate;
-
-    private void Start()
+    private void Update()
     {
-        InvokeRepeating("LookAtCamera", 0, repeatRate);
+        LookAtCamera();
     }
 
     private void LookAtCamera()

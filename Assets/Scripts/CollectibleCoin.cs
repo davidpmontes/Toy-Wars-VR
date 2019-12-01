@@ -5,24 +5,15 @@ using UnityEngine;
 public class CollectibleCoin : MonoBehaviour, ICollectible
 {
     public float speed = 20.0f;
-    private Transform target;
+    [SerializeField] private Transform target;
     public int scoreValue;
     bool isCollected;
     bool reachedPlayer;
     static Queue<GameObject> coins = new Queue<GameObject>();
 
-    void Awake()
-    {
-        target = GameObject.Find("CollectibleCoin").transform;
-        
-    }
-    void Start()
-    {
-        Init();
-    }
-
     public void Init()
     {
+        target = GameObject.Find("CollectibleCoin").transform;
         coins.Enqueue(gameObject);
         isCollected = true;
         reachedPlayer = false;
@@ -40,13 +31,8 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
                 if (transform.position == target.position)
                 {
                     reachedPlayer = true;
-                    StartCoroutine(ShowAndHideScore());
-                    if (coins.Count > 1)
-                    {
-                        //StopAllCoroutines();
-                        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-                    }
-                    
+
+                    StartCoroutine(HideCoinAfterTime());
                 }
             }
             else
@@ -58,22 +44,12 @@ public class CollectibleCoin : MonoBehaviour, ICollectible
         }
     }
 
-    IEnumerator ShowAndHideScore()
+    IEnumerator HideCoinAfterTime()
     {
         ScoreScript.Instance.AddCollectiblesCount();
-        ScoreScript.Instance.UpdateCurrentCollectibleCount();
-        ScoreScript.Instance.SetCurrentCollectibleCountVisibility(true);
-        coins.Dequeue();
-        yield return new WaitForSeconds(3);
-        
-        if(coins.Count == 0)
-        {
-            ScoreScript.Instance.SetCurrentCollectibleCountVisibility(false);
-            ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
-        }
-        
 
+        yield return new WaitForSeconds(ScoreScript.Instance.GetCollectibleCountDuration());
+        
+        ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
     }
-
-
 }

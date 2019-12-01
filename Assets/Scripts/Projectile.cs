@@ -16,7 +16,9 @@ public class Projectile : MonoBehaviour, IProjectile
     {
         if (collision.gameObject.TryGetComponent(out IEnemy component))
         {
-            ScoreScript.Instance.AddNumberOfHits();
+            if (!component.IsVulnerable())
+                return;
+
             component.DamageEnemy(transform.position);
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
@@ -26,12 +28,11 @@ public class Projectile : MonoBehaviour, IProjectile
         {
             coinComponent.Init();
         }
-    }
 
-
-    private void OnEnable()
-    {
-        Invoke("Deactivate", lifespan);
+        if (collision.gameObject.TryGetComponent(out Soldier soldier))
+        {
+            soldier.Fratricide();
+        }
     }
 
     void Deactivate()
@@ -44,5 +45,6 @@ public class Projectile : MonoBehaviour, IProjectile
         transform.position = t.position;
         transform.rotation = t.rotation;
         rb.velocity = direction * speed;
+        Invoke("Deactivate", lifespan);
     }
 }

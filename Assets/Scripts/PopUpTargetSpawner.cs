@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 
-public class PopUpTargetSpawner : MonoBehaviour
+public class PopUpTargetSpawner : MonoBehaviour, IEnemySpawner
 {
-    void Start()
+    public void Init()
+    {
+        Spawn();
+    }
+
+    private void Spawn()
     {
         for(int i = 0; i < transform.childCount; i++)
         {

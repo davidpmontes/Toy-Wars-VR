@@ -5,6 +5,7 @@ public class ZeppelinMachineGun : MonoBehaviour
 {
     [SerializeField] private GameObject target = default;
     [SerializeField] private ParticleSystem flash = default;
+    [SerializeField] private Transform barrel = default;
     private bool targetAcquired;
     private bool newTargetSelected;
 
@@ -59,8 +60,19 @@ public class ZeppelinMachineGun : MonoBehaviour
         while (Time.time < endTime)
         {
             flash.Play();
+            AudioManager.GetAudioManager().PlayOneshot("big one", transform.position);
+
+            var laser = ObjectPool.Instance.GetFromPoolInactive(Pools.RedLaserMissile);
+            laser.transform.rotation = Quaternion.identity;
+            Vector3 direction = barrel.forward.normalized;
+            laser.GetComponent<IProjectile>().Init(barrel, direction.normalized);
+            laser.SetActive(true);
+
             yield return new WaitForSeconds(0.3f);
         }
+
+        //idle time between cannon volleys
+        yield return new WaitForSeconds(5);
 
         target = BaseAssetManager.Instance.GetRandomHiddenBaseTarget();
         newTargetSelected = true;

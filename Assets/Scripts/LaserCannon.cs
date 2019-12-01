@@ -72,7 +72,6 @@ public class LaserCannon : MonoBehaviour
         if (!enabled)
             return;
 
-        ScoreScript.Instance.AddShotsFired();
         audioManager.PlayReserved(leftCannonSource);
         var laser = ObjectPool.Instance.GetFromPoolInactive(Pools.BlueLaserMissile);
         laser.transform.rotation = Quaternion.identity;
@@ -89,7 +88,6 @@ public class LaserCannon : MonoBehaviour
         if (!enabled)
             return;
 
-        ScoreScript.Instance.AddShotsFired();
         audioManager.PlayReserved(rightCannonSource);
         var laser = ObjectPool.Instance.GetFromPoolInactive(Pools.BlueLaserMissile);
         laser.transform.rotation = Quaternion.identity;

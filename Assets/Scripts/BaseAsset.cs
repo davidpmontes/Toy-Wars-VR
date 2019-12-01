@@ -13,10 +13,10 @@ public class BaseAsset : MonoBehaviour, IBaseAsset
 
     public void TakeDamage(Vector3 position)
     {
-        life--;
+        //life--;
         //lifeBar.ReduceLife(1);
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-        explosion.transform.position = position;
+        explosion.transform.GetComponent<Explosion>().Init(position);
         explosion.SetActive(true);
 
         if (life <= 0)

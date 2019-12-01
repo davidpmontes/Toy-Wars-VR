@@ -11,6 +11,8 @@ public enum SOLDIER_TYPE
 
 public class Soldier : MonoBehaviour
 {
+    private string[] phrases = { "SoldierOw", "SoldierStopThat", "SoldierWatchYourFire"};
+
     private NavMeshAgent navMeshAgent;
     private UnityAction action;
     private int currIndex;
@@ -18,6 +20,7 @@ public class Soldier : MonoBehaviour
     public SOLDIER_TYPE type;
     private int state = 0;
     private Animator animator;
+    private float fratricideTimer;
 
     private void Awake()
     {
@@ -43,6 +46,17 @@ public class Soldier : MonoBehaviour
     void Update()
     {
         action();
+    }
+
+    public void Fratricide()
+    {
+        // AudioManager.Instance.PlayNarration(phrases[Random.Range(0, 3)]);
+        if (fratricideTimer < Time.time)
+            fratricideTimer = Time.time + 1;
+        else
+            return;
+
+        AudioManager.Instance.PlayOneshot(phrases[Random.Range(0, phrases.Length)], transform.position);
     }
 
     private void TowerGuardAction()

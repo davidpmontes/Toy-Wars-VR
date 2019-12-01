@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LifeBar : MonoBehaviour
@@ -12,11 +11,13 @@ public class LifeBar : MonoBehaviour
 
     private float MaxLife;
     private float CurrLife;
+    [SerializeField] GameObject visibleBar;
 
     public void SetMaxLifeAndCurrLife(float value)
     {
         MaxLife = value;
         CurrLife = value;
+        visibleBar.SetActive(false);
     }
 
     public void ReduceLife(float value)
@@ -44,6 +45,8 @@ public class LifeBar : MonoBehaviour
             CurrLife = 0;
         }
         UpdateInnerBar();
+        StopAllCoroutines();
+        StartCoroutine(RevealTemporarily());
     }
 
     private void UpdateInnerBar()
@@ -51,5 +54,12 @@ public class LifeBar : MonoBehaviour
         var scale = innerParent.transform.localScale;
         scale.y = CurrLife / MaxLife;
         innerParent.transform.localScale = scale;
+    }
+
+    IEnumerator RevealTemporarily()
+    {
+        visibleBar.SetActive(true);
+        yield return new WaitForSeconds(3);
+        visibleBar.SetActive(false);
     }
 }

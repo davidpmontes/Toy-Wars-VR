@@ -2,14 +2,16 @@
 using Cinemachine;
 using System.Collections;
 
-public class SpitfireSpawner : MonoBehaviour
+public class SpitfireSpawner : MonoBehaviour, IEnemySpawner
 {
     [SerializeField] CinemachineSmoothPath path = default;
-    void Start()
+    public int numberOfEnemies;
+
+    public void Init()
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < numberOfEnemies; i++)
         {
-            StartCoroutine(Spawn(i * 2));
+            StartCoroutine(Spawn(i * 3));
         }
     }
 

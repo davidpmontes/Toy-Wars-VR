@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level1Manager : MonoBehaviour, ILevelManager
 {
@@ -7,12 +8,18 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public int state;
 
+    [SerializeField] GameObject BedroomWindow = default;
+
+    [SerializeField] GameObject ZeppelinSpawner = default;
+
     [SerializeField] GameObject popUpTargetEnemySpawner1 = default;
     [SerializeField] GameObject popUpTargetEnemySpawner2 = default;
     [SerializeField] GameObject popUpTargetEnemySpawner3 = default;
 
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly3 = default;
 
     [SerializeField] GameObject spitfireEnemySpawnerDolly1 = default;
@@ -21,14 +28,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly5 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly6 = default;
 
-    [SerializeField] GameObject zeppelin = default;
-
     [SerializeField] AudioClip[] sound_effects = default;
 
     [SerializeField] GameObject playerStatistics = default;
     [SerializeField] GameObject thanksForPlayingOurDemo = default;
 
     [SerializeField] AudioClip[] NarrationSequences1 = default;
+    [SerializeField] AudioClip[] NarrationSequences1_1 = default;
+
 
     [SerializeField] AudioClip PrettyEasyWhenTheyDontShootBack = default;
     [SerializeField] AudioClip YouveGotSomeSkills = default;
@@ -40,28 +47,39 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] AudioClip[] NarrationSequences2 = default;
     [SerializeField] AudioClip[] NarrationSequences3 = default;
-
-    [SerializeField] AudioClip ILoveTheSmellOfOrangeJuiceInTheMorning = default;
-
     [SerializeField] AudioClip[] NarrationSequences4 = default;
+    [SerializeField] AudioClip[] NarrationSequences5 = default;
 
-    [SerializeField] AudioClip BGM_MainMenu = default;
     [SerializeField] AudioClip BGM_PopUpTargets = default;
     [SerializeField] AudioClip BGM_Action = default;
     [SerializeField] AudioClip BGM_Boss = default;
     [SerializeField] AudioClip BGM_Win = default;
 
+    [SerializeField] AudioClip BaseWarning = default;
 
 
     private AudioManager audioManager;
 
-    private readonly float POPUPTIMER_TIME_LIMIT = 10;
+    public readonly float POPUPTIMER_TIME_LIMIT = 30;
     private float PopUpTargetEndTime;
 
     private void Awake()
     {
         Instance = this;
         audioManager = AudioManager.GetAudioManager();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            PlayerTurret.Instance.ToggleWeapon();
+        }
     }
 
     void Start()
@@ -77,30 +95,25 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void PopUpTargetTimerNotification()
     {
-        GotoState(5, 0);
+        if (state >= 6)
+            return;
+
+        GotoState(6, 0);
     }
 
-    private void NarrateSequenceAndNextState(AudioClip[] clips, float delay, int nextState)
+    private void NarrateSequenceAndNextState(AudioClip[] clips)
     {
-        StartCoroutine(NarrateSequenceAndNextStateCR(clips, delay, nextState));
+        StartCoroutine(NarrateSequenceAndNextStateCR(clips));
     }
 
-    IEnumerator NarrateSequenceAndNextStateCR(AudioClip[] clips, float delay, int nextState)
+    IEnumerator NarrateSequenceAndNextStateCR(AudioClip[] clips)
     {
-        int length = clips.Length;
         for (int i = 0; i < clips.Length; i++)
         {
             audioManager.PlayNarration(clips[i]);
-            if (i != length - 1)
-            {
-                yield return new WaitForSeconds(clips[i].length);
-            }
-            else
-            {
-                yield return new WaitForSeconds(clips[i].length + delay);
-            }
+            yield return new WaitForSeconds(clips[i].length);
         }
-        NextState(nextState);
+        NextState(0);
     }
 
     public void UpdateState()
@@ -113,19 +126,23 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 0) //Opening scene, audio introduction
         {
-            NarrateSequenceAndNextState(NarrationSequences1, 0.2f, state + 1);
+            NarrateSequenceAndNextState(NarrationSequences1);
         }
-        else if (state == 1) //pop up first set of 4 targets
+        else if (state == 1) //Opening scene, audio introduction
         {
-            audioManager.ChangeBGM(BGM_PopUpTargets);
-
+            TVCamera.Instance.ScreenOn();
+            NarrateSequenceAndNextState(NarrationSequences1_1);
+        }
+        else if (state == 2) //pop up first set of 4 targets
+        {
             PopUpTargetEndTime = Time.time + POPUPTIMER_TIME_LIMIT;
+            TVCamera.Instance.StartTimer();
             Invoke("PopUpTargetTimerNotification", POPUPTIMER_TIME_LIMIT);
 
             popUpTargetEnemySpawner1.SetActive(true);
             NextState(0);
         }
-        else if (state == 2) //pop up second set of 4 targets
+        else if (state == 3) //pop up second set of 4 targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 4)
             {
@@ -133,7 +150,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(0);
             }
         }
-        else if (state == 3) //pop up third set of 4 targets
+        else if (state == 4) //pop up third set of 4 targets
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
@@ -141,15 +158,17 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 NextState(0);
             }
         }
-        else if (state == 4) //All targets defeated or time expires
+        else if (state == 5) //All targets defeated or time expires
         {
             if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 12)
             {
-                NarrateSequenceAndNextState(NarrationSequences2, 0.2f, state + 1);
+                TVCamera.Instance.FreezeTimer();
+                NextState(0);
             }
         }
-        else if (state == 5) //Time fail
+        else if (state == 6) //Time fail
         {
+            CancelInvoke("PopUpTargetTimerNotification");
             popUpTargetEnemySpawner1.SetActive(false);
             popUpTargetEnemySpawner2.SetActive(false);
             popUpTargetEnemySpawner3.SetActive(false);
@@ -169,65 +188,116 @@ public class Level1Manager : MonoBehaviour, ILevelManager
                 audioManager.PlayNarration(YouMustPlayALotOfFortnite);
                 NextState(YouMustPlayALotOfFortnite.length + 1);
             }
-
+            
             EnemyManager.Instance.ResetTotalEnemiesDeregistered();
         }
-
-        else if (state == 6) // Wave #1: Narration
+        else if (state == 7)
+        {
+            NextState(1);
+            TVCamera.Instance.Screenoff();
+        }
+        else if (state == 8)
+        {
+            audioManager.PlayNarration(BaseWarning);
+            NextState(2);
+        }
+        else if (state == 9)
         {
             audioManager.ChangeBGM(BGM_Action);
             audioManager.StartBGM();
-            NarrateSequenceAndNextState(NarrationSequences2, 0.2f, state + 1);
+            NextState(2);
         }
-        else if (state == 7) // Wave #1: Attack Helicopters appear
+        else if (state == 10)
+        {
+            NarrateSequenceAndNextState(NarrationSequences2);
+        }
+        else if (state == 11)
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly1_1, 2);
+
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 11);
+
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly2_1, 12);
             NextState(0);
         }
-        else if (state == 8) // Wave #1: Waiting for the Player to defeat all the targets && Wave #2: Narration
+        else if (state == 12)
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 9)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
-                EnemyManager.Instance.ResetTotalEnemiesDeregistered();
-                NarrateSequenceAndNextState(NarrationSequences3, 0.2f, state + 1);
+                NextState(0);
             }
         }
-        else if (state == 9) // Wave #2: Spitfires appear
+        else if (state == 13)
+        {
+            EnemyManager.Instance.ResetTotalEnemiesDeregistered();
+            NarrateSequenceAndNextState(NarrationSequences3); //"Sir the enemy has regrouped..."
+        }
+        else if (state == 14) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
-            ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly4, 13);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly5, 12);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
+            ActivateSpawner(spitfireEnemySpawnerDolly2, 1.5f);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly4, 23);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly5, 21);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 18);
             NextState(0);
         }
-        else if (state == 10) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 15) // Wave #2: Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 10)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 11)
             {
-                audioManager.ChangeBGM(BGM_Boss);
-                audioManager.StartBGM();
-                NarrateSequenceAndNextState(NarrationSequences4, 0.2f, state + 1);
+                NextState(0);
             }
         }
-        else if (state == 11) // Wave #2: Spitfires appear
+        else if (state == 16)
         {
-            ActivateSpawner(zeppelin, 0);
-            NextState(0);
+            NextState(2);
         }
-        else if (state == 12) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 17)
         {
-
+            audioManager.ChangeBGM(BGM_Boss);
+            audioManager.StartBGM();
+            NarrateSequenceAndNextState(NarrationSequences4);
         }
+        else if (state == 18)
+        {
+            //PlayerTurret.Instance.SetWeapon("laser");
+            ActivateSpawner(ZeppelinSpawner, 0);
 
+            Invoke("DestroyWindow", 0);
+            Invoke("DestroyWindow", 0.1f);
+            Invoke("DestroyWindow", 0.2f);
 
+            NextState(6);
+        }
+        else if (state == 19)
+        {
+            NarrateSequenceAndNextState(NarrationSequences5);
+        }
         else if (state == 20)
         {
-            playerStatistics.SetActive(true);
-            thanksForPlayingOurDemo.SetActive(true);
+            //controlled by zeppelin
         }
+        else if (state == 21)
+        {
+            NextState(2);
+        }
+        else if (state == 22)
+        {
+            audioManager.ChangeBGM(BGM_Win);
+            audioManager.StartBGM();
+            playerStatistics.SetActive(true);
+        }
+    }
+
+    private void DestroyWindow()
+    {
+        BedroomWindow.SetActive(false);
+        var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.YellowFireImpactV2);
+        explosion.transform.localScale = Vector3.one * 50;
+        explosion.GetComponent<Explosion>().Init(BedroomWindow.transform.position + Random.insideUnitSphere * 30);
+        explosion.SetActive(true);
     }
 
     private void ActivateSpawner(GameObject spawner, float time)
@@ -239,6 +309,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         yield return new WaitForSeconds(time);
         spawner.SetActive(true);
+        spawner.GetComponent<IEnemySpawner>().Init();
     }
 
     private void NextState(float time)
@@ -263,5 +334,10 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         yield return new WaitForSeconds(time);
         state = newState;
         UpdateState();
+    }
+
+    public void ZeppelinDestroyed()
+    {
+        GotoState(21, 0);
     }
 }

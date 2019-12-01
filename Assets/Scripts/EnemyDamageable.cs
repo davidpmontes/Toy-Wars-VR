@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class EnemyDamageable : MonoBehaviour, IEnemy
 {
-    private float life = 3;
+    [SerializeField] private float life = default;
 
     [SerializeField] private MeshRenderer[] meshRenderers = default;
     [SerializeField] private Material[] originalMaterials = default;
     [SerializeField] private Material flashRed = default;
     [SerializeField] private GameObject[] blownOffParts = default;
     [SerializeField] private GameObject firePoint = default;
+
+    private bool vulnerability = true;
 
     private void Awake()
     {
@@ -32,18 +34,20 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 
         life--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+        explosion.transform.GetComponent<Explosion>().Init(transform.position);
         explosion.transform.position = position;
         explosion.SetActive(true);
 
         if (life <= 0)
         {
-            //EnemyManager.Instance.DeregisterEnemy(gameObject);
+            Zeppelin.Instance.PartDestroyed(gameObject);
             DestroySelf();
         }
         else
         {
             StartCoroutine(DamageFlash());
         }
+        Zeppelin.Instance.TakeDamage();
     }
 
     IEnumerator DamageFlash()
@@ -63,10 +67,9 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
 
     public void DestroyEnemy()
     {
-        throw new System.NotImplementedException();
     }
 
-    private void DestroySelf()
+    virtual public void DestroySelf()
     {
         for (int i = 0; i < blownOffParts.Length; i++)
         {
@@ -82,5 +85,15 @@ public class EnemyDamageable : MonoBehaviour, IEnemy
         smoke.transform.position = transform.position;
         smoke.transform.SetParent(transform);
         smoke.SetActive(true);
+    }
+
+    public bool IsVulnerable()
+    {
+        return vulnerability;
+    }
+
+    public void SetVulnerability(bool value)
+    {
+        vulnerability = value;
     }
 }

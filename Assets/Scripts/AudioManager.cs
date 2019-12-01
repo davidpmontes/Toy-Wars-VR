@@ -26,9 +26,11 @@ public class AudioManager : MonoBehaviour
     public float[] mixer_group_volume;
 
     private static AudioManager audioManager;
+    public static AudioManager Instance { get; private set; }
 
     void Awake()
     {
+        Instance = this;
         InitSources();
         InitBGM();
         InitNarration();
@@ -260,7 +262,6 @@ public class AudioManager : MonoBehaviour
         src.spatialBlend = spacial_blend;
         src.loop = looping;
         reserved_sources.Add(src);
-        print("reserved sources: " + reserved_sources.Count);
         return index;
     }
 
@@ -319,6 +320,9 @@ public class AudioManager : MonoBehaviour
 
     public void UnbindReserved(int source_id)
     {
+        if (source_id == -1)
+            return;
+
         AudioSource src = reserved_sources.ElementAt(source_id);
         src.Stop();
         src.loop = false;
@@ -352,7 +356,7 @@ public class AudioManager : MonoBehaviour
     public void PlayNarration(AudioClip clip, float volume = 1.0f)
     {
         narration.clip = clip;
-        narration.Play();
+        narration.PlayOneShot(clip);
     }
 
     public void PlayUI(string key, float volume = 1.0f)

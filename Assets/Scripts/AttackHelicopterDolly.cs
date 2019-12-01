@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
@@ -11,15 +10,15 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private Rigidbody rigidBody;
     private CinemachineDollyCart cinemachineDollyCart;
     private AudioManager audioManager;
-    private int sourceKey = -1;
     private Vector3 pos0;
     private Vector3 pos1;
     private GameObject smoke;
     [SerializeField] private Material red = default;
     private Material originalMaterial;
-    private int cannonSource = -1;
     [SerializeField] private GameObject target;
 
+    private int sourceKey = -1;
+    //private int cannonSource = -1;
 
     private void Awake()
     {
@@ -32,14 +31,28 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     public void Init()
     {
+        BindAudio();
+        currlife = maxLife;
+    }
+
+    private void BindAudio()
+    {
         if (audioManager != null)
         {
             sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
             audioManager.SetReservedMixer(sourceKey, 3);
-            audioManager.BindReserved(sourceKey, this.transform);
+            audioManager.BindReserved(sourceKey, transform);
             audioManager.PlayReserved(sourceKey);
         }
-        currlife = maxLife;
+    }
+
+    private void UnbindAudio()
+    {
+        if (audioManager != null && sourceKey == -1)
+        {
+            audioManager.UnbindReserved(sourceKey);
+            sourceKey = -1;
+        }
     }
 
     private void Update()
@@ -55,8 +68,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
         currlife--;
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-        explosion.transform.position = position;
-        explosion.transform.GetComponent<Explosion>().Init();
+        explosion.transform.GetComponent<Explosion>().Init(position);
         explosion.SetActive(true);
 
         if (currlife <= 0)
@@ -94,14 +106,9 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     {
         if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-            }
+            UnbindAudio();
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
-            explosion.transform.position = transform.position;
-            explosion.transform.GetComponent<Explosion>().Init();
+            explosion.transform.GetComponent<Explosion>().Init(transform.position);
             explosion.SetActive(true);
             ObjectPool.Instance.DeactivateAndAddToPool(smoke);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
@@ -118,11 +125,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     {
         if (cinemachineDollyCart.m_Position > cinemachineDollyCart.m_Path.PathLength - 1)
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-            }
+            UnbindAudio();
             EnemyManager.Instance.DeregisterEnemyNoPoints(gameObject);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
@@ -139,7 +142,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
         for (int i = 0; i < repeat; i++)
         {
-            audioManager.PlayReserved(cannonSource);
+            //audioManager.PlayReserved(cannonSource);
             var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
             enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
             enemyBullet.SetActive(true);
@@ -149,6 +152,14 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 
     public void DestroyEnemy()
     {
-        throw new System.NotImplementedException();
+    }
+
+    public bool IsVulnerable()
+    {
+        return true;
+    }
+
+    public void SetVulnerability(bool value)
+    {
     }
 }

@@ -2,11 +2,11 @@
 using UnityEngine;
 using Cinemachine;
 
-public class AttackHelicopterSpawnerDolly : MonoBehaviour
+public class AttackHelicopterSpawnerDolly : MonoBehaviour, IEnemySpawner
 {
     [SerializeField] CinemachineSmoothPath path = default;
     public int numberOfEnemies;
-    void Start()
+    public void Init()
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {

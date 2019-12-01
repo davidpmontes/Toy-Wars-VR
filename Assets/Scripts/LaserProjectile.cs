@@ -15,6 +15,7 @@ public class LaserProjectile : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject.name);
         if (isFriendlyLaser)
         {
             if (collision.gameObject.TryGetComponent(out IEnemy component))

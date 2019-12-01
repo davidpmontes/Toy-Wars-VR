@@ -262,7 +262,7 @@ public class AudioManager : MonoBehaviour
         src.spatialBlend = spacial_blend;
         src.loop = looping;
         reserved_sources.Add(src);
-        print("reserved sources: " + reserved_sources.Count);
+        //print("reserved sources: " + reserved_sources.Count);
         return index;
     }
 
@@ -325,7 +325,7 @@ public class AudioManager : MonoBehaviour
         src.Stop();
         src.loop = false;
         src.gameObject.transform.SetParent(transform, false);
-        print("reserved sources: " + reserved_sources.Count);
+        //print("reserved sources: " + reserved_sources.Count);
     }
 
     public void StopReserved(int source_id)

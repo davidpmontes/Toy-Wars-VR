@@ -18,7 +18,8 @@ public enum Pools { PingPongBall,
                     AttackHelicopterDolly,
                     CollectibleStar,
                     BlueLaserMissile,
-                    RedLaserMissile
+                    RedLaserMissile,
+                    YellowLaserMissile,
                 };
 
 public class ObjectPool : MonoBehaviour

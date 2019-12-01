@@ -27,7 +27,7 @@ public class TVCamera : MonoBehaviour
 
     public void ScreenOn()
     {
-        timeRemaining.text = "00:00";
+        timeRemaining.text = string.Format("{0}:00", Level1Manager.Instance.POPUPTIMER_TIME_LIMIT);
         enemyCount.text = "0/12";
     }
 

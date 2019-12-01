@@ -12,7 +12,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject popUpTargetEnemySpawner3 = default;
 
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly1_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2 = default;
+    [SerializeField] GameObject attackHelicopterEnemySpawnerDolly2_1 = default;
     [SerializeField] GameObject attackHelicopterEnemySpawnerDolly3 = default;
 
     [SerializeField] GameObject spitfireEnemySpawnerDolly1 = default;
@@ -47,7 +49,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     [SerializeField] AudioClip[] NarrationSequences4 = default;
 
-    [SerializeField] AudioClip BGM_MainMenu = default;
     [SerializeField] AudioClip BGM_PopUpTargets = default;
     [SerializeField] AudioClip BGM_Action = default;
     [SerializeField] AudioClip BGM_Boss = default;
@@ -58,7 +59,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private AudioManager audioManager;
 
-    public readonly float POPUPTIMER_TIME_LIMIT = 5;
+    public readonly float POPUPTIMER_TIME_LIMIT = 30;
     private float PopUpTargetEndTime;
 
     private void Awake()
@@ -80,6 +81,9 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void PopUpTargetTimerNotification()
     {
+        if (state >= 6)
+            return;
+
         GotoState(6, 0);
     }
 
@@ -150,6 +154,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 6) //Time fail
         {
+            CancelInvoke("PopUpTargetTimerNotification");
             popUpTargetEnemySpawner1.SetActive(false);
             popUpTargetEnemySpawner2.SetActive(false);
             popUpTargetEnemySpawner3.SetActive(false);
@@ -180,7 +185,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 8)
         {
             audioManager.PlayNarration(BaseWarning);
-            NextState(3);
+            NextState(5);
         }
         else if (state == 9) // Wave #1: Narration
         {
@@ -191,13 +196,17 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 10) // Wave #1: Attack Helicopters appear
         {
             ActivateSpawner(attackHelicopterEnemySpawnerDolly1, 0);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly1_1, 2);
+
             ActivateSpawner(attackHelicopterEnemySpawnerDolly2, 7);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 14);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly3, 11);
+
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly2_1, 12);
             NextState(0);
         }
         else if (state == 11)
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 15)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 8)
             {
                 NextState(0);
             }
@@ -210,31 +219,35 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 13) // Wave #2: Spitfires appear
         {
             ActivateSpawner(spitfireEnemySpawnerDolly1, 0);
-            ActivateSpawner(spitfireEnemySpawnerDolly2, 1);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly4, 13);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly5, 12);
-            ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 10);
+            ActivateSpawner(spitfireEnemySpawnerDolly2, 1.5f);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly4, 23);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly5, 21);
+            ActivateSpawner(attackHelicopterEnemySpawnerDolly6, 18);
             NextState(0);
         }
         else if (state == 14) // Wave #2: Waiting for the Player to defeat all the targets
         {
-            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 10)
+            if (EnemyManager.Instance.GetTotalEnemiesDeregistered() == 11)
             {
                 NextState(0);
             }
         }
-        else if (state == 15) // Wave #2: Spitfires appear
+        else if (state == 15)
+        {
+            NextState(2);
+        }
+        else if (state == 16) // Wave #2: Spitfires appear
         {
             audioManager.ChangeBGM(BGM_Boss);
             audioManager.StartBGM();
             NarrateSequenceAndNextState(NarrationSequences4);
         }
-        else if (state == 16) // Wave #2: Spitfires appear
+        else if (state == 17) // Wave #2: Spitfires appear
         {
             ActivateSpawner(zeppelin, 0);
             NextState(0);
         }
-        else if (state == 17) // Wave #2: Waiting for the Player to defeat all the targets
+        else if (state == 18) // Wave #2: Waiting for the Player to defeat all the targets
         {
 
         }

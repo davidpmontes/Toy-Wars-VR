@@ -10,6 +10,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     private Material material;
     [SerializeField] private Material red = default;
     [SerializeField] private GameObject target;
+    [SerializeField] private Transform barrel;
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private GameObject smoke;
@@ -32,25 +33,33 @@ public class Spitfire : MonoBehaviour, IEnemy
 
     public void Init()
     {
+        BindAudio();
+        currLife = maxLife;
+        FireWeapon(Random.Range(8, 10), 5);
+    }
+
+    private void BindAudio()
+    {
         if (audioManager != null)
         {
             sourceKey = audioManager.ReserveSource("engine_generator_loop_03", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
             audioManager.SetReservedMixer(sourceKey, 3);
             audioManager.BindReserved(sourceKey, transform);
             audioManager.PlayReserved(sourceKey);
-        }
-        currLife = maxLife;
-        FireWeapon(Random.Range(8, 10), 5);
-        LoadAudio();
 
-    }
-
-    private void LoadAudio()
-    {
-        if (cannonSource < 0)
-        {
             cannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
             audioManager.BindReserved(cannonSource, transform);
+        }
+    }
+
+    private void UnbindAudio()
+    {
+        if (audioManager != null)
+        {
+            audioManager.UnbindReserved(sourceKey);
+            sourceKey = -1;
+            audioManager.UnbindReserved(cannonSource);
+            cannonSource = -1;
         }
     }
 
@@ -64,11 +73,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     {
         if (cinemachineDollyCart.m_Position > cinemachineDollyCart.m_Path.PathLength - 1)
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-            }
+            UnbindAudio();
             EnemyManager.Instance.DeregisterEnemyNoPoints(gameObject);
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);
         }
@@ -110,14 +115,6 @@ public class Spitfire : MonoBehaviour, IEnemy
 
     private void DestroySelf()
     {
-        if (audioManager != null)
-        {
-            audioManager.UnbindReserved(sourceKey);
-            sourceKey = -1;
-            audioManager.UnbindReserved(cannonSource);
-            cannonSource = -1;
-        }
-
         gameObject.layer = LayerMask.NameToLayer("DyingEnemy");
         cinemachineDollyCart.enabled = false;
         rigidBody.isKinematic = false;
@@ -133,14 +130,7 @@ public class Spitfire : MonoBehaviour, IEnemy
     {
         if (gameObject.layer == LayerMask.NameToLayer("DyingEnemy") && collision.gameObject.layer == LayerMask.NameToLayer("Statics"))
         {
-            if (audioManager != null)
-            {
-                audioManager.UnbindReserved(sourceKey);
-                sourceKey = -1;
-                audioManager.UnbindReserved(cannonSource);
-                cannonSource = -1;
-            }
-
+            UnbindAudio();
             var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
             explosion.transform.GetComponent<Explosion>().Init(transform.position);
             explosion.SetActive(true);
@@ -161,10 +151,10 @@ public class Spitfire : MonoBehaviour, IEnemy
         for (int i = 0; i < repeat; i++)
         {
             audioManager.PlayReserved(cannonSource);
-            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.EnemyBullet);
-            enemyBullet.GetComponent<EnemyBullet>().Init(transform, target.transform.position - transform.position);
+            var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.YellowLaserMissile);
+            enemyBullet.GetComponent<LaserProjectile>().Init(barrel, target.transform.position - transform.position);
             enemyBullet.SetActive(true);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

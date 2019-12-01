@@ -19,7 +19,6 @@ public class Projectile : MonoBehaviour, IProjectile
             if (!component.IsVulnerable())
                 return;
 
-            ScoreScript.Instance.AddNumberOfHits();
             component.DamageEnemy(transform.position);
             CancelInvoke();
             ObjectPool.Instance.DeactivateAndAddToPool(gameObject);

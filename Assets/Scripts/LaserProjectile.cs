@@ -19,6 +19,12 @@ public class LaserProjectile : MonoBehaviour, IProjectile
         {
             if (collision.gameObject.TryGetComponent(out IEnemy component))
             {
+                if (!component.IsVulnerable())
+                {
+                    Deactivate();
+                    return;
+                }
+
                 ScoreScript.Instance.AddNumberOfHits();
                 component.DamageEnemy(transform.position);
             }

@@ -1265,8 +1265,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3094934800404142272}
   - component: {fileID: 1939263194423691770}
-  - component: {fileID: 7130220165823414357}
-  - component: {fileID: 3044270530014459982}
   m_Layer: 11
   m_Name: MachineGun
   m_TagString: Untagged
@@ -1305,39 +1303,6 @@ MonoBehaviour:
   target: {fileID: 0}
   flash: {fileID: 7077092006764048672}
   barrel: {fileID: 4062322041955255396}
---- !u!114 &7130220165823414357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6551865754933312426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c65ca24017759418c7b47a178a336d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 15
-  meshRenderers:
-  - {fileID: 6550197401245607757}
-  originalMaterials: []
-  flashRed: {fileID: 2100000, guid: 2656faf15c805154cb1654752195e671, type: 2}
-  blownOffParts:
-  - {fileID: 5911977490482941399}
-  firePoint: {fileID: 8892977379331492851}
---- !u!135 &3044270530014459982
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6551865754933312426}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 2.96
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6646966684267105753
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ public class ZeppelinMachineGun : MonoBehaviour
 {
     [SerializeField] private GameObject target = default;
     [SerializeField] private ParticleSystem flash = default;
+    [SerializeField] private Transform barrel = default;
     private bool targetAcquired;
     private bool newTargetSelected;
 
@@ -63,8 +64,8 @@ public class ZeppelinMachineGun : MonoBehaviour
 
             var laser = ObjectPool.Instance.GetFromPoolInactive(Pools.RedLaserMissile);
             laser.transform.rotation = Quaternion.identity;
-            Vector3 direction = transform.forward.normalized;
-            laser.GetComponent<IProjectile>().Init(transform, direction.normalized);
+            Vector3 direction = barrel.forward.normalized;
+            laser.GetComponent<IProjectile>().Init(barrel, direction.normalized);
             laser.SetActive(true);
 
             yield return new WaitForSeconds(0.3f);

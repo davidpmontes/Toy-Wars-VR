@@ -143,6 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f968971e4cb93b149bc724c3125881df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackedDolly: {fileID: 0}
+  dollyCart: {fileID: 5830309618219368042}
   WeakSpots1:
   - {fileID: 327202078217591896}
   - {fileID: 8331667961810545488}
@@ -919,11 +921,6 @@ PrefabInstance:
       propertyPath: visibleBar
       value: 
       objectReference: {fileID: 8749900325692720504}
-    - target: {fileID: 6180084194242317477, guid: 8c200657ccfa99942a063b6dda1254a3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7123040825118882476, guid: 8c200657ccfa99942a063b6dda1254a3,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -958,6 +955,11 @@ PrefabInstance:
         type: 3}
       propertyPath: adjustment
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180084194242317477, guid: 8c200657ccfa99942a063b6dda1254a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c200657ccfa99942a063b6dda1254a3, type: 3}

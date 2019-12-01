@@ -15,7 +15,6 @@ public class LaserProjectile : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
         if (isFriendlyLaser)
         {
             if (collision.gameObject.TryGetComponent(out IEnemy component))
@@ -35,14 +34,11 @@ public class LaserProjectile : MonoBehaviour, IProjectile
             {
                 component.TakeDamage(transform.position);
             }
-            else
-            {
-                var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-                explosion.transform.GetComponent<Explosion>().Init(transform.position);
-                explosion.SetActive(true);
-            }
-        }
 
+            var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+            explosion.transform.GetComponent<Explosion>().Init(transform.position);
+            explosion.SetActive(true);
+        }
         Deactivate();
     }
 

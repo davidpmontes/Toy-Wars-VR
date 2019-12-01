@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Zeppelin : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Zeppelin : MonoBehaviour
     private float life = 100;
     private int stage = 0;
 
+    [SerializeField] private CinemachineSmoothPath smoothPath;
+    [SerializeField] private CinemachineDollyCart dollyCart;
 
     [SerializeField] private List<GameObject> WeakSpots1; //9
     [SerializeField] private LifeBar lifeBar;
@@ -30,6 +33,19 @@ public class Zeppelin : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Update()
+    {
+        CheckResetPosition();
+    }
+
+    private void CheckResetPosition()
+    {
+        if (dollyCart.m_Position >= 26)
+        {
+            dollyCart.m_Position -= 16;
+        }
     }
 
     public void Init()

@@ -7,6 +7,8 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     public int state;
 
+    [SerializeField] GameObject BedroomWindow = default;
+
     [SerializeField] GameObject ZeppelinSpawner = default;
 
     [SerializeField] GameObject popUpTargetEnemySpawner1 = default;
@@ -243,6 +245,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         else if (state == 17)
         {
             ActivateSpawner(ZeppelinSpawner, 0);
+
+            Invoke("DestroyWindow", 0);
+            Invoke("DestroyWindow", 0.1f);
+            Invoke("DestroyWindow", 0.2f);
+
             NextState(6);
         }
         else if (state == 18)
@@ -259,6 +266,15 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             playerStatistics.SetActive(true);
             thanksForPlayingOurDemo.SetActive(true);
         }
+    }
+
+    private void DestroyWindow()
+    {
+        BedroomWindow.SetActive(false);
+        var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.YellowFireImpactV2);
+        explosion.transform.localScale = Vector3.one * 50;
+        explosion.GetComponent<Explosion>().Init(BedroomWindow.transform.position + Random.insideUnitSphere * 30);
+        explosion.SetActive(true);
     }
 
     private void ActivateSpawner(GameObject spawner, float time)

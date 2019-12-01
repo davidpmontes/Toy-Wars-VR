@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level1Manager : MonoBehaviour, ILevelManager
 {
@@ -66,6 +67,14 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     {
         Instance = this;
         audioManager = AudioManager.GetAudioManager();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     void Start()
@@ -248,6 +257,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 18)
         {
+            PlayerTurret.Instance.SetWeapon("laser");
             ActivateSpawner(ZeppelinSpawner, 0);
 
             Invoke("DestroyWindow", 0);

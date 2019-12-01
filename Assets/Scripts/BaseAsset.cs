@@ -3,18 +3,18 @@
 public class BaseAsset : MonoBehaviour, IBaseAsset
 {
     [SerializeField] private float life;
-    private LifeBar lifeBar;
+    //private LifeBar lifeBar;
 
     public void Awake()
     {
-        lifeBar = GetComponentInChildren<LifeBar>();
-        lifeBar.SetMaxLifeAndCurrLife(life);
+        //lifeBar = GetComponentInChildren<LifeBar>();
+        //lifeBar.SetMaxLifeAndCurrLife(life);
     }
 
     public void TakeDamage(Vector3 position)
     {
         life--;
-        lifeBar.ReduceLife(1);
+        //lifeBar.ReduceLife(1);
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
         explosion.transform.position = position;
         explosion.SetActive(true);

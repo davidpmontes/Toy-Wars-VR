@@ -50,8 +50,6 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
         rb = GetComponent<Rigidbody>();
         pose = GetComponentInParent<SteamVR_Behaviour_Pose>();
-        click.AddOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
-        click.AddOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
         SetDriveScheme(DriveScheme.FreeTurret);
         audio_manager = AudioManager.GetAudioManager();
     }
@@ -64,6 +62,16 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         audio_manager.PlayReserved(key);
     }
 
+    private void OnEnable()
+    {
+        if(key != -1)
+        {
+            audio_manager.PlayReserved(key);
+        }
+        click.AddOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
+        click.AddOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
+    }
+
     private void Update()
     {
         GetInput();
@@ -74,6 +82,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         drive_scheme = scheme;
         if(scheme == DriveScheme.FreeTurret)
         {
+            rb.constraints = RigidbodyConstraints.FreezeRotationY;
             rb.freezeRotation = true;
             rb.position = body_rb.position;
             body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
@@ -143,7 +152,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         {
             cross = -cross;
         }
-        drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);
+        drag_direction = body_rb.velocity;
         drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
         left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
         right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
@@ -151,6 +160,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
     }
 
+    //Unused at the moment
     private void LockedTurretMotion()
     {
         drag_direction = new Vector3(body_rb.velocity.x, 0, body_rb.velocity.z);

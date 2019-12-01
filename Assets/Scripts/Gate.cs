@@ -18,6 +18,11 @@ public class Gate : MonoBehaviour, IRoomActivate
         }
     }
 
+    private void Start()
+    {
+        Activate();
+    }
+
     public void Activate()
     {
         rotating = true;

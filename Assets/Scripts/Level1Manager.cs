@@ -269,7 +269,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
             audioManager.ChangeBGM(BGM_Win);
             audioManager.StartBGM();
             playerStatistics.SetActive(true);
-            thanksForPlayingOurDemo.SetActive(true);
         }
     }
 

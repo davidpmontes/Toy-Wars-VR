@@ -48,7 +48,6 @@ public class PlayerTankCannon : MonoBehaviour
     private void SpawnBullet()
     {
             cooldown = true;
-            ScoreScript.Instance.AddShotsFired();
             audio_manager.PlayReserved(key);
             var turretBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.PingPongBall);
 

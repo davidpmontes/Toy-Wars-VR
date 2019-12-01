@@ -25,7 +25,6 @@ public class LaserProjectile : MonoBehaviour, IProjectile
                     return;
                 }
 
-                ScoreScript.Instance.AddNumberOfHits();
                 component.DamageEnemy(transform.position);
             }
 

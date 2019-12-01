@@ -40,7 +40,6 @@ public class EnemyManager : MonoBehaviour
         AllEnemies.Remove(oldEnemy);
         Level1Manager.Instance.UpdateState();
         ScoreScript.Instance.AddFinalScore(1000);
-        audioManager.PlayUI("collect_coin_01");
         if (oldEnemy.name == "Target")
         {
             TVCamera.Instance.TargetHit();
@@ -60,7 +59,6 @@ public class EnemyManager : MonoBehaviour
     {
         var ScoreText = ObjectPool.Instance.GetFromPoolInactive(Pools.ScoreText);
         ScoreText.transform.position = position;
-        Vector3 direction = ScoreText.transform.position - Camera.main.transform.position;
         ScoreText.transform.LookAt(Camera.main.transform.position);
         ScoreText.transform.Rotate(0, 180, 0);
         ScoreText.SetActive(true);

@@ -321,11 +321,13 @@ public class AudioManager : MonoBehaviour
 
     public void UnbindReserved(int source_id)
     {
+        if (source_id == -1)
+            return;
+
         AudioSource src = reserved_sources.ElementAt(source_id);
         src.Stop();
         src.loop = false;
         src.gameObject.transform.SetParent(transform, false);
-        //print("reserved sources: " + reserved_sources.Count);
     }
 
     public void StopReserved(int source_id)

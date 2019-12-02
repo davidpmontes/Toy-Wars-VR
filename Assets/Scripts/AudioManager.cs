@@ -126,7 +126,7 @@ public class AudioManager : MonoBehaviour
         src.outputAudioMixerGroup = mixer_groups[4];
         src.rolloffMode = AudioRolloffMode.Linear;
         src.maxDistance = rolloff_distance;
-        src.dopplerLevel = 1.0f;
+        src.dopplerLevel = 0.0f;
 
         for (int i = 0; i < max_sources; i++)
         {

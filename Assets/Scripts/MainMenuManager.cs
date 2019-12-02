@@ -39,6 +39,11 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
         {
             SceneManager.LoadScene("MainMenu");
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SceneManager.LoadScene("TankTest");
+        }
     }
     public void PlayButtonClicked()
     {

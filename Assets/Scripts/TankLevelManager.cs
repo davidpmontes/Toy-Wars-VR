@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TankLevelManager : MonoBehaviour, ILevelManager
 {
@@ -27,13 +27,16 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
 
     void Start()
     {
-        
+        PlayerManager.Instance.EnableVehicle(PlayerVehicles.TANK);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     public void UpdateState()

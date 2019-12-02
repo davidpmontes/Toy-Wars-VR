@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        EnableVehicle(PlayerVehicles.TURRET);
+
     }
 
     public GameObject CurrentVehicle()

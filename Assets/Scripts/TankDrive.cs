@@ -27,6 +27,11 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     [SerializeField] private float max_accel = default;
     [SerializeField] private float max_torque = default;
 
+    [SerializeField] private Transform lf_raypoint = default;
+    [SerializeField] private Transform lb_raypoint = default;
+    [SerializeField] private Transform rf_raypoint = default;
+    [SerializeField] private Transform rb_raypoint = default;
+
     private Vector3 left_tread_speed;
     private Vector3 right_tread_speed;
     private Vector2 pad_position;
@@ -48,6 +53,8 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     private AudioManager audio_manager;
     private int key = -1;
 
+    private RaycastHit hit;
+    private int mask;
 
     void Awake()
     {
@@ -64,6 +71,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         audio_manager.SetReservedMixer(key, 2);
         audio_manager.BindReserved(key, body_transform);
         audio_manager.PlayReserved(key);
+        mask = 1<<LayerMask.NameToLayer("Statics");
     }
 
     private void OnEnable()
@@ -87,7 +95,6 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         if(scheme == DriveScheme.FreeTurret)
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationY;
-            rb.freezeRotation = true;
             rb.position = body_rb.position;
             body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
             return;
@@ -158,10 +165,25 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         }
         drag_direction = body_rb.velocity;
         drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
-        left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
-        right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+        if (CheckGround(lf_raypoint) && CheckGround(rf_raypoint) || CheckGround(lb_raypoint) && CheckGround(rb_raypoint))
+        {
+            left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
+            right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+        }
+        else
+        {
+            left_tread_speed = Vector3.zero;
+            right_tread_speed = Vector3.zero;
+        }
+        print(hit.distance);
+
         body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
         body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
+    }
+
+    private bool CheckGround(Transform raypoint)
+    {
+        return Physics.Raycast(raypoint.position + raypoint.up, -body_transform.up, out hit, 1.5f, mask);
     }
 
     //Unused at the moment
@@ -204,6 +226,5 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     {
         click.RemoveOnStateDownListener(ClickDown, SteamVR_Input_Sources.Any);
         click.RemoveOnStateUpListener(ClickUp, SteamVR_Input_Sources.Any);
-
     }
 }

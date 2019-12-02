@@ -69,10 +69,8 @@ public class TankTargetController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
-        explosion.transform.position = transform.position;
-        explosion.transform.GetComponent<Explosion>().Init();
+        explosion.transform.GetComponent<Explosion>().Init(transform.position);
         explosion.SetActive(true);
-        EnemyManager.Instance.DeregisterEnemyWithPoints(gameObject);
         Destroy(gameObject);
     }
 }

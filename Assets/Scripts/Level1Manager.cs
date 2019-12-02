@@ -84,6 +84,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     void Start()
     {
+        PlayerManager.Instance.EnableVehicle(PlayerVehicles.TURRET);
         QualitySettings.shadowDistance = 450;
         UpdateState();
     }

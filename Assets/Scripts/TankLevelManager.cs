@@ -19,6 +19,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
 
     [SerializeField] AudioClip bgm = default;
     [SerializeField] AudioClip victory = default;
+    [SerializeField] AudioClip narration = default;
     [SerializeField] GameObject congrats = default;
 
     private int targets_left = 10;
@@ -60,13 +61,16 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
 
     public void UpdateState()
     {
+        print(state);
         switch (state)
         {
             case LevelState.Start:
                 AudioManager.Instance.StartBGM(bgm);
-                StartCoroutine(StartDelay());
+                StartCoroutine(DelayUpdate(wait_time));
                 break;
             case LevelState.Intro:
+                AudioManager.Instance.PlayNarration(narration);
+                StartCoroutine(DelayUpdate(narration.length));
                 break;
             case LevelState.Gameplay:
                 break;
@@ -77,9 +81,9 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
         state++;
     }
 
-    private IEnumerator StartDelay()
+    private IEnumerator DelayUpdate(float time)
     {
-        yield return new WaitForSeconds(wait_time);
+        yield return new WaitForSeconds(time);
         UpdateState();
     }
 
@@ -116,7 +120,12 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
         yield return new WaitForSeconds(sec);
 
         Vector3 spawn_pos = firework_spawn.position + new Vector3(Random.Range(-20f, 20f), Random.Range(-5f, 20f), Random.Range(-20f, 20f));
-        GameObject fw = Instantiate(firework_prefab, firework_spawn);
+        ParticleSystem fw = Instantiate(firework_prefab, firework_spawn).GetComponent<ParticleSystem>();
+        ParticleSystem.MainModule mod = fw.main;
+        Color new_color = Random.ColorHSV();
+        new_color.a = 1;
+        mod.startColor = new_color;
+        
         fw.transform.localScale = new Vector3(50, 50, 50);
         fw.transform.position = spawn_pos;
         yield return SpawnFirework();

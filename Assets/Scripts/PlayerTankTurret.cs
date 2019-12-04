@@ -7,6 +7,7 @@ public class PlayerTankTurret : MonoBehaviour
     private Transform targetPoint;
     private Transform cam;
 
+
     private void Awake()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
@@ -39,7 +40,6 @@ public class PlayerTankTurret : MonoBehaviour
     {
         //find the vector pointing from our position to the target
         var direction = (targetPoint.position - barrel.position).normalized;
-
         //create the rotation we need to be in to look at the target
         var lookRotation = Quaternion.LookRotation(direction);
 

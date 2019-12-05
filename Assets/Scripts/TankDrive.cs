@@ -112,7 +112,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            transform.position = transform.position + 5 * Vector3.up;
+            transform.position = TankLevelManager.GetInstance().last_shiny + 10 * Vector3.up;
             transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         }
     }
@@ -165,6 +165,12 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         {
             left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
             right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+
+            if((CheckGround(lb_raypoint) && CheckGround(rb_raypoint) && !(CheckGround(lf_raypoint) || CheckGround(rf_raypoint) || CheckGround(lc_raypoint) || CheckGround(rc_raypoint))))
+                {
+                    left_tread_speed = left_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -left_tread.up;
+                    right_tread_speed = right_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -right_tread.up;
+                }
         }
         else
         {

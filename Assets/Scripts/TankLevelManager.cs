@@ -23,6 +23,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
     [SerializeField] GameObject congrats = default;
 
     private int targets_left = 10;
+    public Vector3 last_shiny;
 
     private static TankLevelManager instance;
     public static TankLevelManager GetInstance()
@@ -42,6 +43,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
     void Start()
     {
         PlayerManager.Instance.EnableVehicle(PlayerVehicles.TANK);
+        last_shiny = this.transform.position;
         UpdateState();
     }
 
@@ -89,6 +91,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
 
     public void ActivateTarget(TriggerCoin coin)
     {
+        last_shiny = coin.transform.position;
         int key = target_spawners.IndexOf(coin);
         targets[key].SetActive(true);
         coin.gameObject.SetActive(false);
@@ -128,6 +131,12 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
         
         fw.transform.localScale = new Vector3(50, 50, 50);
         fw.transform.position = spawn_pos;
+        AudioManager.Instance.PlayOneshot("explosion_large_01", fw.transform.position, Random.Range(0.7f, 1.3f));
         yield return SpawnFirework();
+    }
+
+    private void ShinyCollect(TriggerCoin coin)
+    {
+        last_shiny = coin.transform.position;
     }
 }

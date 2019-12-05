@@ -199,7 +199,7 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         }
         else if (state == 8)
         {
-            audioManager.PlayNarration(BaseWarning);
+            audioManager.PlayUI(BaseWarning);
             NextState(2);
         }
         else if (state == 9)

@@ -365,6 +365,13 @@ public class AudioManager : MonoBehaviour
         ui.Play();
     }
 
+    public void PlayUI(AudioClip clip, float volume = 1.0f)
+    {
+        ui.clip = clip;
+        ui.volume = volume;
+        ui.Play();
+    }
+
     public void NarrateSequence(AudioClip[] clips, float delay = 0.0f, bool blocking = false)
     {
         if(narr_blocking == true)

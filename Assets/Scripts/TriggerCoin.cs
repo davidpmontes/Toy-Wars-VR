@@ -19,6 +19,7 @@ public class TriggerCoin : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
+            AudioManager.Instance.PlayOneshot("collect_coin_03", this.transform.position);
             TankLevelManager.GetInstance().ActivateTarget(this);
         }
     }

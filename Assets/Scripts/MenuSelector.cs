@@ -11,6 +11,7 @@ public class MenuSelector : MonoBehaviour
     private string currentButtonName;
     private string buttonDownName;
 
+    [SerializeField] private GameObject tank;
     public Animator PlayButton;
     //public Animator QuitButton;
     private AudioManager audioManager;
@@ -35,7 +36,7 @@ public class MenuSelector : MonoBehaviour
     {
         if (selectMenu.stateDown)
         {
-            if (currentButtonName == "PlayButton" || currentButtonName == "QuitButton")
+            if (currentButtonName == "PlayButton" || currentButtonName == "TankButton")
             {
                 buttonDownName = currentButtonName;
             }
@@ -56,17 +57,17 @@ public class MenuSelector : MonoBehaviour
                     MainMenuManager.Instance.PlayButtonClicked();
                     enabled = false;
                 }
-                //else if (buttonDownName == "QuitButton")
-                //{
-                //    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
-                //    explode.transform.position = QuitButton.gameObject.transform.position;
-                //    explode.transform.localScale = Vector3.one * 0.5f;
-                //    explode.SetActive(true);
-                //    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
-                //    //QuitButton.gameObject.SetActive(false);
-                //    //MainMenuManager.Instance.QuitButtonClicked();
-                //    //enabled = false;
-                //}
+                else if (buttonDownName == "TankButton")
+                {
+                    var explode = ObjectPool.Instance.GetFromPoolInactive(Pools.CFX_Explosion_B_Smoke_Text);
+                    explode.transform.position = PlayButton.gameObject.transform.position;
+                    explode.transform.localScale = Vector3.one * 0.5f;
+                    explode.SetActive(true);
+                    audioManager.PlayOneshot("explosion_large_01", PlayButton.transform.position);
+                    tank.SetActive(false);
+                    MainMenuManager.Instance.TankButtonClicked();
+                    enabled = false;
+                }
             }
             buttonDownName = "None";
         }
@@ -78,19 +79,16 @@ public class MenuSelector : MonoBehaviour
         {
             var obj = hitInfo.collider.gameObject;
 
-            if (obj.name == "PlayButton" || obj.name == "QuitButton")
+            if (obj.name == "PlayButton" || obj.name == "TankButton")
             {
                 currentButtonName = hitInfo.collider.gameObject.name;
-                
+
+                Debug.Log(currentButtonName);
+
                 if (obj.name == "PlayButton")
                 {
                     PlayButton.Play("Hover");
                 }
-
-                //if (obj.name == "QuitButton")
-                //{
-                //    QuitButton.Play("Hover");
-                //}
 
                 return;
             }

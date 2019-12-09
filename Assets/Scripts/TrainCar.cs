@@ -6,6 +6,6 @@ public class TrainCar : MonoBehaviour, ICollectible
 
     public void Init()
     {
-        train_engine.GetComponent<Train>().Init();
+        train_engine.GetComponent<ICollectible>().Init();
     }
 }

@@ -6,6 +6,6 @@ public class GameBoy : MonoBehaviour, IRoomActivate
 {
     public void Activate()
     {
-        this.GetComponent<Rigidbody>().AddForce(-25 * this.transform.forward, ForceMode.Impulse);
+        this.GetComponent<Rigidbody>().AddForce(-800 * this.transform.forward, ForceMode.Impulse);
     }
 }

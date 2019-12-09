@@ -18,6 +18,7 @@ public class TankTargetController : MonoBehaviour
     public int direction = 1;
     public float offsetX;
     public float offsetY;
+    public TankLevelManager manager = default;
 
 
     private void Start()
@@ -71,6 +72,7 @@ public class TankTargetController : MonoBehaviour
         var explosion = ObjectPool.Instance.GetFromPoolInactive(Pools.Large_CFX_Explosion_B_Smoke_Text);
         explosion.transform.GetComponent<Explosion>().Init(transform.position);
         explosion.SetActive(true);
+        manager.TargetDestroyed();
         Destroy(gameObject);
     }
 }

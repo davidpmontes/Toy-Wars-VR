@@ -23,8 +23,8 @@ public class ScoreScript : MonoBehaviour
     private void UpdateScoreText()
     {
         finalScoreText.text = string.Format("Final Score: {0}", finalScore);
-        collectiblesPercentage.text = string.Format("Collectibles Found %: {0}", collectibleCount / 5);
-        basePercentage.text = string.Format("Remaining Base %: {0}", 100);
+        collectiblesPercentage.text = string.Format("Collectibles Found %: {0}", (collectibleCount / 5) * 100);
+        basePercentage.text = string.Format("Remaining Base %: {0}", Mathf.RoundToInt(Random.Range(85, 95)));
     }
 
     public float GetCollectibleCountDuration()
@@ -42,6 +42,7 @@ public class ScoreScript : MonoBehaviour
     {
         collectibleCount += 1;
         currentCollectedCollectibles.text = string.Format("{0}", collectibleCount);
+        UpdateScoreText();
 
         CancelInvoke("HideCollectiblesCount");
         currentCollectedCollectibles.gameObject.SetActive(true);

@@ -50,6 +50,11 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
         Invoke("PlayGameInTime", 1);
     }
 
+    public void TankButtonClicked()
+    {
+        Invoke("PlayTankInTime", 1);
+    }
+
     public void QuitButtonClicked()
     {
     }
@@ -63,6 +68,11 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
     private void PlayGameInTime()
     {
         SceneManager.LoadScene("Level1");
+    }
+
+    private void PlayTankInTime()
+    {
+        SceneManager.LoadScene("TankTest");
     }
 
     public void UpdateState()

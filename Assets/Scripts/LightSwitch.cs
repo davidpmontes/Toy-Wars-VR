@@ -19,6 +19,7 @@ public class LightSwitch : MonoBehaviour, IRoomActivate
 
     public void Activate()
     {
+        AudioManager.Instance.PlayOneshot("switch_off", this.transform);
         room_light.SetActive(false);
         StartCoroutine(TurnLightOn());
     }
@@ -26,6 +27,7 @@ public class LightSwitch : MonoBehaviour, IRoomActivate
     private IEnumerator TurnLightOn()
     {
         yield return new WaitForSeconds(1f);
+        AudioManager.Instance.PlayOneshot("switch_on", this.transform);
         room_light.SetActive(true);
     }
 

@@ -19,6 +19,14 @@ public class RoomTrigger : MonoBehaviour
 
     private void OnDestroy()
     {
-        obj.GetComponent<IRoomActivate>().Activate();
+        if (obj != null)
+        {
+            IRoomActivate obj2;
+            obj.TryGetComponent<IRoomActivate>(out obj2);
+            if(obj2 != null)
+            {
+                obj2.Activate();
+            }
+        }
     }
 }

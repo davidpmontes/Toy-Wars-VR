@@ -28,8 +28,10 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     [SerializeField] private float max_torque = default;
 
     [SerializeField] private Transform lf_raypoint = default;
+    [SerializeField] private Transform lc_raypoint = default;
     [SerializeField] private Transform lb_raypoint = default;
     [SerializeField] private Transform rf_raypoint = default;
+    [SerializeField] private Transform rc_raypoint = default;
     [SerializeField] private Transform rb_raypoint = default;
 
     private Vector3 left_tread_speed;
@@ -87,6 +89,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     private void Update()
     {
         GetInput();
+        MoveTank();
     }
 
     void SetDriveScheme(DriveScheme scheme)
@@ -95,6 +98,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         if(scheme == DriveScheme.FreeTurret)
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationY;
+            body_rb.position = new Vector3(body_rb.position.x, 0, body_rb.position.z);
             rb.position = body_rb.position;
             body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
             return;
@@ -106,23 +110,15 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
 
     private void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            if(drive_scheme == DriveScheme.FreeTurret)
-            {
-                print("locking turret");
-                SetDriveScheme(DriveScheme.lockedTurret);
-            }
-            else
-            {
-                SetDriveScheme(DriveScheme.FreeTurret);
-            }
+            transform.position = TankLevelManager.GetInstance().last_shiny + 10 * Vector3.up;
+            transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         }
     }
 
     void FixedUpdate ()
     {
-        MoveTank();
     }
 
     private void MoveTank()
@@ -164,11 +160,17 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
             cross = -cross;
         }
         drag_direction = body_rb.velocity;
-        drag_force = Mathf.Min((max_velocity - drag_direction.magnitude) / max_velocity * accel_scale, 0) * drag_direction.normalized;
-        if (CheckGround(lf_raypoint) && CheckGround(rf_raypoint) || CheckGround(lb_raypoint) && CheckGround(rb_raypoint))
+        drag_force = Mathf.Min(((max_velocity - drag_direction.magnitude) / max_velocity) * accel_scale, 0) * drag_direction.normalized;
+        if (CheckGround(lf_raypoint) || CheckGround(rf_raypoint) || CheckGround(lb_raypoint) || CheckGround(rb_raypoint) || CheckGround(lc_raypoint) || CheckGround(rc_raypoint))
         {
             left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
             right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
+
+            if((CheckGround(lb_raypoint) && CheckGround(rb_raypoint) && !(CheckGround(lf_raypoint) || CheckGround(rf_raypoint) || CheckGround(lc_raypoint) || CheckGround(rc_raypoint))))
+                {
+                    left_tread_speed = left_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -left_tread.up;
+                    right_tread_speed = right_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -right_tread.up;
+                }
         }
         else
         {
@@ -183,7 +185,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
 
     private bool CheckGround(Transform raypoint)
     {
-        return Physics.Raycast(raypoint.position + raypoint.up, -body_transform.up, out hit, 1.5f, mask);
+        return Physics.Raycast(raypoint.position + raypoint.up, -body_transform.up, out hit, 1.4f, mask);
     }
 
     //Unused at the moment

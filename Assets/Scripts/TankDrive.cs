@@ -98,8 +98,9 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         if(scheme == DriveScheme.FreeTurret)
         {
             rb.constraints = RigidbodyConstraints.FreezeRotationY;
-            body_rb.position = new Vector3(body_rb.position.x, 0, body_rb.position.z);
+            body_rb.position = new Vector3(body_rb.position.x, -10, body_rb.position.z);
             rb.position = body_rb.position;
+            body_rb.position = body_rb.position + body_transform.forward;
             body_transform.GetComponent<ConfigurableJoint>().angularYMotion = ConfigurableJointMotion.Free;
             return;
         }
@@ -112,7 +113,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            transform.position = TankLevelManager.GetInstance().last_shiny + 10 * Vector3.up;
+            transform.position = TankLevelManager.GetInstance().last_shiny;
             transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         }
     }
@@ -166,21 +167,23 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
             left_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) - Mathf.Min(torque_scale * cross, max_torque))) * left_tread.forward;
             right_tread_speed = ((Mathf.Min(dot * accel_scale, max_accel) + Mathf.Min(torque_scale * cross, max_torque))) * right_tread.forward;
 
-            if((CheckGround(lb_raypoint) && CheckGround(rb_raypoint) && !(CheckGround(lf_raypoint) || CheckGround(rf_raypoint) || CheckGround(lc_raypoint) || CheckGround(rc_raypoint))))
-                {
-                    left_tread_speed = left_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -left_tread.up;
-                    right_tread_speed = right_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * -right_tread.up;
-                }
+            if ((CheckGround(lb_raypoint) || CheckGround(rb_raypoint)) && !(CheckGround(lf_raypoint) || CheckGround(rf_raypoint) || CheckGround(lc_raypoint) || CheckGround(rc_raypoint)))
+            {
+                //left_tread_speed = left_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * left_tread.up;
+                //right_tread_speed = right_tread_speed + Mathf.Min(dot * accel_scale, max_accel)/4 * right_tread.up;
+                body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), lb_raypoint.position, ForceMode.Force);
+                body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), rb_raypoint.position, ForceMode.Force);
+            }
+            else
+            {
+                body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Force);
+                body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Force);
+            }
         }
-        else
-        {
-            left_tread_speed = Vector3.zero;
-            right_tread_speed = Vector3.zero;
-        }
+
         print(hit.distance);
 
-        body_rb.AddForceAtPosition(body_rb.mass * (left_tread_speed + drag_force), left_tread.position, ForceMode.Acceleration);
-        body_rb.AddForceAtPosition(body_rb.mass * (right_tread_speed + drag_force), right_tread.position, ForceMode.Acceleration);
+
     }
 
     private bool CheckGround(Transform raypoint)

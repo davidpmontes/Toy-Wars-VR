@@ -22,7 +22,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
     [SerializeField] AudioClip narration = default;
     [SerializeField] GameObject congrats = default;
 
-    private int targets_left = 10;
+    private int targets_left = 9;
     public Vector3 last_shiny;
 
     private static TankLevelManager instance;

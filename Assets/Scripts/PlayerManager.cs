@@ -45,7 +45,10 @@ public class PlayerManager : MonoBehaviour
     {
         CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
                                        currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
-        CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
+        if(currentVehicle != tank)
+        {
+            CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
+        }
     }
 
     public void EnableVehicle(PlayerVehicles vehicle)

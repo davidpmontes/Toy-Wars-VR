@@ -6,16 +6,20 @@ public class PlayerTankTurret : MonoBehaviour
 
     private Transform targetPoint;
     private Transform cam;
+    [SerializeField] private Transform  cam_pos = default;
+    [SerializeField] private Transform  turret = default;
 
 
     private void Awake()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
         targetPoint = GameObject.Find("TargetPoint").transform;
+        this.GetComponent<Rigidbody>().position = turret.position;
     }
 
     void Update()
     {
+        UpdateCamera();
         RotateTurretWithCamera();
         RotateBarrelToController();
     }
@@ -25,7 +29,7 @@ public class PlayerTankTurret : MonoBehaviour
     private void RotateTurretWithCamera()
     {
         //find the vector pointing from our position to the target
-        var direction = ((cam.position + cam.forward*10) - transform.position);
+        var direction = ((cam.position + cam.forward*100) - transform.position);
         direction.y = 0;
         direction = direction.normalized;
 
@@ -45,5 +49,10 @@ public class PlayerTankTurret : MonoBehaviour
 
         //rotate us over time according to speed until we are in the required rotation
         barrel.rotation = Quaternion.Slerp(barrel.rotation, lookRotation, Time.deltaTime * 4);
+    }
+
+    private void UpdateCamera()
+    {
+        CameraRigSetPosition.Instance.transform.position = cam_pos.position;
     }
 }

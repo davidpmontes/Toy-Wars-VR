@@ -74,8 +74,8 @@ public class TurretCannonNormal : MonoBehaviour, ICameraRelocate
         var horizontal = Gamepad.current.leftStick.x.ReadValue();
         var vertical = Gamepad.current.leftStick.y.ReadValue();
 
-        horizontalValue += horizontal * 50 * Time.deltaTime;
-        verticalValue += vertical * 50 * Time.deltaTime;
+        horizontalValue += horizontal * 70 * Time.deltaTime;
+        verticalValue += vertical * 70 * Time.deltaTime;
 
         horizontalValue = Mathf.Clamp(horizontalValue, -90, 90);
         verticalValue = Mathf.Clamp(verticalValue, -90, 90);

@@ -4,6 +4,9 @@ using Cinemachine;
 
 public class AttackHelicopterDolly : MonoBehaviour, IEnemy
 {
+    [SerializeField] private Material red = default;
+    [SerializeField] private GameObject target = default;
+
     private float maxLife = 3;
     private float currlife;
     private MeshRenderer meshRenderer;
@@ -13,10 +16,7 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private Vector3 pos0;
     private Vector3 pos1;
     private GameObject smoke;
-    [SerializeField] private Material red = default;
     private Material originalMaterial;
-    [SerializeField] private GameObject target;
-
     private int sourceKey = -1;
     //private int cannonSource = -1;
 

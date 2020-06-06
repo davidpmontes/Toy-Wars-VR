@@ -2,7 +2,7 @@
 
 public class BaseAsset : MonoBehaviour, IBaseAsset
 {
-    [SerializeField] private float life;
+    [SerializeField] private float life = default;
     //private LifeBar lifeBar;
 
     public void Awake()

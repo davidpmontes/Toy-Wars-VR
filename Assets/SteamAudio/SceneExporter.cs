@@ -141,8 +141,8 @@ namespace SteamAudio
             } else if (terrain != null) {
                 var terrainSimplificationLevel = GetTerrainSimplificationLevel(terrain);
 
-                var w = terrain.terrainData.heightmapWidth;
-                var h = terrain.terrainData.heightmapHeight;
+                var w = terrain.terrainData.heightmapResolution;
+                var h = terrain.terrainData.heightmapResolution;
                 var s = Mathf.Min(w - 1, Mathf.Min(h - 1, (int)Mathf.Pow(2.0f, terrainSimplificationLevel)));
 
                 if (s == 0) {
@@ -168,8 +168,8 @@ namespace SteamAudio
             } else if (terrain != null) {
                 var terrainSimplificationLevel = GetTerrainSimplificationLevel(terrain);
 
-                var w = terrain.terrainData.heightmapWidth;
-                var h = terrain.terrainData.heightmapHeight;
+                var w = terrain.terrainData.heightmapResolution;
+                var h = terrain.terrainData.heightmapResolution;
                 var s = Mathf.Min(w - 1, Mathf.Min(h - 1, (int)Mathf.Pow(2.0f, terrainSimplificationLevel)));
 
                 if (s == 0) {
@@ -202,8 +202,8 @@ namespace SteamAudio
             } else if (terrain != null) {
                 var terrainSimplificationLevel = GetTerrainSimplificationLevel(terrain);
 
-                var w = terrain.terrainData.heightmapWidth;
-                var h = terrain.terrainData.heightmapHeight;
+                var w = terrain.terrainData.heightmapResolution;
+                var h = terrain.terrainData.heightmapResolution;
                 var s = Mathf.Min(w - 1, Mathf.Min(h - 1, (int)Mathf.Pow(2.0f, terrainSimplificationLevel)));
                 if (s == 0) {
                     s = 1;
@@ -213,18 +213,18 @@ namespace SteamAudio
                 h = ((h - 1) / s) + 1;
 
                 var position = terrain.transform.position;
-                var heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapWidth,
-                    terrain.terrainData.heightmapHeight);
+                var heights = terrain.terrainData.GetHeights(0, 0, terrain.terrainData.heightmapResolution,
+                    terrain.terrainData.heightmapResolution);
 
                 var index = 0;
-                for (var v = 0; v < terrain.terrainData.heightmapHeight; v += s) {
-                    for (var u = 0; u < terrain.terrainData.heightmapWidth; u += s) {
+                for (var v = 0; v < terrain.terrainData.heightmapResolution; v += s) {
+                    for (var u = 0; u < terrain.terrainData.heightmapResolution; u += s) {
                         var height = heights[v, u];
 
-                        var x = position.x + (((float)u / terrain.terrainData.heightmapWidth) *
+                        var x = position.x + (((float)u / terrain.terrainData.heightmapResolution) *
                             terrain.terrainData.size.x);
                         var y = position.y + (height * terrain.terrainData.size.y);
-                        var z = position.z + (((float)v / terrain.terrainData.heightmapHeight) *
+                        var z = position.z + (((float)v / terrain.terrainData.heightmapResolution) *
                             terrain.terrainData.size.z);
 
                         var vertex = new UnityEngine.Vector3 { x = x, y = y, z = z };
@@ -254,8 +254,8 @@ namespace SteamAudio
             } else if (terrain != null) {
                 var terrainSimplificationLevel = GetTerrainSimplificationLevel(terrain);
 
-                var w = terrain.terrainData.heightmapWidth;
-                var h = terrain.terrainData.heightmapHeight;
+                var w = terrain.terrainData.heightmapResolution;
+                var h = terrain.terrainData.heightmapResolution;
                 var s = Mathf.Min(w - 1, Mathf.Min(h - 1, (int)Mathf.Pow(2.0f, terrainSimplificationLevel)));
                 if (s == 0) {
                     s = 1;

@@ -5,8 +5,8 @@ public class TVCamera : MonoBehaviour
 {
     public static TVCamera Instance { get; private set; }
 
-    [SerializeField] private TextMesh timeRemaining;
-    [SerializeField] private TextMesh enemyCount;
+    [SerializeField] private TextMesh timeRemaining = default;
+    [SerializeField] private TextMesh enemyCount = default;
 
     private float timer;
 

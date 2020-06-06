@@ -8,7 +8,7 @@ public class FallToPostion : Collectible
     [SerializeField] float speed = default;
     [SerializeField] string audio_clip = default;
     [SerializeField] Transform anchor = default;
-    [SerializeField] bool shootable;
+    [SerializeField] bool shootable = default;
 
     private bool triggered = false;
     // Start is called before the first frame update

@@ -5,14 +5,14 @@ public class MenuSelector : MonoBehaviour
 {
     public static MenuSelector Instance { get; private set; }
 
+    [SerializeField] private GameObject tank = default;
+    [SerializeField] private Animator PlayButton = default;
+
     public SteamVR_Action_Boolean selectMenu;
 
     private LayerMask layerMask;
     private string currentButtonName;
     private string buttonDownName;
-
-    [SerializeField] private GameObject tank;
-    public Animator PlayButton;
     //public Animator QuitButton;
     private AudioManager audioManager;
 

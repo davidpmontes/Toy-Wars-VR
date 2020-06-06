@@ -11,7 +11,7 @@ public class LifeBar : MonoBehaviour
 
     private float MaxLife;
     private float CurrLife;
-    [SerializeField] GameObject visibleBar;
+    [SerializeField] GameObject visibleBar = default;
 
     public void SetMaxLifeAndCurrLife(float value)
     {

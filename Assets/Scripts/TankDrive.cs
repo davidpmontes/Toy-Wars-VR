@@ -113,7 +113,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            transform.position = TankLevelManager.GetInstance().last_shiny;
+            transform.position = TankLevelManager.Instance.last_shiny;
             transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
         }
     }

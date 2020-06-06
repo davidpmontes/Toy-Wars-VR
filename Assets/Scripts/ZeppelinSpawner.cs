@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ZeppelinSpawner : MonoBehaviour, IEnemySpawner
 {
-    [SerializeField] private GameObject Zeppelin;
+    [SerializeField] private GameObject Zeppelin = default;
 
     public void Init()
     {

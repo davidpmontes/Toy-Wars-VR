@@ -3,51 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum LevelState {Start = 0, Intro = 1, Gameplay = 2, Finish = 3};
+public enum LEVEL_STATE {
+    START, INTRO, GAMEPLAY, FINISH
+};
+
 public class TankLevelManager : MonoBehaviour, ILevelManager
 {
-    // Start is called before the first frame update
+    public static TankLevelManager Instance { get; private set; }
 
     [SerializeField] AudioClip[] sound_effects = default;
     [SerializeField] List<TriggerCoin> target_spawners = default;
     [SerializeField] List<GameObject> targets = default;
-    [SerializeField] private LevelState state = default;
+    [SerializeField] private LEVEL_STATE state = default;
     [SerializeField] private float wait_time = default;
     [SerializeField] GameObject firework_prefab = default;
     [SerializeField] Transform firework_spawn = default;
-    [SerializeField] GameObject finish_point;
+    [SerializeField] GameObject finish_point = default;
 
     [SerializeField] AudioClip bgm = default;
     [SerializeField] AudioClip victory = default;
     [SerializeField] AudioClip narration = default;
     [SerializeField] GameObject congrats = default;
 
-    private int targets_left = 9;
     public Vector3 last_shiny;
 
-    private static TankLevelManager instance;
-    public static TankLevelManager GetInstance()
-    {
-        if(instance == null)
-        {
-            instance = GameObject.Find("TankLevelManager").GetComponent<TankLevelManager>();
-        }
-        return instance;
-    }
+    private int targets_left = 9;
 
-    public void GetSoundEffects(out AudioClip[] fx)
+    private void Awake()
     {
-        fx = sound_effects;
+        Instance = this;
     }
 
     void Start()
     {
         PlayerManager.Instance.EnableVehicle(PlayerVehicles.TANK);
-        last_shiny = this.transform.position;
+        last_shiny = transform.position;
         UpdateState();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -61,22 +54,27 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
         }
     }
 
+    public void GetSoundEffects(out AudioClip[] fx)
+    {
+        fx = sound_effects;
+    }
+
     public void UpdateState()
     {
         print(state);
         switch (state)
         {
-            case LevelState.Start:
+            case LEVEL_STATE.START:
                 AudioManager.Instance.StartBGM(bgm);
                 StartCoroutine(DelayUpdate(wait_time));
                 break;
-            case LevelState.Intro:
+            case LEVEL_STATE.INTRO:
                 AudioManager.Instance.PlayNarration(narration);
                 StartCoroutine(DelayUpdate(narration.length));
                 break;
-            case LevelState.Gameplay:
+            case LEVEL_STATE.GAMEPLAY:
                 break;
-            case LevelState.Finish:
+            case LEVEL_STATE.FINISH:
                 Finish();
                 break;
         }
@@ -102,7 +100,7 @@ public class TankLevelManager : MonoBehaviour, ILevelManager
         targets_left--;
         if(targets_left == 0)
         {
-            state = LevelState.Finish;
+            state = LEVEL_STATE.FINISH;
         }
     }
 

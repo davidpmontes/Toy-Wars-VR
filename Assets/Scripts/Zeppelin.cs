@@ -11,29 +11,29 @@ public class Zeppelin : MonoBehaviour
     private float life = 100;
     private int stage = 0;
 
-    [SerializeField] private CinemachineSmoothPath smoothPath;
-    [SerializeField] private CinemachineDollyCart dollyCart;
+    [SerializeField] private CinemachineSmoothPath smoothPath = default;
+    [SerializeField] private CinemachineDollyCart dollyCart = default;
 
-    [SerializeField] private List<GameObject> WeakSpots1; //9
-    [SerializeField] private LifeBar lifeBar;
-    [SerializeField] private GameObject bomber;
+    [SerializeField] private List<GameObject> WeakSpots1 = default; //9
+    [SerializeField] private LifeBar lifeBar = default;
+    [SerializeField] private GameObject bomber = default;
 
     //Commander
-    [SerializeField] private AudioClip ILoveTheSmellOfOrangeJuiceInTheMorning;
-    [SerializeField] private AudioClip ItsSlowingDown;
-    [SerializeField] private AudioClip ThatsItKeepFiring;
+    [SerializeField] private AudioClip ILoveTheSmellOfOrangeJuiceInTheMorning = default;
+    [SerializeField] private AudioClip ItsSlowingDown = default;
+    [SerializeField] private AudioClip ThatsItKeepFiring = default;
 
     //Zeppelin
-    [SerializeField] private AudioClip laugh1;
-    [SerializeField] private AudioClip laugh2;
-    [SerializeField] private AudioClip laugh3;
-    [SerializeField] private AudioClip AhStopThat;
-    [SerializeField] private AudioClip AllYourBaseAreBelongToUs;
-    [SerializeField] private AudioClip Nooooo;
-    [SerializeField] private AudioClip MyEmperorIveFailedYou;
+    [SerializeField] private AudioClip laugh1 = default;
+    [SerializeField] private AudioClip laugh2 = default;
+    [SerializeField] private AudioClip laugh3 = default;
+    [SerializeField] private AudioClip AhStopThat = default;
+    [SerializeField] private AudioClip AllYourBaseAreBelongToUs = default;
+    [SerializeField] private AudioClip Nooooo = default;
+    [SerializeField] private AudioClip MyEmperorIveFailedYou = default;
 
-    [SerializeField] private ZeppelinEnemyDamageable body;
-    [SerializeField] private GameObject machineGun;
+    [SerializeField] private ZeppelinEnemyDamageable body = default;
+    [SerializeField] private GameObject machineGun = default;
 
     private void Awake()
     {

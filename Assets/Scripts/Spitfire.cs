@@ -4,13 +4,14 @@ using Cinemachine;
 
 public class Spitfire : MonoBehaviour, IEnemy
 {
+    [SerializeField] private Material red = default;
+    [SerializeField] private GameObject target = default;
+    [SerializeField] private Transform barrel = default;
+
     private float maxLife = 3;
     private float currLife;
     private Material originalMaterial;
     private Material material;
-    [SerializeField] private Material red = default;
-    [SerializeField] private GameObject target;
-    [SerializeField] private Transform barrel;
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private GameObject smoke;

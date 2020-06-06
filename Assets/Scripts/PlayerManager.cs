@@ -8,7 +8,7 @@ public enum PlayerVehicles
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager Instance;
+    public static PlayerManager Instance { get; private set; }
     private GameObject currentVehicle;
 
     [SerializeField] private GameObject turret = default;
@@ -19,11 +19,6 @@ public class PlayerManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
-    {
-
-    }
-
     public GameObject CurrentVehicle()
     {
         return currentVehicle;
@@ -31,14 +26,14 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            EnableVehicle(PlayerVehicles.TURRET);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            EnableVehicle(PlayerVehicles.TANK);
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    EnableVehicle(PlayerVehicles.TURRET);
+        //}
+        //else if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    EnableVehicle(PlayerVehicles.TANK);
+        //}
     }
 
     private void SetCameraToVehicle()

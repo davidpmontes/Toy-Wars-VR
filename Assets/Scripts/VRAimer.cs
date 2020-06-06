@@ -3,15 +3,13 @@
 public class VRAimer : MonoBehaviour
 {
     public static VRAimer Instance { get; private set; }
+
     [SerializeField] private GameObject targetPoint = default;
+    [SerializeField] private LayerMask layerMask;
 
-    private LayerMask layerMask;
-
-    private void Start()
+    private void Awake()
     {
         Instance = this;
-        layerMask = 1 << LayerMask.NameToLayer("Statics"); //|
-                    //(1 << LayerMask.NameToLayer("Enemy"));
     }
 
     void Update()

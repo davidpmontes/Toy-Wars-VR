@@ -71,15 +71,15 @@ public class Level1Manager : MonoBehaviour, ILevelManager
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    SceneManager.LoadScene("MainMenu");
+        //}
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            PlayerTurret.Instance.ToggleWeapon();
-        }
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    PlayerTurret.Instance.ToggleWeapon();
+        //}
     }
 
     void Start()

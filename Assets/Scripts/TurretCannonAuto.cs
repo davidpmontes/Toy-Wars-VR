@@ -28,7 +28,7 @@ public class TurretCannonAuto : MonoBehaviour
 
     private void LoadAudio()
     {
-        audioManager = AudioManager.GetAudioManager();
+        audioManager = AudioManager.Instance;
 
         if (leftCannonSource < 0)
         {

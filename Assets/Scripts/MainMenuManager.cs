@@ -3,16 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour, ILevelManager
 {
-
-    private AudioManager audioManager;
-    [SerializeField] private AudioClip[] sound_effects = default;
-    [SerializeField] AudioClip BGM_MainMenu = default;
-
     public static MainMenuManager Instance { get; private set; }
+
+    [SerializeField] private AudioClip[] sound_effects = default;
+    [SerializeField] private AudioClip BGM_MainMenu = default;
+
     private void Awake()
     {
         Instance = this;
-        audioManager = AudioManager.GetAudioManager();
+        GetComponent<InitializeInOrder>().InitializeObjects();
+        PlayerManager.Instance.EnableVehicle(PlayerVehicles.MENU_SELECTOR);
+        QualitySettings.shadowDistance = 10;
+        SetCameraToMainMenu();
+        AudioManager.Instance.ChangeBGM(BGM_MainMenu);
+        AudioManager.Instance.StartBGM();
     }
 
     public void GetSoundEffects(out AudioClip[] fx)
@@ -20,30 +24,22 @@ public class MainMenuManager : MonoBehaviour, ILevelManager
         fx = sound_effects;
     }
 
-    void Start()
-    {
-        QualitySettings.shadowDistance = 10;
-        SetCameraToMainMenu();
-        AudioManager.Instance.ChangeBGM(BGM_MainMenu);
-        AudioManager.Instance.StartBGM();
-    }
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Application.Quit();
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    Application.Quit();
+        //}
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            SceneManager.LoadScene("MainMenu");
-        }
+        //if (Input.GetKeyDown(KeyCode.R))
+        //{
+        //    SceneManager.LoadScene("MainMenu");
+        //}
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            SceneManager.LoadScene("TankTest");
-        }
+        //if (Input.GetKeyDown(KeyCode.T))
+        //{
+        //    SceneManager.LoadScene("TankTest");
+        //}
     }
     public void PlayButtonClicked()
     {

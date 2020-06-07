@@ -8,7 +8,7 @@ public class Explosion : MonoBehaviour
     public void Init(Vector3 position)
     {
         transform.position = position;
-        AudioManager.GetAudioManager().PlayOneshot(audiofileName, transform.position);
+        AudioManager.Instance.PlayOneshot(audiofileName, transform.position);
         Invoke("Deactivate", lifespan);
     }
 

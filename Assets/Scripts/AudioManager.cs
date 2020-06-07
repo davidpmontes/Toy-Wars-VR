@@ -7,6 +7,8 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance { get; private set; }
+
     [SerializeField] private int max_sources = default;
     [SerializeField] private float volume_reduction = default;
     [SerializeField] private AudioMixer mixer = default;
@@ -26,7 +28,6 @@ public class AudioManager : MonoBehaviour
     public float[] mixer_group_volume;
 
     private static AudioManager audioManager;
-    public static AudioManager Instance { get; private set; }
 
     void Awake()
     {
@@ -42,15 +43,6 @@ public class AudioManager : MonoBehaviour
     {
         //ChangeBGM(bgm_clip);
         InitMixerGroups();
-    }
-
-    public static AudioManager GetAudioManager()
-    {
-        if (audioManager == null)
-        {
-            audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        }
-        return audioManager;
     }
 
     void InitUI()

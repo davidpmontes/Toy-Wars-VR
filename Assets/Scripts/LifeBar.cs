@@ -8,10 +8,10 @@ public class LifeBar : MonoBehaviour
     [SerializeField] Material redLifeBar = default;
     [SerializeField] Material yellowLifeBar = default;
     [SerializeField] Material greenLifeBar = default;
+    [SerializeField] GameObject visibleBar = default;
 
     private float MaxLife;
     private float CurrLife;
-    [SerializeField] GameObject visibleBar = default;
 
     public void SetMaxLifeAndCurrLife(float value)
     {

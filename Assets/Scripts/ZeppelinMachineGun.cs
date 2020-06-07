@@ -60,7 +60,7 @@ public class ZeppelinMachineGun : MonoBehaviour
         while (Time.time < endTime)
         {
             flash.Play();
-            AudioManager.GetAudioManager().PlayOneshot("big one", transform.position);
+            AudioManager.Instance.PlayOneshot("big one", transform.position);
 
             var laser = ObjectPool.Instance.GetFromPoolInactive(Pools.RedLaserMissile);
             laser.transform.rotation = Quaternion.identity;

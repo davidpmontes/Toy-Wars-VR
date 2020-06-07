@@ -33,7 +33,7 @@ public class LaserCannon : MonoBehaviour
 
     private void LoadAudio()
     {
-        audioManager = AudioManager.GetAudioManager();
+        audioManager = AudioManager.Instance;
         if (leftCannonSource < 0)
         {
             leftCannonSource = audioManager.ReserveSource("shoot_laser_strong", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);

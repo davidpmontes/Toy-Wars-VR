@@ -5,7 +5,7 @@ public class VRAimer : MonoBehaviour
     public static VRAimer Instance { get; private set; }
 
     [SerializeField] private GameObject targetPoint = default;
-    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LayerMask layerMask = default;
 
     private void Awake()
     {

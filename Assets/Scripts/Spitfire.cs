@@ -17,7 +17,6 @@ public class Spitfire : MonoBehaviour, IEnemy
     private GameObject smoke;
     private Vector3 pos0;
     private Vector3 pos1;
-    private AudioManager audioManager;
     private CinemachineDollyCart cinemachineDollyCart;
     private int sourceKey = -1;
     private int cannonSource = -1;
@@ -29,7 +28,6 @@ public class Spitfire : MonoBehaviour, IEnemy
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
         cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
-        audioManager = AudioManager.GetAudioManager();
     }
 
     public void Init()
@@ -37,29 +35,35 @@ public class Spitfire : MonoBehaviour, IEnemy
         BindAudio();
         currLife = maxLife;
         FireWeapon(Random.Range(8, 10), 5);
+        Invoke("BecomeVisible", 0.1f);
+    }
+
+    private void BecomeVisible()
+    {
+        transform.GetChild(0).transform.localScale = Vector3.one;
     }
 
     private void BindAudio()
     {
-        if (audioManager != null)
+        if (AudioManager.Instance != null)
         {
-            sourceKey = audioManager.ReserveSource("engine_generator_loop_03", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
-            audioManager.SetReservedMixer(sourceKey, 3);
-            audioManager.BindReserved(sourceKey, transform);
-            audioManager.PlayReserved(sourceKey);
+            sourceKey = AudioManager.Instance.ReserveSource("engine_generator_loop_03", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+            AudioManager.Instance.SetReservedMixer(sourceKey, 3);
+            AudioManager.Instance.BindReserved(sourceKey, transform);
+            AudioManager.Instance.PlayReserved(sourceKey);
 
-            cannonSource = audioManager.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
-            audioManager.BindReserved(cannonSource, transform);
+            cannonSource = AudioManager.Instance.ReserveSource("big one", occluding: true, spacial_blend: 1.0f, pitch: 1.0f);
+            AudioManager.Instance.BindReserved(cannonSource, transform);
         }
     }
 
     private void UnbindAudio()
     {
-        if (audioManager != null)
+        if (AudioManager.Instance != null)
         {
-            audioManager.UnbindReserved(sourceKey);
+            AudioManager.Instance.UnbindReserved(sourceKey);
             sourceKey = -1;
-            audioManager.UnbindReserved(cannonSource);
+            AudioManager.Instance.UnbindReserved(cannonSource);
             cannonSource = -1;
         }
     }
@@ -151,7 +155,7 @@ public class Spitfire : MonoBehaviour, IEnemy
 
         for (int i = 0; i < repeat; i++)
         {
-            audioManager.PlayReserved(cannonSource);
+            AudioManager.Instance.PlayReserved(cannonSource);
             var enemyBullet = ObjectPool.Instance.GetFromPoolInactive(Pools.YellowLaserMissile);
             enemyBullet.GetComponent<LaserProjectile>().Init(barrel, target.transform.position - transform.position);
             enemyBullet.SetActive(true);

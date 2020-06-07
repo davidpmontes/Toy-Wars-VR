@@ -3,7 +3,8 @@
 public enum PlayerVehicles
 {
     TURRET,
-    TANK
+    TANK,
+    MENU_SELECTOR
 }
 
 public class PlayerManager : MonoBehaviour
@@ -13,6 +14,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] private GameObject turret = default;
     [SerializeField] private GameObject tank = default;
+    [SerializeField] private GameObject menuSelector = default;
 
     void Awake()
     {
@@ -36,20 +38,11 @@ public class PlayerManager : MonoBehaviour
         //}
     }
 
-    private void SetCameraToVehicle()
-    {
-        CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
-                                       currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
-        if(currentVehicle != tank)
-        {
-            CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
-        }
-    }
-
     public void EnableVehicle(PlayerVehicles vehicle)
     {
         turret.SetActive(false);
         tank.SetActive(false);
+        menuSelector.SetActive(false);
 
         if (vehicle == PlayerVehicles.TURRET)
         {
@@ -61,6 +54,11 @@ public class PlayerManager : MonoBehaviour
             tank.SetActive(true);
             currentVehicle = tank;
         }
+        else if (vehicle == PlayerVehicles.MENU_SELECTOR)
+        {
+            menuSelector.SetActive(true);
+            currentVehicle = menuSelector;
+        }
 
         SetCameraToVehicle();
 
@@ -68,5 +66,15 @@ public class PlayerManager : MonoBehaviour
 
         //AimingCircle.Instance.SetTrueAimingTransform(currentVehicle.transform);
         //FollowTarget.Instance.SetCameraTargets(currentVehicle.transform);
+    }
+
+    private void SetCameraToVehicle()
+    {
+        CameraRigSetPosition.Instance.Relocate(currentVehicle.GetComponent<ICameraRelocate>().GetRelocatePosition(),
+                                               currentVehicle.GetComponent<ICameraRelocate>().GetRelocateRotation());
+        if (currentVehicle != tank)
+        {
+            CameraRigSetPosition.Instance.AttachToGameobject(currentVehicle.transform);
+        }
     }
 }

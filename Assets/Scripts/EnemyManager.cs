@@ -6,13 +6,11 @@ public class EnemyManager : MonoBehaviour
 	public static EnemyManager Instance { get; private set; }
 
     private List<GameObject> AllEnemies;
-    private AudioManager audioManager;
     private int totalEnemiesDeregistered = 0;
 
     void Awake()
     {
         Instance = this;
-        audioManager = AudioManager.GetAudioManager();
         AllEnemies = new List<GameObject>();
     }
 

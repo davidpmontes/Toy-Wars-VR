@@ -19,15 +19,17 @@ public class SpitfireSpawner : MonoBehaviour, IEnemySpawner
     {
         yield return new WaitForSeconds(delay);
 
-        var newSpitfire = ObjectPool.Instance.GetFromPoolActiveSetTransform(Pools.Spitfire, transform);
+        var newSpitfire = ObjectPool.Instance.GetFromPoolInactive(Pools.Spitfire);
         newSpitfire.GetComponent<Rigidbody>().isKinematic = true;
         newSpitfire.layer = LayerMask.NameToLayer("Enemy");
         var cart = newSpitfire.GetComponent<CinemachineDollyCart>();
         cart.m_Path = path;
+        cart.m_PositionUnits = CinemachinePathBase.PositionUnits.Distance;
         cart.m_Position = 0;
-        newSpitfire.GetComponent<IEnemy>().Init();
-        newSpitfire.SetActive(true);
         cart.enabled = true;
+        newSpitfire.transform.GetChild(0).transform.localScale = Vector3.zero;
+        newSpitfire.SetActive(true);
+        newSpitfire.GetComponent<IEnemy>().Init();
         EnemyManager.Instance.RegisterEnemy(newSpitfire);
     }
 }

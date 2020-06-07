@@ -22,7 +22,7 @@ public class AttackHelicopter : MonoBehaviour, IEnemy
     {
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
-        audioManager = AudioManager.GetAudioManager();
+        audioManager = AudioManager.Instance;
     }
 
     public void Init()

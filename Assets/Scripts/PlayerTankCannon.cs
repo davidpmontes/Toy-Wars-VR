@@ -24,7 +24,7 @@ public class PlayerTankCannon : MonoBehaviour
 
     private void Awake()
     {
-        audio_manager = AudioManager.GetAudioManager();
+        audio_manager = AudioManager.Instance;
     }
 
     private void Start()

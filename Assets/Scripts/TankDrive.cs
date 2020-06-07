@@ -64,7 +64,7 @@ public class TankDrive : MonoBehaviour, ICameraRelocate
         rb = GetComponent<Rigidbody>();
         pose = GetComponentInParent<SteamVR_Behaviour_Pose>();
         SetDriveScheme(DriveScheme.FreeTurret);
-        audio_manager = AudioManager.GetAudioManager();
+        audio_manager = AudioManager.Instance;
     }
 
     private void Start()

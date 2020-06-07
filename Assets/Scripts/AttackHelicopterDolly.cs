@@ -12,7 +12,6 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
     private MeshRenderer meshRenderer;
     private Rigidbody rigidBody;
     private CinemachineDollyCart cinemachineDollyCart;
-    private AudioManager audioManager;
     private Vector3 pos0;
     private Vector3 pos1;
     private GameObject smoke;
@@ -26,31 +25,37 @@ public class AttackHelicopterDolly : MonoBehaviour, IEnemy
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalMaterial = meshRenderer.material;
         cinemachineDollyCart = GetComponent<CinemachineDollyCart>();
-        audioManager = AudioManager.GetAudioManager();
+        cinemachineDollyCart.m_Position = 0;
+    }
+
+    private void BecomeVisible()
+    {
+        transform.GetChild(0).transform.localScale = Vector3.one;
     }
 
     public void Init()
     {
         BindAudio();
         currlife = maxLife;
+        Invoke("BecomeVisible", 0.1f);
     }
 
     private void BindAudio()
     {
-        if (audioManager != null)
+        if (AudioManager.Instance != null)
         {
-            sourceKey = audioManager.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
-            audioManager.SetReservedMixer(sourceKey, 3);
-            audioManager.BindReserved(sourceKey, transform);
-            audioManager.PlayReserved(sourceKey);
+            sourceKey = AudioManager.Instance.ReserveSource("helicopter_idle", occluding: true, spacial_blend: 1f, pitch: 1f, looping: true);
+            AudioManager.Instance.SetReservedMixer(sourceKey, 3);
+            AudioManager.Instance.BindReserved(sourceKey, transform);
+            AudioManager.Instance.PlayReserved(sourceKey);
         }
     }
 
     private void UnbindAudio()
     {
-        if (audioManager != null && sourceKey == -1)
+        if (AudioManager.Instance != null && sourceKey == -1)
         {
-            audioManager.UnbindReserved(sourceKey);
+            AudioManager.Instance.UnbindReserved(sourceKey);
             sourceKey = -1;
         }
     }

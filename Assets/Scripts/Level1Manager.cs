@@ -66,7 +66,11 @@ public class Level1Manager : MonoBehaviour, ILevelManager
     private void Awake()
     {
         Instance = this;
-        audioManager = AudioManager.GetAudioManager();
+        GetComponent<InitializeInOrder>().InitializeObjects();
+        audioManager = AudioManager.Instance;
+        PlayerManager.Instance.EnableVehicle(PlayerVehicles.TURRET);
+        QualitySettings.shadowDistance = 450;
+        UpdateState();
     }
 
     private void Update()
@@ -80,13 +84,6 @@ public class Level1Manager : MonoBehaviour, ILevelManager
         //{
         //    PlayerTurret.Instance.ToggleWeapon();
         //}
-    }
-
-    void Start()
-    {
-        PlayerManager.Instance.EnableVehicle(PlayerVehicles.TURRET);
-        QualitySettings.shadowDistance = 450;
-        UpdateState();
     }
 
     public void GetSoundEffects(out AudioClip[] fx)

@@ -20,10 +20,10 @@ public class TrainTank : Collectible
         {
             on_cooldown = true;
             Instantiate(smoke_prefab, smoke_stack.transform);
-            audioManager.PlayOneshot("train_horn_02", smoke_stack.transform, 2.0f);
+            AudioManager.Instance.PlayOneshot("train_horn_02", smoke_stack.transform, 2.0f);
             yield return new WaitForSeconds(toot_time);
             Instantiate(smoke_prefab, smoke_stack.transform);
-            audioManager.PlayOneshot("train_horn_02", smoke_stack.transform, 2.0f);
+            AudioManager.Instance.PlayOneshot("train_horn_02", smoke_stack.transform, 2.0f);
             yield return new WaitForSeconds(cooldown_time);
             on_cooldown = false;
         }

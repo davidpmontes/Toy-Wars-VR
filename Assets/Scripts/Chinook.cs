@@ -17,7 +17,7 @@ public class Chinook : MonoBehaviour, IEnemy
     {
         meshRenderer = GetComponent<MeshRenderer>();
         originalMaterial = GetComponent<MeshRenderer>().material;
-        audioManager = AudioManager.GetAudioManager();
+        audioManager = AudioManager.Instance;
     }
 
     public void Init()

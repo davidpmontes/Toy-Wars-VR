@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 425004187609611310}
   - component: {fileID: 425004187609611309}
   m_Layer: 12
-  m_Name: Cube
+  m_Name: HorizontalCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55,6 +55,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -105,7 +106,7 @@ GameObject:
   - component: {fileID: 425004189143904371}
   - component: {fileID: 425004189143904370}
   m_Layer: 12
-  m_Name: Cube (1)
+  m_Name: VerticalCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,6 +148,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -229,3 +231,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a99344b8852f8e4449aa007e6a17d27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  adjustment: 100

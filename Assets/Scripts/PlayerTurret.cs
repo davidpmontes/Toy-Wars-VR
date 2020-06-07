@@ -29,10 +29,16 @@ public class PlayerTurret : MonoBehaviour, IRotateable, ICameraRelocate
         {
             var direction = (targetPoint.transform.position - transform.position).normalized;
             var rotateableLookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
-            var tiltableLookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+            var tiltableLookRotation = Quaternion.LookRotation(new Vector3(direction.x,
+                                                                           direction.y,
+                                                                           direction.z));
 
-            Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation, rotateableLookRotation, Time.deltaTime * 10);
-            Tiltable.transform.rotation = Quaternion.Slerp(Tiltable.transform.rotation, tiltableLookRotation, Time.deltaTime * 10);
+            Rotateable.transform.rotation = Quaternion.Slerp(Rotateable.transform.rotation,
+                                                             rotateableLookRotation,
+                                                             Time.deltaTime * 10);
+            Tiltable.transform.rotation = Quaternion.Slerp(Tiltable.transform.rotation,
+                                                           tiltableLookRotation,
+                                                           Time.deltaTime * 10);
         }
     }
 

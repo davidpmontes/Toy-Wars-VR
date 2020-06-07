@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2412970655316243481}
   - component: {fileID: 2412970655316243495}
   m_Layer: 0
-  m_Name: AudioManager 1
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_sources: 30
   volume_reduction: -10
-  bgm_clip: {fileID: 8300000, guid: 6032661c97d0c4947bb53db6e7c673dd, type: 3}
   mixer: {fileID: 24100000, guid: d8a45f15809d22e4ab3dcffec43f9184, type: 2}
   mixer_groups: []
   rolloff_distance: 500
